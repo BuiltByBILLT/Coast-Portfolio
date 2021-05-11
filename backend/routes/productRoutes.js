@@ -5,10 +5,11 @@ import Product from '../models/productModel.js'
 const router = express.Router()
 
 // @desc Fetch all products
-// @route GET /api/products
+// @route GET /api/products/
 // @access Public
 router.get('/', asyncHandler(async (req, res) => {
     const products = await Product.find({})
+    // await new Promise((resolve) => setTimeout(resolve, 20000))
     res.json(products)
 }))
 
