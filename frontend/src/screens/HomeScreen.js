@@ -5,7 +5,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { listProducts } from '../actions/productActions'
+import { listProducts, resetProducts } from '../actions/productActions'
 
 
 const HomeScreen = () => {
@@ -15,6 +15,7 @@ const HomeScreen = () => {
 
     useEffect(() => {
         dispatch(listProducts())
+        return dispatch(resetProducts())
     }, [dispatch])
 
     return (

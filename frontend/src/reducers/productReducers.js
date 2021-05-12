@@ -2,15 +2,19 @@ import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
     PRODUCT_LIST_FAIL,
+    PRODUCT_LIST_RESET,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_FAIL
+    PRODUCT_DETAILS_FAIL,
+    PRODUCT_DETAILS_RESET
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
     switch (action.type) {
+        case PRODUCT_LIST_RESET:
+            return { loading: true, products: [] }
         case PRODUCT_LIST_REQUEST:
-            return { ...state, loading: true }
+            return { loading: true, products: [] }
         case PRODUCT_LIST_SUCCESS:
             return { loading: false, products: action.payload }
         case PRODUCT_LIST_FAIL:
@@ -22,8 +26,10 @@ export const productListReducer = (state = { products: [] }, action) => {
 
 export const productDetailsReducer = (state = { product: { rating: 0, numReviews: 0 } }, action) => {
     switch (action.type) {
+        case PRODUCT_DETAILS_RESET:
+            return { loading: true, product: { rating: 0, numReviews: 0 } }
         case PRODUCT_DETAILS_REQUEST:
-            return { loading: true, product: {} }
+            return { loading: true, product: { rating: 0, numReviews: 0 } }
         case PRODUCT_DETAILS_SUCCESS:
             return { loading: false, product: action.payload }
         case PRODUCT_DETAILS_FAIL:

@@ -6,7 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { listProductDetails } from '../actions/productActions'
+import { listProductDetails, resetProductDetails } from '../actions/productActions'
 
 
 const ProductScreen = ({ match }) => {
@@ -16,6 +16,9 @@ const ProductScreen = ({ match }) => {
 
     useEffect(() => {
         dispatch(listProductDetails(match.params.id))
+        return () => {
+            dispatch(resetProductDetails());
+        };
     }, [dispatch, match])
 
     return (

@@ -3,9 +3,11 @@ import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
     PRODUCT_LIST_FAIL,
+    PRODUCT_LIST_RESET,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_FAIL
+    PRODUCT_DETAILS_FAIL,
+    PRODUCT_DETAILS_RESET
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch) => {
@@ -28,6 +30,10 @@ export const listProducts = () => async (dispatch) => {
     }
 }
 
+export const resetProducts = () => async (dispatch) => {
+    dispatch({ type: PRODUCT_LIST_RESET })
+}
+
 export const listProductDetails = (id) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST })
@@ -46,4 +52,8 @@ export const listProductDetails = (id) => async (dispatch) => {
         })
 
     }
+}
+
+export const resetProductDetails = () => async (dispatch) => {
+    dispatch({ type: PRODUCT_DETAILS_RESET })
 }
