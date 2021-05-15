@@ -9,7 +9,7 @@ import {
     PRODUCT_DETAILS_RESET
 } from '../constants/productConstants'
 
-export const productListReducer = (state = { products: [] }, action) => {
+export const productListReducer = (state = { loading: true, products: [] }, action) => {
     switch (action.type) {
         case PRODUCT_LIST_RESET:
             return { loading: true, products: [] }
@@ -24,7 +24,7 @@ export const productListReducer = (state = { products: [] }, action) => {
     }
 }
 
-export const productDetailsReducer = (state = { product: { rating: 0, numReviews: 0 } }, action) => {
+export const productDetailsReducer = (state = { loading: true, product: { rating: 0, numReviews: 0 } }, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_RESET:
             return { loading: true, product: { rating: 0, numReviews: 0 } }
