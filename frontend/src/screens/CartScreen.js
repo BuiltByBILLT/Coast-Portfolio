@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import Message from '../components/Message'
@@ -26,7 +26,7 @@ const CartScreen = ({ match, location, history }) => {
         dispatch(removeFromCart(id))
     }
     const checkoutHandler = () => {
-        history.push('/login?redirect?=shipping')
+        history.push('/login?redirect=shipping')
     }
 
     return (
