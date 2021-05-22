@@ -14,10 +14,11 @@ const OrderScreen = ({ match }) => {
     const { order, loading, error } = orderDetails
 
     useEffect(() => {
-        dispatch(getOrderDetails(orderId))
+        if (!order || order._id !== orderId) {
+            dispatch(getOrderDetails(orderId))
+        }
         return () => { }
-        // eslint-disable-next-line
-    }, [])
+    }, [dispatch, orderId])
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
