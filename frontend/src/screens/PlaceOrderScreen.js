@@ -15,12 +15,14 @@ const PlaceOrderScreen = ({ history }) => {
         currency: 'USD',
         minimumFractionDigits: 2
     })
+    const round2 = (x) => { return Math.round(x * 100) / 100 }
 
     // Calculate Prices
-    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
-    cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 10
-    cart.taxPrice = 0.15 * cart.itemsPrice
-    cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
+    cart.itemsPrice = round2(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
+    cart.shippingPrice = round2(cart.itemsPrice > 100 ? 0 : 10)
+    cart.taxPrice = round2(0.15 * cart.itemsPrice)
+    cart.totalPrice = round2(cart.itemsPrice + cart.shippingPrice + cart.taxPrice)
+
 
     const orderCreate = useSelector(state => state.orderCreate)
     const { order, success, error } = orderCreate
