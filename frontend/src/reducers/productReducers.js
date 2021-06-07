@@ -31,12 +31,12 @@ export const productListReducer = (state = { loading: true, products: [] }, acti
     }
 }
 
-export const productDetailsReducer = (state = { loading: true, product: { rating: 0, numReviews: 0 } }, action) => {
+export const productDetailsReducer = (state = { loading: true, product: { name: '', rating: 0, numReviews: 0 } }, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_RESET:
             return { loading: true, product: { rating: 0, numReviews: 0 } }
         case PRODUCT_DETAILS_REQUEST:
-            return { loading: true, product: { rating: 0, numReviews: 0 } }
+            return { ...state, loading: true }
         case PRODUCT_DETAILS_SUCCESS:
             return { loading: false, product: action.payload }
         case PRODUCT_DETAILS_FAIL:
