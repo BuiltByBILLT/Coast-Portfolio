@@ -101,7 +101,7 @@ const PlaceOrderScreen = ({ history }) => {
                     <Card>
                         <ListGroup>
                             <ListGroup.Item>
-                                <h2>Order Summart</h2>
+                                <h2>Order Summary</h2>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
