@@ -4,6 +4,7 @@ import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form } from 'r
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Meta from '../components/Meta'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails, resetProductDetails, createProductReview } from '../actions/productActions'
@@ -51,6 +52,7 @@ const ProductScreen = ({ history, match }) => {
             {loading ? <Loader />
                 : error ? (<Message variant='danger'>{error}</Message>)
                     : (<>
+                        <Meta title={product.name} />
                         <Row>
                             <Col lg={6}>
                                 <Image src={product.image} alt={product.name} fluid></Image>
