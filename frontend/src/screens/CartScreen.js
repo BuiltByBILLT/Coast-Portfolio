@@ -80,8 +80,8 @@ const CartScreen = ({ match, location, history }) => {
                                 .reduce((acc, curr) => acc + curr.qty * curr.price, 0)
                                 .toFixed(2)}
                         </ListGroupItem>
-                        <ListGroupItem className='d-grid gap-2'>
-                            <Button type='button' disabled={cartItems.length === 0} onClick={checkoutHandler}>
+                        <ListGroupItem>
+                            <Button type='button' block disabled={cartItems.length === 0} onClick={checkoutHandler}>
                                 Proceed to Checkout
                             </Button>
                         </ListGroupItem>

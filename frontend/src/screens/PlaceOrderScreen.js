@@ -133,8 +133,8 @@ const PlaceOrderScreen = ({ history }) => {
                                 <Message variant='danger'>{error}</Message>
                             </ListGroup.Item>
                         )}
-                        <ListGroup.Item className='d-grid gap-2'>
-                            <Button type='button' disabled={cart.cartItems === 0}
+                        <ListGroup.Item>
+                            <Button type='button' block disabled={cart.cartItems === 0}
                                 onClick={placeOrderHandler}>
                                 Place Order
                             </Button>

@@ -113,8 +113,9 @@ const ProductScreen = ({ history, match }) => {
                                             </ListGroupItem>
                                         )}
 
-                                        <ListGroupItem className='d-grid gap-2'>
+                                        <ListGroupItem>
                                             <Button
+                                                block
                                                 onClick={addToCartHandler}
                                                 disabled={product.countInStock === 0}>
                                                 Add to Cart
