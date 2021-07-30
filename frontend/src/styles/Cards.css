@@ -1,0 +1,62 @@
+.linkBox:hover {
+  text-decoration: none;
+}
+
+.productDetailsCard {
+  border: transparent 2px solid;
+}
+.productDetailsCard:hover {
+  border: #d9534f 2px solid;
+}
+
+.categoryCard {
+  border: transparent 2px solid;
+}
+
+.categoryCard:hover {
+  border: #d9534f 2px solid;
+}
+
+/* .topCat .categoryCard {
+  color: black !important;
+}
+.topCat .categoryCard:hover {
+  color: #d9534f;
+} */
+
+.productSimpleCard {
+  border: transparent 2px solid;
+  position: relative;
+}
+
+.productSimpleCard:hover {
+  border: darkkhaki 2px solid;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: rgb(255, 191, 0, 0.7);
+}
+
+.overlay:hover {
+  opacity: 1;
+}
+
+.middle {
+  transition: 0.5s ease;
+  opacity: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}

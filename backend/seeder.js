@@ -3,9 +3,12 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import users from './data/users.js'
 import products from './data/products.js'
+import categories from './data/categories.js'
+import images from './data/images.js'
 import User from './models/userModel.js'
 import Product from './models/productModel.js'
 import Order from './models/orderModel.js'
+import Category from './models/categoryModel.js'
 import connectDB from './config/db.js'
 
 dotenv.config()
@@ -14,14 +17,35 @@ connectDB()
 
 const importData = async () => {
     try {
+
         await Order.deleteMany()
         await Product.deleteMany()
         await User.deleteMany()
+        await Category.deleteMany()
+
+        await Category.insertMany(categories)
+
+        //Load Images
+        products.forEach(product => {
+            product.images = []
+        });
+        for (let i = 0; i < images.length; i++) {
+            const { imageProduct, imageSrc, imageType, imageNumber } = images[i];
+            const productIndex = products.findIndex(product => product.pID == imageProduct)
+            if (productIndex != -1) {
+                const newImage = {
+                    imageProduct,
+                    imageSrc,
+                    imageType,
+                    imageNumber,
+                }
+                products[productIndex].images.push(newImage)
+            }
+        }
 
         const createdUsers = await User.insertMany(users)
 
         const adminUser = createdUsers[0]._id
-
         const sampleProducts = products.map(product => {
             return { ...product, user: adminUser }
         })

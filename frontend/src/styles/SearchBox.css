@@ -1,0 +1,12 @@
+.searchBoxInput {
+  background-color: #1a1a1a;
+  border-style: hidden;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+}
+/* .searchBoxInput::placeholder {
+  font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  color: rgba(255, 255, 255, 0.5);
+} */

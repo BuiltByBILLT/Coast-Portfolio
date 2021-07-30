@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import Category from '../models/categoryModel.js'
 
 
 // @desc Fetch all products
@@ -27,8 +28,10 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route GET /api/products/:id
 // @access Public
 const getProductById = asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findOne({ pID: req.params.id })
     if (product) {
+        const category = await Category.findOne({ sectionID: product.pSection })
+        product.topSection = category.sectionName
         res.json(product)
     } else {
         res.status(404)
@@ -149,6 +152,20 @@ const getTopProducts = asyncHandler(async (req, res) => {
     res.json(products)
 })
 
+// @desc Get Suggested Products
+// @route Get /api/products/suggested
+// @access Public
+const getSuggestedProducts = asyncHandler(async (req, res) => {
+    const array = []
+    const count = await Product.countDocuments({ pDisplay: true, pSell: true })
+    for (let i = 0; i < 4; i++) {
+        let random = Math.floor(Math.random() * count)
+        let product = await Product.findOne({ pDisplay: true, pSell: true }).skip(random)
+        array.push(product)
+    }
+    res.json(array)
+})
+
 
 export {
     getProducts,
@@ -158,4 +175,5 @@ export {
     updateProduct,
     createProductReview,
     getTopProducts,
+    getSuggestedProducts,
 }

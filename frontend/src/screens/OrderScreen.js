@@ -78,12 +78,70 @@ const OrderScreen = ({ match, history }) => {
         : error ? <Message variant='danger'>{error}</Message>
             : (
                 <>
-                    <h1>Order {order._id}</h1>
+                    <Row className="mt-5 mb-3">
+                        <Col lg="auto">
+                            <h3 className="text-danger text-break m-0">Order #{order._id}</h3>
+                        </Col>
+                        <Col className="mt-3 mt-lg-auto">
+                            <p className="my-0">{order.createdAt.substring(0, 10)}</p>
+                        </Col>
+                    </Row>
+
                     <Row>
                         <Col lg={8}>
-                            <ListGroup variant='flush'>
+                            {order.orderItems.length === 0
+                                ? <Message>Order is empty</Message>
+                                : (
+                                    <ListGroup className="mb-5">
+                                        <ListGroup.Item className="mb-3 border-left-0 border-right-0 px-0">
+                                            <Row>
+                                                <Col xs={4} lg={3} className="mb-3 mb-lg-0 my-auto d-none d-lg-block">
+                                                    <h6>Product</h6>
+                                                </Col>
+                                                <Col className="d-none d-lg-block my-auto">
+                                                </Col>
+                                                <Col xs={5} lg={2} className="text-center my-auto">
+                                                    <h6>Price</h6>
+                                                </Col>
+                                                <Col xs={2} lg={1} className="text-center my-auto">
+                                                    <h6>Qty</h6>
+                                                </Col>
+                                                <Col xs={5} lg={2} className="text-center my-auto">
+                                                    <h6>Total</h6>
+                                                </Col>
+                                            </Row>
+                                        </ListGroup.Item>
+
+                                        {order.orderItems.map((item, index) => (
+                                            <ListGroup.Item key={index} className="mb-3 border-0 px-0">
+                                                <Row>
+                                                    <Col xs={12} lg={3} className="mb-3 mb-lg-0">
+                                                        <Image src={item.image} alt={item.name}
+                                                            fluid rounded />
+                                                    </Col>
+                                                    <Col xs={12} lg={4} className="mb-2 my-lg-auto text-center text-lg-left">
+                                                        <Link to={`/product/${item.product}`}
+                                                            className=" text-danger" style={{ fontWeight: "bold" }}>
+                                                            {item.name}
+                                                        </Link>
+                                                    </Col>
+                                                    <Col xs={5} lg={2} className="text-center my-auto">
+                                                        ${item.price}
+                                                    </Col>
+                                                    <Col xs={2} lg={1} className="text-center my-auto border">
+                                                        {item.qty}
+                                                    </Col>
+                                                    <Col xs={5} lg={2} className="text-center my-auto">
+                                                        ${item.qty * item.price}
+                                                    </Col>
+                                                </Row>
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                                )}
+                            <ListGroup>
                                 <ListGroup.Item>
-                                    <h2>Shipping</h2>
+                                    <h4>Shipping</h4>
                                     <p>
                                         <strong>Name: </strong>{order.user.name}
                                     </p>
@@ -103,7 +161,7 @@ const OrderScreen = ({ match, history }) => {
                                 </ListGroup.Item>
 
                                 <ListGroup.Item>
-                                    <h2>Payment Method</h2>
+                                    <h4>Payment Method</h4>
                                     <p>
 
                                         <strong>Method: </strong>
@@ -115,40 +173,14 @@ const OrderScreen = ({ match, history }) => {
                                     }
                                 </ListGroup.Item>
 
-                                <ListGroup.Item>
-                                    <h2>Order Items</h2>
-                                    {order.orderItems.length === 0
-                                        ? <Message>Order is empty</Message>
-                                        : (
-                                            <ListGroup variant='flush'>
-                                                {order.orderItems.map((item, index) => (
-                                                    <ListGroup.Item key={index}>
-                                                        <Row>
-                                                            <Col lg={1}>
-                                                                <Image src={item.image} alt={item.name}
-                                                                    fluid rounded />
-                                                            </Col>
-                                                            <Col>
-                                                                <Link to={`/product/${item.product}`}>
-                                                                    {item.name}
-                                                                </Link>
-                                                            </Col>
-                                                            <Col lg={4}>
-                                                                {item.qty} x ${item.price} = ${item.qty * item.price}
-                                                            </Col>
-                                                        </Row>
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        )}
-                                </ListGroup.Item>
                             </ListGroup>
+
                         </Col>
-                        <Col lg={4}>
+                        <Col lg={4} className="pl-lg-5">
                             <Card>
                                 <ListGroup>
                                     <ListGroup.Item>
-                                        <h2>Order Summary</h2>
+                                        <h4>Order Summary</h4>
                                     </ListGroup.Item>
                                     <ListGroup.Item>
                                         <Row>

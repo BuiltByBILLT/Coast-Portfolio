@@ -17,19 +17,34 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import OrderHistoryScreen from './screens/OrderHistoryScreen'
+import CategoryScreen from './screens/CategoryScreen'
+
+import ReturnStatic from './screens/static/ReturnStatic'
+import ShippingStatic from './screens/static/ShippingStatic'
+import InternationalStatic from './screens/static/InternationalStatic'
+import AboutStatic from './screens/static/AboutStatic'
 
 const App = () => {
   return (
     <Router>
       <Header />
+      <Route path='/' component={HomeScreen} exact />
       <main className='py-3'>
-        <Container>
+        <Container className="p-5">
+          <Route path='/international' component={InternationalStatic} />
+          <Route path='/returnpolicy' component={ReturnStatic} />
+          <Route path='/shippingpolicy' component={ShippingStatic} />
+          <Route path='/about' component={AboutStatic} />
+
+          <Route path='/category/:id' component={CategoryScreen} />
           <Route path='/order/:id' component={OrderScreen} />
           <Route path='/placeorder' component={PlaceOrderScreen} />
           <Route path='/payment' component={PaymentScreen} />
           <Route path='/shipping' component={ShippingScreen} />
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
+          <Route path='/orderhistory' component={OrderHistoryScreen} />
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/product/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
@@ -42,7 +57,6 @@ const App = () => {
           <Route path='/search/:keyword' component={HomeScreen} exact />
           <Route path='/page/:pageNumber' component={HomeScreen} exact />
           <Route path='/search/:keyword/page/:pageNumber' component={HomeScreen} exact />
-          <Route path='/' component={HomeScreen} exact />
         </Container>
 
       </main>

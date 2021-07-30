@@ -1,16 +1,8 @@
 main {
-  min-height: 80vh;
+  min-height: 69vh;
 }
-.form-select {
+/* .form-select {
   padding: 1rem 1rem;
-}
-h1 {
-  font-size: 1.8rem;
-  padding: 1rem 0;
-}
-h2 {
-  font-size: 1.4rem;
-  padding: 0.5rem 0;
 }
 
 /* carousel */

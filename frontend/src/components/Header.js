@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, Row } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox'
+import SubNav from './SubNav'
+import '../styles/Header.css'
 
-const Header = () => {
+const Header = ({ }) => {
 
     const dispatch = useDispatch()
     const userLogin = useSelector(state => state.userLogin)
@@ -17,48 +19,60 @@ const Header = () => {
 
     return (
         <header>
-            <Navbar bg="dark" variant='dark' expand="lg" collapseOnSelect>
-                <Container>
-                    <LinkContainer to='/'>
-                        <Navbar.Brand>Coast Airbrush</Navbar.Brand>
-                    </LinkContainer>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Route render={({ history }) => <SearchBox history={history} />}></Route>
-                        <Nav className='ml-auto'>
-                            <LinkContainer to='/cart'>
-                                <Nav.Link><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
-                            </LinkContainer>
-                            {userInfo ? (
-                                <NavDropdown title={userInfo.name} id='username'>
-                                    <LinkContainer to='/profile'>
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>
-                                        Log Out
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            ) : (
-                                <LinkContainer to='/login'>
-                                    <Nav.Link href="/login"><i className='fas fa-user'></i>Sign In</Nav.Link>
+            <Navbar bg="primary" variant='dark' expand="lg" collapseOnSelect>
+                <LinkContainer to='/'>
+                    <Navbar.Brand>Coast Airbrush</Navbar.Brand>
+                </LinkContainer>
+                <Navbar.Toggle
+                    aria-controls="basic-navbar-nav"
+                />
+                <Navbar.Collapse>
+                    <Route render={({ history }) => <SearchBox history={history} />}></Route>
+                    <Nav className='ml-auto'>
+                        <LinkContainer exact to='/'>
+                            <Nav.Link active={false} className='mx-4'>Home</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to='/about'>
+                            <Nav.Link active={false} className='mx-4'>About</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to='/cart'>
+                            <Nav.Link active={false} className='mx-4'>
+                                <i className='fas fa-shopping-cart px-1'></i>
+                                Cart
+                            </Nav.Link>
+                        </LinkContainer>
+                        {userInfo ? (
+                            <NavDropdown title={userInfo.name} id='username'
+                                className=''>
+                                <LinkContainer to='/profile'>
+                                    <NavDropdown.Item active={false}>Profile</NavDropdown.Item>
                                 </LinkContainer>
-                            )}
-                            {userInfo && userInfo.isAdmin && (
-                                <NavDropdown title='Admin' id='adminmenu'>
-                                    <LinkContainer to='/admin/userlist'>
-                                        <NavDropdown.Item>Users</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <LinkContainer to='/admin/productlist'>
-                                        <NavDropdown.Item>Products</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <LinkContainer to='/admin/orderlist'>
-                                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                                    </LinkContainer>
-                                </NavDropdown>
-                            )}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
+                                <LinkContainer to='/orderhistory'>
+                                    <NavDropdown.Item active={false}>Order History</NavDropdown.Item>
+                                </LinkContainer>
+                                <NavDropdown.Item onClick={logoutHandler}>
+                                    Log Out
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        ) : (
+                            <LinkContainer to='/login'>
+                                <Nav.Link active={false} href="/login" className='loginButton px-4 ml-4 mb-3 mb-lg-0'>
+                                    Login
+                                </Nav.Link>
+                            </LinkContainer>
+                        )}
+                    </Nav>
+                    <Nav className='d-lg-none bg-danger'>
+                        <SubNav />
+                    </Nav>
+                </Navbar.Collapse >
+            </Navbar >
+            <Navbar variant='dark' expand="lg" collapseOnSelect className='p-0 p-lg-1' style={{ backgroundColor: "maroon" }}>
+                <Navbar.Collapse>
+                    <Nav className='mx-auto'>
+                        <SubNav />
+                    </Nav>
+                </Navbar.Collapse >
             </Navbar >
         </header >
     )

@@ -1,0 +1,29 @@
+footer {
+  background-color: #c33;
+}
+
+footer p {
+  color: white;
+  margin: 1rem 0rem;
+  font-size: 10px;
+  text-transform: none;
+}
+
+footer .navbar-dark .navbar-nav .nav-link {
+  padding-left: 0px;
+  padding-right: 0px;
+  font-size: 10px;
+  text-transform: none;
+}
+
+footer .brand {
+  letter-spacing: 0px;
+  font-size: 16px;
+  padding-top: 13px;
+}
+
+footer h6 {
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
+}

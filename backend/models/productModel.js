@@ -23,31 +23,60 @@ const reviewSchema = mongoose.Schema({
     timestamps: true,
 })
 
+const imageSchema = mongoose.Schema({
+    imageProduct: {
+        type: String,
+        required: true,
+    },
+    imageSrc: {
+        type: String,
+        required: true,
+        default: "/images/sample.jpg"
+    },
+    imageType: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    imageNumber: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
+
+}, {
+    timestamps: true,
+})
+
+
 const productSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
     },
-    name: {
+    pID: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    pName: {
         type: String,
         required: true
     },
-    image: {
+    images: [imageSchema],
+    pManufacturer: {
         type: String,
+    },
+    pSection: {
+        type: Number,
         required: true,
     },
-    brand: {
+    pDescription: {
         type: String,
-        required: true
     },
-    category: {
+    dLongDescription: {
         type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
     },
     reviews: [reviewSchema],
     rating: {
@@ -60,16 +89,38 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 0
     },
-    price: {
+    pPrice: {
         type: Number,
         required: true,
         default: 0
     },
-    countInStock: {
+    pListPrice: {
+        type: Number,
+    },
+    pInStock: {
         type: Number,
         required: true,
         default: 0
     },
+    pWeight: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    pDisplay: {
+        type: Boolean,
+        required: true,
+        default: 0
+    },
+    pSell: {
+        type: Boolean,
+        required: true,
+        default: 0
+    },
+    topSection: {
+        type: String
+    }
+
 }, {
     timestamps: true
 })

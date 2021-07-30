@@ -4,39 +4,42 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import ProfileNav from '../components/ProfileNav'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
-import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
-const ProfileScreen = ({ location, history }) => {
+const ProfileInfoScreen = ({ location, history }) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [address, setAddress] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [nameEdit, setNameEdit] = useState(false)
+    const [emailEdit, setEmailEdit] = useState(false)
+    const [addressEdit, setAddressEdit] = useState(false)
+    const [passwordEdit, setPasswordEdit] = useState(false)
     const [message, setMessage] = useState('')
-
-    const dispatch = useDispatch()
+    const [successMessage, setSucessMessage] = useState(false)
 
     const userDetails = useSelector(state => state.userDetails)
     const { loading, error, user } = userDetails
-
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
-
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const { success } = userUpdateProfile
 
-    const orderListMy = useSelector(state => state.orderListMy)
-    const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
-
+    const dispatch = useDispatch()
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
         } else {
-            if (!user.name || success) {
+            if (!user.name) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails('profile'))
-                dispatch(listMyOrders())
+            } else if (success) {
+                dispatch({ type: USER_UPDATE_PROFILE_RESET })
+                dispatch(getUserDetails('profile'))
+                successPopup()
             } else {
                 setName(user.name)
                 setEmail(user.email)
@@ -45,99 +48,139 @@ const ProfileScreen = ({ location, history }) => {
         return () => { }
     }, [dispatch, history, userInfo, user, success])
 
-    const submitHandler = (e) => {
+    const nameHandler = (e) => {
         e.preventDefault()
-        if (password !== confirmPassword) {
-            setMessage('Passwords do not match')
+        setNameEdit(!nameEdit)
+        if (nameEdit) {
+            console.log("sent: " + name)
+            dispatch(updateUserProfile({ name }))
+        }
+    }
+    const emailHandler = (e) => {
+        e.preventDefault()
+        setEmailEdit(!emailEdit)
+        if (emailEdit) {
+            console.log("sent: " + email)
+            dispatch(updateUserProfile({ email }))
+        }
+    }
+    const addressHandler = (e) => {
+        e.preventDefault()
+        setAddressEdit(!addressEdit)
+        if (emailEdit) {
+            console.log("sent: " + address)
+            // dispatch(updateUserProfile({ address }))
+        }
+    }
+    const passwordHandler = (e) => {
+        console.log(passwordEdit)
+        e.preventDefault()
+        let passEl = document.getElementById("password")
+        let confirmEl = document.getElementById("confirmPassword")
+
+        if (passwordEdit) {
+            if (password !== confirmPassword) {
+                setMessage('Passwords do not match')
+                passEl.focus()
+            } else if (password === "") {
+                setMessage('Please Enter Password')
+                passEl.focus()
+            } else {
+                console.log({ password })
+                setMessage('')
+                passEl.placeholder = "******"
+                confirmEl.parentElement.className = "d-none form-group"
+                setPasswordEdit(false)
+                dispatch(updateUserProfile({ password }))
+            }
         } else {
-            dispatch(updateUserProfile({ id: user._id, name, email, password }))
+            passEl.placeholder = ""
+            passEl.focus()
+            confirmEl.parentElement.className = "form-group"
+            setPasswordEdit(true)
         }
     }
 
-    return (
-        <Row>
-            <Col lg={3}>
-                <h2>User Profile</h2>
-                {message && <Message variant='danger'>{message}</Message>}
-                {error && <Message variant='danger'>{error}</Message>}
-                {success && <Message variant='success'>Profile Updated</Message>}
-                {loading && <Loader />}
-                <Form onSubmit={submitHandler}>
-                    <Form.Group controlId='name'>
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control type='name' placeholder='Enter name' value={name}
-                            onChange={(e) => setName(e.target.value)}>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId='email'>
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control type='email' placeholder='Enter email' value={email}
-                            onChange={(e) => setEmail(e.target.value)}>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId='password'>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type='password' placeholder='Enter password' value={password}
-                            onChange={(e) => setPassword(e.target.value)}>
-                        </Form.Control>
-                    </Form.Group>
-                    <Form.Group controlId='confirmPassword'>
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}>
-                        </Form.Control>
-                    </Form.Group>
-                    <Button type='submit' variant='primary'>
-                        Update
-                    </Button>
-                </Form>
-            </Col>
-            <Col lg={9}>
-                <h2>My Orders</h2>
-                {loadingOrders ? <Loader />
-                    : errorOrders ? <Message variant='danger'>{errorOrders}</Message>
-                        : (<Table striped bordered hover responsive className='table-sm'>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>DATE</th>
-                                    <th>TOTAL</th>
-                                    <th>PAID</th>
-                                    <th>DELIVERD</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {orders.map(order => (
-                                    <tr key={order._id}>
-                                        <td>{order._id}</td>
-                                        <td>{order.createdAt.substring(0, 10)}</td>
-                                        <td>{order.totalPrice}</td>
-                                        <td>
-                                            {order.isPaid ? order.paidAt.substring(0, 10)
-                                                : <i className='fas fa-times' style={{ color: 'red' }}></i>
-                                            }
-                                        </td>
-                                        <td>
-                                            {order.isDeliverd ? order.deliveredAt.substring(0, 10)
-                                                : <i className='fas fa-times' style={{ color: 'red' }}></i>
-                                            }
-                                        </td>
-                                        <td>
-                                            <LinkContainer to={`/order/${order._id}`}>
-                                                <Button className='btn-sm' variant='light'>Details</Button>
-                                            </LinkContainer>
-                                        </td>
+    const successPopup = async () => {
+        setSucessMessage(true)
+        await new Promise(r => setTimeout(r, 5000));
+        setSucessMessage(false)
+    }
 
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                        )
-                }
-            </Col>
-        </Row>
+    return (
+        <>
+            {message && <Message variant='danger'>{message}</Message>}
+            {error && <Message variant='danger'>{error}</Message>}
+            {successMessage && <Message variant='success'>Profile Updated</Message>}
+            {loading && <Loader />}
+            <Form>
+                <Row>
+                    <Col lg={6} className="p-5">
+                        <Form.Group controlId='name'>
+                            <Form.Label as="h3">Name</Form.Label>
+                            <Form.Control type='name' placeholder='Enter name' value={name}
+                                readOnly={!nameEdit} plaintext={!nameEdit}
+                                onChange={(e) => setName(e.target.value)}>
+                            </Form.Control>
+                        </Form.Group>
+                        <Button variant='secondary' className="text-danger p-0"
+                            onClick={nameHandler}>
+                            {nameEdit ? "Save" : "Edit"}
+                        </Button>
+                    </Col>
+
+                    <Col lg={6} className="p-5">
+                        <Form.Group controlId='email'>
+                            <Form.Label as="h3">Email</Form.Label>
+                            <Form.Control type='email' placeholder='Enter email' value={email}
+                                readOnly={!emailEdit} plaintext={!emailEdit}
+                                onChange={(e) => setEmail(e.target.value)}>
+                            </Form.Control>
+                        </Form.Group>
+                        <Button variant='secondary' className="text-danger p-0"
+                            onClick={emailHandler}>
+                            {emailEdit ? "Save" : "Edit"}
+                        </Button>
+                    </Col>
+
+                    <Col lg={6} className="p-5">
+                        <Form.Group controlId='password'>
+                            <Form.Label as="h3">Password</Form.Label>
+                            <Form.Control type='password' placeholder='******'
+                                readOnly={!passwordEdit} plaintext={!passwordEdit}
+                                onChange={(e) => setPassword(e.target.value)}>
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId='confirmPassword' className="d-none">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}>
+                            </Form.Control>
+                        </Form.Group>
+                        <Button id="passwordBtn" variant='secondary' className="text-danger p-0"
+                            onClick={passwordHandler}>
+                            {passwordEdit ? "Save" : "Edit"}
+                        </Button>
+                    </Col>
+
+                    <Col lg={6} className="p-5">
+                        <Form.Group controlId='address'>
+                            <Form.Label as="h3">Address</Form.Label>
+                            <Form.Control type='text' placeholder='Enter Address' value={address}
+                                readOnly={!addressEdit} plaintext={!addressEdit}
+                                onChange={(e) => setAddress(e.target.value)}>
+                            </Form.Control>
+                        </Form.Group>
+                        <Button variant='secondary' className="text-danger p-0"
+                            onClick={addressHandler}>
+                            {addressEdit ? "Save" : "Edit"}
+                        </Button>
+                    </Col>
+                </Row>
+
+            </Form>
+        </>
     )
 }
 
-export default ProfileScreen
+export default ProfileInfoScreen
