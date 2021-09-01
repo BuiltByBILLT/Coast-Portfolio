@@ -35,7 +35,7 @@ const HomeScreen = ({ match }) => {
             <Meta />
             <div className="homePage">
                 <Row className="" style={{
-                    backgroundImage: "url('/images/Hero_image_only.png')",
+                    backgroundImage: "url('/images/hero_image_only.png')",
                     // backgroundSize: "100% 100%",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
