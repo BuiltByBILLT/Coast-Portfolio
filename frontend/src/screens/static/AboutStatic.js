@@ -36,7 +36,7 @@ const AboutStatic = () => {
                 >
                     <Image src="/images/Photo_top.png" style={{ width: "100%", paddingBottom: "20px" }} />
                     <Image src="/images/Photo_middle.png" style={{ width: "100%", paddingBottom: "20px" }} />
-                    <Image src="/images/Photo_bottom.png" style={{ width: "100%", paddingBottom: "20px" }} />
+                    <Image src="/images/Photo_Bottom.png" style={{ width: "100%", paddingBottom: "20px" }} />
                 </Col>
                 <Col className="pt-5 pr-5 mr-5">
                     <h1 className="text-danger mb-5">Our Story</h1>
