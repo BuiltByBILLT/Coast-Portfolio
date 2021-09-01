@@ -4,8 +4,8 @@ import "../../styles/Static.css"
 
 const ReturnStatic = () => {
     return (
-        <Container className="pb-5">
-            <h1 className="text-center text-danger mb-5">Coast Return Policy</h1>
+        <Container className="py-5">
+            <h2 className="text-center text-danger mb-5">Coast Return Policy</h2>
             <h5 className="my-2">Coast Airbrush does not accept returns or exchanges on the following items</h5>
             <ul>
                 <li>Books, Videos & DVD's, Magazines & Projectors (unless a manufacturer defect within warranty</li>

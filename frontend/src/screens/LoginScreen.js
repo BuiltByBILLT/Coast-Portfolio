@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -16,11 +16,12 @@ const LoginScreen = ({ location, history }) => {
     const userLogin = useSelector(state => state.userLogin)
     const { loading, error, userInfo } = userLogin
 
-    const redirect = location.search ? location.search.split('=')[1] : '/'
+    const redirect = location.search ? location.search.split('=')[1] : '/profile'
 
     useEffect(() => {
         if (userInfo) {
             history.push(redirect)
+            // history.push('/profile')
         }
         return () => { }
     }, [history, userInfo, redirect])
@@ -31,8 +32,8 @@ const LoginScreen = ({ location, history }) => {
     }
 
     return (
-        <>
-            <h1 className="text-center text-danger my-5">Log In</h1>
+        <Container className="my-5 pt-3">
+            <h2 className="text-center text-danger mb-5 pb-3">Log In</h2>
             <FormContainer>
                 {error && <Message variant='danger'>{error}</Message>}
                 {loading && <Loader />}
@@ -64,7 +65,7 @@ const LoginScreen = ({ location, history }) => {
                     </Col>
                 </Row>
             </FormContainer>
-        </>
+        </Container>
     )
 }
 

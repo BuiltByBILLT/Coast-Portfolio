@@ -41,7 +41,7 @@ const imageSchema = mongoose.Schema({
     imageNumber: {
         type: Number,
         required: true,
-        unique: true,
+        // unique: true,
     },
 
 }, {
@@ -107,6 +107,21 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 0
     },
+    pLength: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    pWidth: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    pHeight: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     pDisplay: {
         type: Boolean,
         required: true,
@@ -119,6 +134,11 @@ const productSchema = mongoose.Schema({
     },
     topSection: {
         type: String
+    },
+    cloverID: {
+        type: String,
+        unique: true,
+        required: true,
     }
 
 }, {

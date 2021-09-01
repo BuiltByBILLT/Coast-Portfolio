@@ -50,7 +50,7 @@ export const productListReducer = (state = { loading: true, products: [] }, acti
     }
 }
 
-export const productDetailsReducer = (state = { loading: true, product: { name: '', rating: 0, numReviews: 0 } }, action) => {
+export const productDetailsReducer = (state = { loading: true, product: {} }, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_RESET:
             return { loading: true, product: { rating: 0, numReviews: 0 } }
@@ -59,7 +59,7 @@ export const productDetailsReducer = (state = { loading: true, product: { name: 
         case PRODUCT_DETAILS_SUCCESS:
             return { loading: false, product: action.payload }
         case PRODUCT_DETAILS_FAIL:
-            return { loading: false, error: action.payload }
+            return { loading: false, error: action.payload, product: {} }
         default:
             return state
     }
@@ -100,7 +100,7 @@ export const productUpdateReducer = (state = { product: {} }, action) => {
         case PRODUCT_UPDATE_SUCCESS:
             return { loading: false, success: true, product: action.payload }
         case PRODUCT_UPDATE_FAIL:
-            return { loading: false, error: action.payload }
+            return { loading: false, success: false, error: action.payload }
         case PRODUCT_UPDATE_RESET:
             return { product: {} }
         default:

@@ -4,7 +4,7 @@ import { getCategoryDetails, getCategoryProducts } from '../actions/categoryActi
 
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from 'react-router-dom'
-import { Row, Col, Image, Breadcrumb } from 'react-bootstrap'
+import { Row, Col, Image, Breadcrumb, Container } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Suggested from '../components/Suggested'
@@ -28,7 +28,7 @@ const CategoryScreen = ({ match }) => {
     }, [dispatch, match])
 
     return (
-        <>
+        <Container className="my-5">
             {loading ? <Loader /> : error ? (<Message variant='danger'>{error}</Message>)
                 : (<>
                     <BreadCrumbs category={category} />
@@ -68,7 +68,7 @@ const CategoryScreen = ({ match }) => {
                 </>)
             }
 
-        </>
+        </Container>
     )
 }
 

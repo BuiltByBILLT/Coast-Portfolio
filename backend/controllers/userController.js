@@ -1,7 +1,8 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
-
+import Cart from '../models/cartModel.js'
+import axios from 'axios'
 
 // @desc Register a new user
 // @route POST /api/users
@@ -15,20 +16,25 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('User already exists')
     }
+    const { data } = await syncToClover({ name: "", email: "", customerID: "" }, req.body)
 
     const user = await User.create({
         name,
         email,
         password,
+        customerID: data.id
     })
 
     if (user) {
+
         res.status(201).json({
             _id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
+            customerID: user.customerID,
+            isAdmin: false,
             token: generateToken(user._id),
+            cart: user.cart
         })
     } else {
         res.status(400)
@@ -50,7 +56,10 @@ const authUser = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            isStaff: user.isStaff,
             isAdmin: user.isAdmin,
+            cart: user.cart,
+            customerID: user.customerID,
             token: generateToken(user._id),
         })
     } else {
@@ -71,35 +80,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            customerID: user.customerID,
+            isStaff: user.isStaff,
             isAdmin: user.isAdmin,
-        })
-    } else {
-        res.status(404)
-        throw new Error('User not found')
-    }
-})
-
-// @desc Update user profile 
-// @route PUT /api/users/profile
-// @access Private
-const updateUserProfile = asyncHandler(async (req, res) => {
-    console.log(req.body)
-    const user = await User.findById(req.user._id)
-
-    if (user) {
-        user.name = req.body.name || user.name
-        user.email = req.body.email || user.email
-        if (req.body.password) {
-            user.password = req.body.password
-        }
-        const updatedUser = await user.save()
-
-        res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            isAdmin: updatedUser.isAdmin,
-            token: generateToken(updatedUser._id),
         })
     } else {
         res.status(404)
@@ -110,19 +93,21 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 // @desc Get all users  
 // @route GET /api/users/
-// @access Private/Admin
+// @access Private/Staff/Admin
 const getUsers = asyncHandler(async (req, res) => {
-    const users = await User.find({})
+    const users = await User.find({}).sort({ createdAt: -1 })
+
     res.json(users)
 })
 
 // @desc Delete users  
 // @route DELETE /api/users/:id
-// @access Private/Admin
+// @access Private/Staff/Admin
 const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
     if (user) {
         await user.remove()
+        await axios.delete(URL + `/customers/${user.customerID}`, { headers: { "Authorization": `Bearer ${KEY}` } })
         res.json({ message: 'User Removed' })
 
     } else {
@@ -133,7 +118,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 // @desc Get user by ID  
 // @route GET /api/users/:id
-// @access Private/Admin
+// @access Private/Staff/Admin
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id).select('-password')
     if (user) {
@@ -144,28 +129,137 @@ const getUserById = asyncHandler(async (req, res) => {
     }
 })
 
-// @desc Update user 
+// @desc Admin Updates User 
 // @route PUT /api/users/:id
 // @access Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
-
+    const oldUser = { ...user }
     if (user) {
+
+
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
-        user.isAdmin = req.body.isAdmin
+
+        if (req.user && req.user.isAdmin) {
+            user.isStaff = req.body.isStaff || req.body.isAdmin
+            user.isAdmin = req.body.isAdmin
+        }
 
         const updatedUser = await user.save()
+        await syncToClover(oldUser, req.body)
 
         res.json({
             _id: updatedUser._id,
             name: updatedUser.name,
             email: updatedUser.email,
+            isStaff: updatedUser.isStaff,
+            customerID: updatedUser.customerID,
             isAdmin: updatedUser.isAdmin,
         })
     } else {
         res.status(404)
         throw new Error('User not found')
+    }
+})
+
+// @desc User Updates own profile 
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+    console.log(req.body)
+    const user = await User.findById(req.user._id)
+    const oldUser = { ...user }
+
+    if (user) {
+
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+        await syncToClover(user, req.body)
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isStaff: updatedUser.isStaff,
+            isAdmin: updatedUser.isAdmin,
+            customerID: updatedUser.customerID,
+            token: generateToken(updatedUser._id),
+        })
+    } else {
+        res.status(404)
+        throw new Error('User not found')
+    }
+})
+
+// Middle Function to sync to Clover
+const syncToClover = async (user, newUser) => {
+    let cloverResponse = {}
+    let cloverPost = {}
+    // console.log(user)
+    // console.log(newUser)
+
+    if (newUser.name && (newUser.name != user.name)) {
+        const nameArr = newUser.name.split(" ")
+        const first = nameArr[0]
+        const last = nameArr.length > 1 ? nameArr[nameArr.length - 1] : null
+        cloverPost.firstName = first
+        cloverPost.lastName = last
+    }
+    if (newUser.email && (newUser.email != user.email)) {
+        cloverPost.emailAddresses = [{ "emailAddress": newUser.email.toLowerCase() }]
+    }
+    // console.log(cloverPost)
+    cloverResponse = await axios.post(
+        process.env.CLOVER_URL + `/customers/${user.customerID}`,
+        cloverPost,
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } })
+    console.log(cloverResponse.data)
+    return cloverResponse
+}
+
+// @desc Add Cart to User
+// @route POST /api/users/cart
+// @access Private
+const addCartToUser = asyncHandler(async (req, res) => {
+    // console.log(req.body)
+    const user = await User.findById(req.user.id)
+    if (user) {
+        user.cart = req.body
+        const updatedUser = await user.save()
+        if (updatedUser) {
+            res.status(201).json({
+                message: "success"
+            })
+        } else {
+            res.status(400)
+            throw new Error('Invalid Cart Data')
+        }
+    }
+    else {
+        res.status(400)
+        throw new Error('Invalid User Data')
+    }
+})
+
+// @desc Get Cart from User
+// @route GET /api/users/cart
+// @access Private
+const getCartFromUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id)
+    if (user) {
+        res.json({
+            cart: user.cart
+        })
+    }
+    else {
+        res.status(400)
+        throw new Error('Invalid User Data')
     }
 })
 
@@ -177,5 +271,7 @@ export {
     getUsers,
     deleteUser,
     getUserById,
-    updateUser
+    updateUser,
+    addCartToUser,
+    getCartFromUser,
 }

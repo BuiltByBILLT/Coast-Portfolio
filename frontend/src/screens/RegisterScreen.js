@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -38,8 +38,8 @@ const RegisterScreen = ({ location, history }) => {
     }
 
     return (
-        <>
-            <h1 className="text-center text-danger my-5">Sign Up</h1>
+        <Container className="my-5 pt-3">
+            <h2 className="text-center text-danger mb-5 pb-3">Sign Up</h2>
             <FormContainer>
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
@@ -47,25 +47,25 @@ const RegisterScreen = ({ location, history }) => {
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId='name'>
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type='name' placeholder='Enter name' value={name}
+                        <Form.Control type='name' placeholder='Enter name' value={name} required
                             onChange={(e) => setName(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId='email'>
                         <Form.Label>Email Address</Form.Label>
-                        <Form.Control type='email' placeholder='Enter email' value={email}
+                        <Form.Control type='email' placeholder='Enter email' value={email} required
                             onChange={(e) => setEmail(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId='password'>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type='password' placeholder='Enter password' value={password}
+                        <Form.Control type='password' placeholder='Enter password' value={password} required
                             onChange={(e) => setPassword(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId='confirmPassword'>
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword}
+                        <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword} required
                             onChange={(e) => setConfirmPassword(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
@@ -84,7 +84,7 @@ const RegisterScreen = ({ location, history }) => {
                     </Col>
                 </Row>
             </FormContainer>
-        </>
+        </Container>
     )
 }
 

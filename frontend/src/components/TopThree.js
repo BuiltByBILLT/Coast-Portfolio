@@ -24,13 +24,13 @@ const TopThree = () => {
                             <Col key={product.pID} xs='6' lg='4' className='px-5'>
                                 <Link to={`/product/${product.pID}`} className="linkBox">
                                     <div className="mb-5 productSimpleCard">
-                                        <Image className="px-2" style={{ width: "100%", height: "250px", objectFit: "contain" }}
+                                        <Image className="" style={{ width: "100%", height: "250px", objectFit: "contain" }}
                                             src={product.images && product.images[0] ? "https://www.coastairbrush.com/" + product.images[0].imageSrc
                                                 : "/images/sample.jpg"}
                                         />
-                                        <p className="text-center mt-4 text-danger">
+                                        <h5 className="text-center mt-4 text-danger px-4">
                                             {product.pName}
-                                        </p>
+                                        </h5>
                                         <div className="overlay">
                                             <Button className="middle">See More</Button>
                                         </div>

@@ -28,11 +28,11 @@ import {
     PRODUCT_SUGGESTED_FAIL
 } from '../constants/productConstants'
 
-export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) => {
+export const listProducts = (keyword = '', pageNumber = '', limit = '') => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST })
 
-        const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
+        const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}&limit=${limit}`)
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
@@ -145,7 +145,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
-        const { data } = await axios.put(`/api/products/${product._id}`, product, config)
+        const { data } = await axios.put(`/api/products/${product.cloverID}`, product, config)
 
         dispatch({
             type: PRODUCT_UPDATE_SUCCESS,

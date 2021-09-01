@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap'
+import { Container, Row, Col, Nav, Navbar, Image } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import "../styles/Footer.css"
 
@@ -35,18 +35,21 @@ const Footer = () => {
                             </LinkContainer>
                         </Nav>
                         <Nav>
-                            <LinkContainer to='/product'>
+                            <LinkContainer to='/products'>
                                 <Nav.Link active={false}>Product</Nav.Link>
                             </LinkContainer>
                         </Nav>
                         <Nav>
-                            <LinkContainer to='/brand'>
+                            <LinkContainer to='/brands'>
                                 <Nav.Link active={false}>Brand</Nav.Link>
                             </LinkContainer>
                         </Nav>
                     </Col>
                     <Col lg="auto" className="text-center text-lg-left">
-                        <h6 className="brand mr-lg-3">COAST AIRBRUSH</h6>
+                        {/* <h6 className="brand mr-lg-3">COAST AIRBRUSH</h6> */}
+                        <Image src="/images/CA_Logo2.png"
+                            style={{ height: "24px", marginBottom: "8px" }}
+                        />
                         <Nav>
                             <LinkContainer exact to='/'>
                                 <Nav.Link active={false}>Home</Nav.Link>

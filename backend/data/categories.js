@@ -11350,7 +11350,8 @@ const categories = [
         "sectionDisabled": 0,
         "sectionURL": "",
         "sectionDescription": "Paint Huffer Dry Pearls & Dry Pearl Candy"
-    }
+    },
+
 ]
 
 export default categories

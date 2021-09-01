@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Table, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -33,19 +33,34 @@ const ProductListScreen = ({ history, match }) => {
     } = productCreate
 
     useEffect(() => {
-        dispatch({ type: PRODUCT_CREATE_RESET })
-        if (!userInfo) {
-            history.push('/login')
-        } else if (!userInfo.isAdmin) {
-            history.push('/login')
-        }
-        if (successCreate) {
-            history.push(`/admin/product/${createdProduct._id}/edit`)
+        if (userInfo && userInfo.isStaff) {
+            dispatch(listProducts('', pageNumber, 200))
         } else {
-            dispatch(listProducts('', pageNumber))
+            history.push('/login')
         }
-        return () => { }
-    }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, pageNumber])
+
+        return () => { dispatch({ type: PRODUCT_CREATE_RESET }) }
+    }, [])
+
+    useEffect(() => {
+        if (successCreate) {
+            history.push(`/admin/product/${createdProduct.cloverID}/edit`)
+        }
+    }, [successCreate])
+    // useEffect(() => {
+    //     dispatch({ type: PRODUCT_CREATE_RESET })
+    //     if (!userInfo) {
+    //         history.push('/login')
+    //     } else if (!userInfo.isAdmin) {
+    //         history.push('/login')
+    //     }
+    //     if (successCreate) {
+    //         history.push(`/admin/product/${createdProduct._id}/edit`)
+    //     } else {
+    //         dispatch(listProducts('', pageNumber, 200))
+    //     }
+    //     return () => { }
+    // }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, pageNumber])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure')) {
@@ -56,12 +71,12 @@ const ProductListScreen = ({ history, match }) => {
         dispatch(createProduct())
     }
     return (
-        <>
+        <Container className="my-5 py-3">
             <Row className='align-items-center'>
                 <Col>
                     <h1>Products</h1>
                 </Col>
-                <Col className="text-end">
+                <Col className="text-right">
                     <Button className='my-3' onClick={createProductHandler}>
                         <i className='fas fa-plus'></i>Create Product
                     </Button>
@@ -76,30 +91,30 @@ const ProductListScreen = ({ history, match }) => {
                     <Table striped bordered hover responsive className='table-sm'>
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>NAME</th>
                                 <th>PRICE</th>
-                                <th>CATEGORY</th>
-                                <th>BRAND</th>
+                                {/* <th>CATEGORY</th>
+                                <th>BRAND</th> */}
+                                <th>STOCK</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {products.map(product => (
-                                <tr key={product._id}>
-                                    <td>{product._id}</td>
-                                    <td>{product.name}</td>
-                                    <td>${product.price}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.brand}</td>
+                                <tr key={product.cloverID}>
+                                    <td>{product.pName}</td>
+                                    <td>{Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}</td>
+                                    {/* <td>{product.category}</td>
+                                    <td>{product.brand}</td> */}
+                                    <td>{product.pInStock}</td>
                                     <td>
-                                        <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                                            <Button variant='light' className='btn=sm'>
+                                        <LinkContainer to={`/admin/product/${product.cloverID}/edit`}>
+                                            <Button variant='light' className='btn-sm'>
                                                 <i className='fas fa-edit'></i>
                                             </Button>
                                         </LinkContainer>
                                         <Button variant='danger' className='btn-sm'
-                                            onClick={() => deleteHandler(product._id)}>
+                                            onClick={() => deleteHandler(product.cloverID)}>
                                             <i className='fas fa-trash'></i>
                                         </Button>
                                     </td>
@@ -110,7 +125,7 @@ const ProductListScreen = ({ history, match }) => {
                     <Paginate pages={pages} page={page} isAdmin={true} />
                 </>
                 )}
-        </>
+        </Container>
     )
 }
 

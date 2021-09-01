@@ -4,8 +4,8 @@ import "../../styles/Static.css"
 
 const ShippingStatic = () => {
     return (
-        <Container className="pb-5">
-            <h1 className="text-center text-danger mb-5">Coast Airbrush Shipping Policy</h1>
+        <Container className="py-5">
+            <h2 className="text-center text-danger mb-5">Coast Airbrush Shipping Policy</h2>
             <p>
                 Coast Airbrush ships to all domestic 48 states, non hazardous orders via UPS ground service. Our shipping fee is $9.00 for all orders under $100.00. Orders over $100.00 are charged at a 9% rate of the subtotal. Some items qualify for Free Shipping. For oversized or heavy weight items there will be additional charges based on the dimensional weight. We will email or phone you prior to charging any extra fees to obtain your approval, unless otherwise stated on the web site. Any air charges are also calculated by weight and destination zip code which will be provided in an email for approval. Because the shopping cart is unable to accurately calculate other than the standard shipping, please disregard the default confirmation if you are requesting additional services. We will adjust the order and email it before finalizing the order. We do not ship to PO boxes unless it is a military address. To request US Postal service, please call or submit a request on your order. Coast Airbrush is not responsible for lost or damaged items being sent USPS. There is also no tracking available for some USPS shipments. Please use the additional comments section of your order to ask for special rates or expedited shipping. In case of damage or discrepancy on order, you must retain all original packaging and contact us within 48 hours of delivery to qualify for a claim. Keep all boxes, etc in case UPS or the US postal service needs to come out and examine the package. If original package is thrown out carrier may not authorize a claim for replacement or refund.
             </p>

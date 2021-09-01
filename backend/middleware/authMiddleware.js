@@ -11,6 +11,7 @@ const protect = asyncHandler(async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
             req.user = await User.findById(decoded.id).select('-password')
+            console.log("User:", req.user.id)
 
             next()
         } catch (error) {
@@ -36,5 +37,14 @@ const admin = (req, res, next) => {
     }
 }
 
+const staff = (req, res, next) => {
+    if (req.user && req.user.isStaff) {
+        next()
+    } else {
+        res.status(401)
+        throw new Error('Not authorized as Staff')
+    }
+}
 
-export { protect, admin }
+
+export { protect, admin, staff }

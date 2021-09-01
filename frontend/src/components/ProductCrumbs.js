@@ -19,7 +19,7 @@ const Breadcrumbs = ({ product }) => {
         <>
             {
                 category && category.breadcrumbs && category.breadcrumbs[0] && (
-                    <Breadcrumb className="mt-5">
+                    <Breadcrumb className="mb-4">
                         <LinkContainer to="/">
                             <Breadcrumb.Item>Home</Breadcrumb.Item>
                         </LinkContainer>

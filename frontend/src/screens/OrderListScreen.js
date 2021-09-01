@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Table, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -17,7 +17,7 @@ const OrderListScreen = ({ history, match }) => {
     const { userInfo } = userLogin
 
     useEffect(() => {
-        if (userInfo && userInfo.isAdmin) {
+        if (userInfo && userInfo.isStaff) {
             dispatch(listOrders())
         } else {
             history.push('/login')
@@ -27,7 +27,7 @@ const OrderListScreen = ({ history, match }) => {
     }, [dispatch, history, userInfo])
 
     return (
-        <>
+        <Container className="my-5 py-3">
             <Row className='align-items-center'>
                 <Col>
                     <h1>ORDERS</h1>
@@ -39,22 +39,22 @@ const OrderListScreen = ({ history, match }) => {
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>USER</th>
+                                {/* <th>USER</th> */}
                                 <th>DATE</th>
                                 <th>TOTAL</th>
-                                <th>PAID</th>
-                                <th>DELIVERED</th>
+                                {/* <th>PAID</th> */}
+                                {/* <th>DELIVERED</th> */}
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {orders.map(order => (
-                                <tr key={order._id}>
-                                    <td>{order._id}</td>
-                                    <td>{order.user && order.user.name}</td>
-                                    <td>{order.createdAt.substring(0, 10)}</td>
-                                    <td>${order.totalPrice}</td>
-                                    <td>{order.isPaid ? (
+                                <tr key={order.id}>
+                                    <td>{order.id}</td>
+                                    {/* <td>{order.user && order.user.name}</td> */}
+                                    <td>{Date(order.createdTime).substring(4, 24)}</td>
+                                    <td>{Number(order.total / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}</td>
+                                    {/* <td>{order.isPaid ? (
                                         order.paidAt.substring(0, 10)
                                     ) : (
                                         <i className='fas fa-times' style={{ color: 'red' }}></i>
@@ -65,10 +65,10 @@ const OrderListScreen = ({ history, match }) => {
                                     ) : (
                                         <i className='fas fa-times' style={{ color: 'red' }}></i>
                                     )}
-                                    </td>
+                                    </td> */}
                                     <td>
-                                        <LinkContainer to={`/order/${order._id}`}>
-                                            <Button variant='light' className='btn=sm'>
+                                        <LinkContainer to={`/order/${order.id}`}>
+                                            <Button variant='light' className='btn-sm'>
                                                 Details
                                             </Button>
                                         </LinkContainer>
@@ -78,7 +78,7 @@ const OrderListScreen = ({ history, match }) => {
                         </tbody>
                     </Table>
                 )}
-        </>
+        </Container>
     )
 }
 

@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Table, Form, Button, Row, Col, Image, ListGroup } from 'react-bootstrap'
+import { Table, Form, Button, Row, Col, Image, ListGroup, Container, Navbar, Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listMyOrders } from '../actions/orderActions'
+import { UserNavBar } from '../components/UserNavBar'
 
 const OrderHistoryScreen = ({ history }) => {
 
-
-    const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
-    const orderListMy = useSelector(state => state.orderListMy)
-    const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
+    const { userInfo } = useSelector(state => state.userLogin)
+    const { loading, error, orders } = useSelector(state => state.orderListMy)
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -27,32 +25,35 @@ const OrderHistoryScreen = ({ history }) => {
 
 
     return (
-        <div>
-            <h2 className="text-center my-3">My Orders</h2>
-            {loadingOrders ? <Loader />
-                : errorOrders ? <Message variant='danger'>{errorOrders}</Message>
+        <Container className="my-5">
+            <UserNavBar></UserNavBar>
+            {loading ? <Loader />
+                : error ? <Message variant='danger'>{error}</Message>
                     : orders && orders.length ? (
                         <ListGroup >
                             {orders.map(order => (
-                                <ListGroup.Item key={order._id} className="border-0 mb-3">
+                                <ListGroup.Item key={order.id} className="border-0 mb-3">
                                     <Row className="justify-content-center">
-                                        <Col lg={4}>
-                                            <Image src={order.orderItems[0].image} alt={order.orderItems[0].name}
-                                                fluid rounded />
+                                        <Col lg={4} className="text-center">
+                                            {order.orderImage &&
+                                                <Image src={"https://www.coastairbrush.com/" + order.orderImage}
+                                                    alt={order.lineItems.elements[0].name} fluid rounded
+                                                    style={{ height: "200px" }}
+                                                />}
                                         </Col>
                                         <Col lg={4} className="my-auto">
                                             <Row className="justify-content-center mt-3">
                                                 <h4 className="text-danger" style={{ letterSpacing: "0px" }}>
-                                                    ${order.totalPrice}
+                                                    {Number(order.total / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
                                                 </h4>
                                             </Row>
                                             <Row className="justify-content-center">
                                                 <p>
-                                                    {order.createdAt.substring(0, 10)}
+                                                    {Date(order.createdTime).substring(4, 24)}
                                                 </p>
                                             </Row>
                                             <Row className="justify-content-center">
-                                                <LinkContainer to={`/order/${order._id}`}>
+                                                <LinkContainer to={`/order/${order.id}`}>
                                                     <Button className='btn-sm' variant='dark'>View Details</Button>
                                                 </LinkContainer>
                                             </Row>
@@ -70,7 +71,7 @@ const OrderHistoryScreen = ({ history }) => {
 
 
             }
-        </div >
+        </Container >
     )
 }
 

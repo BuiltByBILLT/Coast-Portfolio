@@ -1,17 +1,18 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 import Category from '../models/categoryModel.js'
-
+import axios from 'axios'
 
 // @desc Fetch all products
 // @route GET /api/products/
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-    const pageSize = 4
+    // const pageSize = 100
+    const pageSize = Number(req.query.limit) || 100
     const page = Number(req.query.pageNumber) || 1
 
     const keyword = req.query.keyword ? {
-        name: {
+        pName: {
             $regex: req.query.keyword,
             $options: 'i'
         }
@@ -28,7 +29,8 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route GET /api/products/:id
 // @access Public
 const getProductById = asyncHandler(async (req, res) => {
-    const product = await Product.findOne({ pID: req.params.id })
+    // const product = await Product.findOne({ pID: req.params.id })
+    const product = await Product.findOne({ cloverID: req.params.id })
     if (product) {
         const category = await Category.findOne({ sectionID: product.pSection })
         product.topSection = category.sectionName
@@ -44,7 +46,7 @@ const getProductById = asyncHandler(async (req, res) => {
 // @route DELETE /api/products/:id
 // @access Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findOne({ cloverID: req.params.id })
     if (product) {
         await product.remove()
         res.json({ message: 'Product Removed' })
@@ -58,44 +60,50 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @route POST /api/products/
 // @access Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
+
+    //New Clover Product
+    const { data } = await axios.post(
+        process.env.CLOVER_URL + `/items`,
+        { name: "New Product", price: 0 },
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+    ).catch(error => console.log(error.response.data))
+
     const product = await Product({
-        name: 'Sample name',
-        price: 0,
-        user: req.user._id,
-        image: '/images/sample.jpg',
-        brand: 'Sample Brand',
-        category: 'Sample Category',
-        countInStock: 0,
-        numReviews: 0,
-        description: 'Sample description'
+        pID: data.id,
+        cloverID: data.id,
+        pName: 'New Product',
+        pPrice: 0,
+        pListPrice: 0,
+        // images: image
+        pManufacturer: 'Sample Brand',
+        pSection: 999,
+        pLongDescription: 'Sample description',
+        pInStock: 0,
+        user: req.user._id
     })
     const createdProduct = await product.save()
     res.status(201).json(createdProduct)
 
 })
 
+
 // @desc Update a product
 // @route PUT /api/products/:id
 // @access Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-    const { name,
-        price,
-        description,
-        image,
-        brand,
-        category,
-        countInStock,
-    } = req.body
 
-    const product = await Product.findById(req.params.id)
+    const { data } = await syncToClover(req)
+
+    const product = await Product.findOne({ cloverID: req.params.id })
     if (product) {
-        product.name = name
-        product.price = price
-        product.description = description
-        product.image = image
-        product.brand = brand
-        product.category = category
-        product.countInStock = countInStock
+        product.pName = req.body.name
+        product.pPrice = req.body.price
+        product.pListPrice = req.body.listPrice
+        // product.images = req.body.image
+        product.pManufacturer = req.body.brand
+        product.pSection = req.body.category
+        product.pLongDescription = req.body.description
+        product.pInStock = req.body.countInStock
 
         const updatedProduct = await product.save()
         res.json(updatedProduct)
@@ -105,52 +113,89 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 })
 
+const syncToClover = async (req) => {
+    var cloverResponse = await axios.get(
+        process.env.CLOVER_URL + `/items/${req.body.cloverID}?expand=itemStock`,
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+    ).catch(error => console.log(error.response.data))
+
+    // If New
+    if (cloverResponse.data.name == "New Product") {
+        cloverResponse = await axios.post(
+            process.env.CLOVER_URL + `/items/${req.body.cloverID}`,
+            { name: req.body.name, price: req.body.price },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        )
+        cloverResponse = await axios.post(
+            process.env.CLOVER_URL + `/item_stocks/${req.body.cloverID}`,
+            { "quantity": req.body.countInStock },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        ).catch(error => console.log(error.response.data))
+        // console.log(cloverResponse.data)
+    } else {
+        // If Update
+        cloverResponse = await axios.post(
+            process.env.CLOVER_URL + `/items/${req.body.cloverID}`,
+            { price: req.body.price },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        )
+        cloverResponse = await axios.post(
+            process.env.CLOVER_URL + `/item_stocks/${req.body.cloverID}`,
+            { "quantity": req.body.countInStock },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        ).catch(error => console.log(error.response.data))
+
+    }
+
+
+    return cloverResponse
+}
 
 // @desc Create new review
 // @route POST /api/products/:id/reviews
 // @access Private
-const createProductReview = asyncHandler(async (req, res) => {
-    const { rating, comment } = req.body
+// const createProductReview = asyncHandler(async (req, res) => {
+//     const { rating, comment } = req.body
 
-    const product = await Product.findById(req.params.id)
-    if (product) {
-        const alreadyReviewed = product.reviews.find(
-            r => r.user.toString() === req.user._id.toString()
-        )
-        if (alreadyReviewed) {
-            res.status(400)
-            throw new Error('Product Already Reviewed')
-        }
+//     const product = await Product.findOne({ cloverID: req.params.id })
+//     if (product) {
+//         const alreadyReviewed = product.reviews.find(
+//             r => r.user.toString() === req.user._id.toString()
+//         )
+//         if (alreadyReviewed) {
+//             res.status(400)
+//             throw new Error('Product Already Reviewed')
+//         }
 
-        const review = {
-            name: req.user.name,
-            rating: Number(rating),
-            comment,
-            user: req.user._id
-        }
-        product.reviews.push(review)
-        product.numReviews = product.reviews.length
-        product.rating = product.reviews.reduce(
-            (acc, item) => item.rating + acc, 0
-        ) / product.reviews.length
+//         const review = {
+//             name: req.user.name,
+//             rating: Number(rating),
+//             comment,
+//             user: req.user._id
+//         }
+//         product.reviews.push(review)
+//         product.numReviews = product.reviews.length
+//         product.rating = product.reviews.reduce(
+//             (acc, item) => item.rating + acc, 0
+//         ) / product.reviews.length
 
-        await product.save()
-        res.status(201).json({ message: 'Review added' })
+//         await product.save()
+//         res.status(201).json({ message: 'Review added' })
 
-    } else {
-        res.status(404)
-        throw new Error('Product not found')
-    }
-})
+//     } else {
+//         res.status(404)
+//         throw new Error('Product not found')
+//     }
+// })
 
 // @desc Get Top Rated Products
 // @route Get /api/products/top
 // @access Public
-const getTopProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({ rating: -1 }).limit(4)
+// const getTopProducts = asyncHandler(async (req, res) => {
+//     const products = await Product.find({}).sort({ rating: -1 }).limit(4)
 
-    res.json(products)
-})
+//     res.json(products)
+// })
 
 // @desc Get Suggested Products
 // @route Get /api/products/suggested
@@ -173,7 +218,7 @@ export {
     deleteProduct,
     createProduct,
     updateProduct,
-    createProductReview,
-    getTopProducts,
+    // createProductReview,
+    // getTopProducts,
     getSuggestedProducts,
 }

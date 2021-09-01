@@ -14,7 +14,7 @@ const getCategories = asyncHandler(async (req, res) => {
 // @route GET /api/categories/:id/products
 // @access Public
 const getCategoryProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({ pSection: req.params.id, pDisplay: true })
+    const products = await Product.find({ pSection: req.params.id, pDisplay: true, cloverID: { $ne: null } })
     if (products) {
         res.json(products)
     } else {

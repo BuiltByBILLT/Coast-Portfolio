@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Form, Button, Row, Col } from 'react-bootstrap'
+import { Table, Form, Button, Row, Col, Container, Navbar, Nav } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import ProfileNav from '../components/ProfileNav'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import { UserNavBar } from '../components/UserNavBar'
 
 const ProfileInfoScreen = ({ location, history }) => {
     const [name, setName] = useState('')
@@ -109,76 +110,79 @@ const ProfileInfoScreen = ({ location, history }) => {
 
     return (
         <>
-            {message && <Message variant='danger'>{message}</Message>}
-            {error && <Message variant='danger'>{error}</Message>}
-            {successMessage && <Message variant='success'>Profile Updated</Message>}
-            {loading && <Loader />}
-            <Form>
-                <Row>
-                    <Col lg={6} className="p-5">
-                        <Form.Group controlId='name'>
-                            <Form.Label as="h3">Name</Form.Label>
-                            <Form.Control type='name' placeholder='Enter name' value={name}
-                                readOnly={!nameEdit} plaintext={!nameEdit}
-                                onChange={(e) => setName(e.target.value)}>
-                            </Form.Control>
-                        </Form.Group>
-                        <Button variant='secondary' className="text-danger p-0"
-                            onClick={nameHandler}>
-                            {nameEdit ? "Save" : "Edit"}
-                        </Button>
-                    </Col>
+            <Container className="my-5">
+                <UserNavBar />
+                {message && <Message variant='danger'>{message}</Message>}
+                {error && <Message variant='danger'>{error}</Message>}
+                {successMessage && <Message variant='success'>Profile Updated</Message>}
+                {loading && <Loader />}
+                <Form>
+                    <Row className="mt-5">
+                        <Col lg={6} className="p-5">
+                            <Form.Group controlId='name'>
+                                <Form.Label as="h3">Name</Form.Label>
+                                <Form.Control type='name' placeholder='Enter name' value={name} required
+                                    readOnly={!nameEdit} plaintext={!nameEdit}
+                                    onChange={(e) => setName(e.target.value)}>
+                                </Form.Control>
+                            </Form.Group>
+                            <Button variant='secondary' className="text-danger p-0"
+                                onClick={nameHandler}>
+                                {nameEdit ? "Save" : "Edit"}
+                            </Button>
+                        </Col>
 
-                    <Col lg={6} className="p-5">
-                        <Form.Group controlId='email'>
-                            <Form.Label as="h3">Email</Form.Label>
-                            <Form.Control type='email' placeholder='Enter email' value={email}
-                                readOnly={!emailEdit} plaintext={!emailEdit}
-                                onChange={(e) => setEmail(e.target.value)}>
-                            </Form.Control>
-                        </Form.Group>
-                        <Button variant='secondary' className="text-danger p-0"
-                            onClick={emailHandler}>
-                            {emailEdit ? "Save" : "Edit"}
-                        </Button>
-                    </Col>
+                        <Col lg={6} className="p-5">
+                            <Form.Group controlId='email'>
+                                <Form.Label as="h3">Email</Form.Label>
+                                <Form.Control type='email' placeholder='Enter email' value={email} required
+                                    readOnly={!emailEdit} plaintext={!emailEdit}
+                                    onChange={(e) => setEmail(e.target.value)}>
+                                </Form.Control>
+                            </Form.Group>
+                            <Button variant='secondary' className="text-danger p-0"
+                                onClick={emailHandler}>
+                                {emailEdit ? "Save" : "Edit"}
+                            </Button>
+                        </Col>
 
-                    <Col lg={6} className="p-5">
-                        <Form.Group controlId='password'>
-                            <Form.Label as="h3">Password</Form.Label>
-                            <Form.Control type='password' placeholder='******'
-                                readOnly={!passwordEdit} plaintext={!passwordEdit}
-                                onChange={(e) => setPassword(e.target.value)}>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group controlId='confirmPassword' className="d-none">
-                            <Form.Label>Confirm Password</Form.Label>
-                            <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}>
-                            </Form.Control>
-                        </Form.Group>
-                        <Button id="passwordBtn" variant='secondary' className="text-danger p-0"
-                            onClick={passwordHandler}>
-                            {passwordEdit ? "Save" : "Edit"}
-                        </Button>
-                    </Col>
+                        <Col lg={6} className="p-5">
+                            <Form.Group controlId='password'>
+                                <Form.Label as="h3">Password</Form.Label>
+                                <Form.Control type='password' placeholder='******' required
+                                    readOnly={!passwordEdit} plaintext={!passwordEdit}
+                                    onChange={(e) => setPassword(e.target.value)}>
+                                </Form.Control>
+                            </Form.Group>
+                            <Form.Group controlId='confirmPassword' className="d-none">
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword} required
+                                    onChange={(e) => setConfirmPassword(e.target.value)}>
+                                </Form.Control>
+                            </Form.Group>
+                            <Button id="passwordBtn" variant='secondary' className="text-danger p-0"
+                                onClick={passwordHandler}>
+                                {passwordEdit ? "Save" : "Edit"}
+                            </Button>
+                        </Col>
 
-                    <Col lg={6} className="p-5">
-                        <Form.Group controlId='address'>
-                            <Form.Label as="h3">Address</Form.Label>
-                            <Form.Control type='text' placeholder='Enter Address' value={address}
-                                readOnly={!addressEdit} plaintext={!addressEdit}
-                                onChange={(e) => setAddress(e.target.value)}>
-                            </Form.Control>
-                        </Form.Group>
-                        <Button variant='secondary' className="text-danger p-0"
-                            onClick={addressHandler}>
-                            {addressEdit ? "Save" : "Edit"}
-                        </Button>
-                    </Col>
-                </Row>
+                        <Col lg={6} className="p-5">
+                            <Form.Group controlId='address'>
+                                <Form.Label as="h3">Address</Form.Label>
+                                <Form.Control type='text' placeholder='Enter Address' value={address}
+                                    readOnly={!addressEdit} plaintext={!addressEdit}
+                                    onChange={(e) => setAddress(e.target.value)}>
+                                </Form.Control>
+                            </Form.Group>
+                            <Button variant='secondary' className="text-danger p-0"
+                                onClick={addressHandler}>
+                                {addressEdit ? "Save" : "Edit"}
+                            </Button>
+                        </Col>
+                    </Row>
 
-            </Form>
+                </Form>
+            </Container>
         </>
     )
 }

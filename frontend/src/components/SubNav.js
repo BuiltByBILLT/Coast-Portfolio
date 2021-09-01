@@ -9,16 +9,16 @@ const SubNav = () => {
 
     return (
         <>
-            <LinkContainer to='/category/0'>
+            <LinkContainer to='/category/0' className=''>
                 <Nav.Link active={false} className='mx-4'>Categories</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/bbb'>
+            <LinkContainer to='/products'>
                 <Nav.Link active={false} className='mx-4'>Products</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/ccc'>
+            <LinkContainer to='/brands'>
                 <Nav.Link active={false} className='mx-4'>Brands</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/ddd'>
+            <LinkContainer to='/youtube'>
                 <Nav.Link active={false} className='mx-4'>Coast TV</Nav.Link>
             </LinkContainer>
         </ >

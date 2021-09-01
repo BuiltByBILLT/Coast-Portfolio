@@ -24,8 +24,10 @@ import {
     USER_UPDATE_REQUEST,
     USER_UPDATE_SUCCESS,
     USER_UPDATE_FAIL,
+    USER_REGISTER_RESET,
 } from "../constants/userConstants"
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
+import { CART_LOAD_USER, CART_RESET } from '../constants/cartConstants'
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -44,6 +46,11 @@ export const login = (email, password) => async (dispatch) => {
             payload: data
         })
 
+        dispatch({
+            type: CART_LOAD_USER,
+            payload: data.cart
+        })
+
         localStorage.setItem('userInfo', JSON.stringify(data))
     } catch (error) {
         dispatch({
@@ -56,10 +63,16 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('cartItems')
+    localStorage.removeItem('shippingInfo')
+    localStorage.removeItem('shippingMethod')
+    // localStorage.removeItem('cloverOrder')
     dispatch({ type: USER_LOGOUT })
     dispatch({ type: USER_DETAILS_RESET })
+    dispatch({ type: USER_REGISTER_RESET })
     dispatch({ type: ORDER_LIST_MY_RESET })
     dispatch({ type: USER_LIST_RESET })
+    dispatch({ type: CART_RESET })
 }
 
 export const register = (name, email, password) => async (dispatch) => {

@@ -1,121 +1,120 @@
 import asyncHandler from 'express-async-handler'
-import Order from '../models/orderModel.js'
-
-
-// @desc Create new order
-// @route POST /api/orders/
-// @access Private
-const addOrderItems = asyncHandler(async (req, res) => {
-    const {
-        orderItems,
-        shippingAddress,
-        paymentMethod,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice
-    } = req.body
-
-    if (orderItems && orderItems.length === 0) {
-        res.status(400)
-        throw new Error('No order items')
-        return
-    } else {
-        const order = new Order({
-            user: req.user._id,
-            orderItems,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice
-        })
-        const createdOrder = await order.save()
-
-        res.status(201).json(createdOrder)
-    }
-})
+// import Order from '../models/orderModel.js'
+import Product from '../models/productModel.js'
+import axios from 'axios'
 
 // @desc Get order by ID
 // @route GET /api/orders/:id
-// @access Private
+// @access Public -> Private&Staff
 const getOrderByID = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id).populate('user', 'name email')
+    const { data } = await axios.get(
+        process.env.CLOVER_URL + `/orders/${req.params.id}?expand=lineItems&expand=customers&expand=payments`,
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+    )
 
-    if (order) {
-        res.json(order)
-    } else {
-        res.status(404)
-        throw new Error('Order not found')
-    }
-})
-
-// @desc Update order to paid
-// @route PUT /api/orders/:id/pay
-// @access Private
-const updateOrderToPaid = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id)
-
-    if (order) {
-        order.isPaid = true
-        order.paidAt = Date.now()
-        order.paymentResult = {
-            id: req.body.id,
-            status: req.body.status,
-            update_time: req.body.update_time,
-            email_address: req.body.payer.email_address
+    // Group Line Items
+    var lineItems = data.lineItems.elements
+    for (var outside = 0; outside < lineItems.length; outside++) {
+        var outsideItem = lineItems[outside];
+        lineItems[outside].qty = 1
+        for (var inside = lineItems.length - 1; inside >= 0; inside--) {
+            var insideItem = lineItems[inside];
+            if (outsideItem.name === insideItem.name) {
+                if (outside == inside) { break; }
+                outsideItem.qty++
+                lineItems.splice(inside, 1)
+            }
         }
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-    } else {
-        res.status(404)
-        throw new Error('Order not found')
     }
-})
-
-// @desc Update order to delivered
-// @route PUT /api/orders/:id/deliver
-// @access Private/Admin
-const updateOrderToDelivered = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id)
-
-    if (order) {
-        order.isDelivered = true
-        order.delieveredAt = Date.now()
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-    } else {
-        res.status(404)
-        throw new Error('Order not found')
+    // Add Images
+    for (var index = 0; index < lineItems.length; index++) {
+        const cloverID = lineItems[index].item && lineItems[index].item.id;
+        // console.log("Clover", cloverID)
+        if (cloverID) {
+            const product = await Product.findOne({ cloverID: cloverID })
+            // console.log(product)
+            if (product) {
+                lineItems[index].image = product.images.length && product.images[0].imageSrc
+                lineItems[index].pID = product.pID
+            }
+        }
+        else { // Remove in Prod
+            lineItems[index].image = lineItems[index].alternateName
+            lineItems[index].pID = lineItems[index].note
+        }
     }
+
+    // Parse Shipping Label
+    var shippingLabel
+    for (var i = 0; i < lineItems.length; i++) {
+        if (lineItems[i].name === "Website Shipping") {
+            shippingLabel = JSON.parse(lineItems[i].note)
+        }
+    }
+
+    // if customerID does not match (protect)
+    res.json({ lineItems, shippingLabel, payment: data.payments.elements[0] })
 })
 
 // @desc Get logged in user orders
 // @route GET /api/orders/myorders
-// @access Private
+// @access Public -> Private%Staff
 const getMyOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id })
-    res.json(orders)
-
+    // console.log(req.user.customerID)
+    const { data } = await axios.get(
+        process.env.CLOVER_URL + `/orders?filter=customer.id=${req.user.customerID}&expand=lineItems`,
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+    )
+    var orderList = data.elements
+    for (let i = 0; i < orderList.length; i++) {
+        const order = orderList[i];
+        const firstItem = order.lineItems.elements[0]
+        const cloverID = firstItem.item && firstItem.item.id
+        if (cloverID) {
+            const product = await Product.findOne({ cloverID: cloverID })
+            if (product) {
+                order.orderImage = product.images.length && product.images[0].imageSrc
+            }
+        } else { //Remove in Prod
+            order.orderImage = firstItem.alternateName
+        }
+    }
+    // console.log(orderList)
+    res.json(orderList)
 })
 
 // @desc Get all orders
 // @route GET /api/orders/
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'id name')
-    res.json(orders)
-
+    const { data } = await axios.get(
+        process.env.CLOVER_URL + `/orders?expand=lineItems`,
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+    )
+    // var orders = data.elements
+    // for (let i = 0; i < orders.length; i++) {
+    //     const order = orders[i];
+    //     const { data } = await axios.get(
+    //         process.env.CLOVER_URL + `/customers/${}`,
+    //         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+    // }
+    res.json(data.elements)
 })
 
 
 
+// @desc Update order to delivered
+// @route PUT /api/orders/:id/deliver
+// @access Private/Admin
+// const updateOrderToDelivered = asyncHandler(async (req, res) => {
+// })
+
+
 export {
-    addOrderItems,
+    // addOrderItems,
     getOrderByID,
-    updateOrderToPaid,
-    updateOrderToDelivered,
+    // updateOrderToPaid,
+    // updateOrderToDelivered,
     getMyOrders,
     getOrders
 }

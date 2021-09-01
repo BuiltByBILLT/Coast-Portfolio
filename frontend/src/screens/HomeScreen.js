@@ -25,7 +25,8 @@ const HomeScreen = ({ match }) => {
 
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getTopCategories())
+        // window.scrollTo({ top: 0, behavior: "smooth" });
+        // dispatch(getTopCategories())
 
     }, [dispatch])
 
@@ -33,131 +34,210 @@ const HomeScreen = ({ match }) => {
         <>
             <Meta />
             <div className="homePage">
-                <Row className="hero">
-                    <Container >
-                        <Col lg={5}>
-                            <div className="bg-danger heroText">
-                                <h2>Takes One to Know One</h2>
-                                <p className="text-light">Here at Coast, we are one big family of artists who love to create and serve our communit as best we can</p>
-                            </div>
-                        </Col>
+                <Row className="" style={{
+                    backgroundImage: "url('/images/Hero_image_only.png')",
+                    // backgroundSize: "100% 100%",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    height: "600px",
+                    marginTop: "-2px"
+                }}>
+                    <Container className=""
+                        style={{
+                            backgroundImage: "url('/images/Hero_Headline.png')",
+                            backgroundRepeat: "no-repeat",
+                            backgroundSize: "contain",
+                            height: "320px",
+                            fontSize: "13px",
+                            paddingTop: "210px",
+                            paddingLeft: "50px",
+                            marginTop: "150px",
+                        }}>
+                        <p className="text-light"
+                            style={{ width: "350px" }}>
+                            Here at Coast, we are one big family of artists who love to create and serve our communit as best we can</p>
                     </Container>
                 </Row>
-                <Row className="featured" >
+                <div style={{ position: "absolute", width: "100vw" }}>
+                    <Image src="/images/texture1_only.png"
+                        style={{ height: "80px", position: "absolute", top: "-35px", left: "-50px", zIndex: 5 }}></Image>
+                </div>
+
+                <Row className="featured" style={{ backgroundImage: "url('/images/BG_Featured_section.png')" }} >
                     <Container>
                         <Row className="pb-5">
 
                             <Col lg={6}>
-                                <Image src="https://www.coastairbrush.com/prodimages/K9200smw.png"
+                                <Image src="/images/airbrush_withframe.png"
                                     style={{ width: "100%" }}
                                     className="px-5" />
                             </Col>
                             <Col lg={6} >
-                                <h2 className="mt-5 mt-lg-0 text-danger">Featured Product</h2>
+                                <h2 className="mt-5 text-danger">Featured Product</h2>
                                 <h3 className="mt-3" style={{ letterSpacing: "0px" }}>IWATA Airbrush</h3>
-                                <p className="">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
+                                <p className="pr-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
                                 <Button>Shop Now</Button>
                             </Col>
                         </Row>
-                        <h1 className="text-center text-danger mb-3">Top Products</h1>
-                        <TopThree />
+                        <h1 className="text-center text-danger mb-5">Top Products</h1>
+                        <TopThree className="my-5" />
                     </Container>
                 </Row >
                 <Row className="topCat">
-                    <Container >
-                        {top && (
-                            <Row>
-                                {top.slice(0, 4).map(child => (
-                                    <Col key={child.sectionID} xs='6' lg='3' className='p-4'>
-                                        <CategoryCard category={child} />
+                    <Container>
+                        {
+                            <Row className="my-5">
+                                {[
+                                    { name: "Makeup/Beauty", url: "607", image: "/images/Makeup.png" },
+                                    { name: "Automobile", url: "20", image: "/images/Automobile.png" },
+                                    { name: "Fine Arts", url: "22", image: "/images/FineArts.png" },
+                                    { name: "T-Shirts", url: "383", image: "/images/Tshirts.png" }
+                                ].map(card => (
+                                    <Col key={card.name} xs='6' lg='3' className='p-4'>
+                                        <Link to={`/category/${card.url}`} className="linkBox" >
+                                            <Image
+                                                className="mx-auto px-2"
+                                                style={{ width: "100%", height: "200px", objectFit: "contain" }}
+                                                src={card.image}
+                                            />
+                                            <h5 className="text-center my-4">{card.name}</h5>
+                                        </Link>
                                     </Col>
                                 ))}
                             </Row>
-                        )}
+                        }
                         <h1 className="text-center text-danger mb-3">Top Categories</h1>
-                        {top && (
-                            <Row>
-                                {top.slice(4, 8).map(child => (
-                                    <Col key={child.sectionID} xs='6' lg='3' className='p-4'>
-                                        <CategoryCard category={child} />
+                        {
+                            <Row className="my-5">
+                                {[
+                                    { name: "Leafing/Pinstripe", url: "607", image: "/images/Pinstripe.png" },
+                                    { name: "Hobby", url: "0", image: "/images/Hobby.png" },
+                                    { name: "Mural", url: "589", image: "/images/Mural.png" },
+                                    { name: "Model", url: "404", image: "/images/Model.png" }
+                                ].map(card => (
+                                    <Col key={card.name} xs='6' lg='3' className='p-4'>
+                                        <Link to={`/category/${card.url}`} className="linkBox" >
+                                            <Image
+                                                className="mx-auto px-2"
+                                                style={{ width: "100%", height: "200px", objectFit: "contain" }}
+                                                src={card.image}
+                                            />
+                                            <h5 className="text-center my-4">{card.name}</h5>
+                                        </Link>
                                     </Col>
                                 ))}
                             </Row>
-                        )}
+                        }
                     </Container>
                 </Row>
                 <Row className="topBrands" >
                     <Container>
-                        {top && (
-                            <Row>
-                                {top.slice(8, 12).map(child => (
-                                    <Col key={child.sectionID} xs='6' lg='3' className='p-4'>
-                                        <CategoryCard category={child} />
+                        {
+                            <Row className="my-5">
+                                {[
+                                    { image: "/images/kolor.png" },
+                                    { image: "/images/Iwata.png" },
+                                    { image: "/images/3m.png" },
+                                    { image: "/images/CreateXColors.png" }
+                                ].map(card => (
+                                    <Col key={card.name} xs='6' lg='3' className='p-4'>
+                                        <Link to={`/brands`} className="linkBox" >
+                                            <Image
+                                                className="mx-auto px-2"
+                                                style={{ width: "100%", height: "200px", objectFit: "contain" }}
+                                                src={card.image}
+                                            />
+                                        </Link>
                                     </Col>
                                 ))}
                             </Row>
-                        )}
+                        }
                         <h1 className="text-center mb-3">Top Brands</h1>
-                        {top && (
-                            <Row>
-                                {top.slice(12, 16).map(child => (
-                                    <Col key={child.sectionID} xs='6' lg='3' className='p-4'>
-                                        <CategoryCard category={child} />
+                        {
+                            <Row className="my-5">
+                                {[
+                                    { image: "/images/Lumilor.png" },
+                                    { image: "/images/Paasche.png" },
+                                    { image: "/images/1shot.png" },
+                                    { image: "/images/MissionModels.png" }
+                                ].map(card => (
+                                    <Col key={card.name} xs='6' lg='3' className='p-4'>
+                                        <Link to={`/brands`} className="linkBox" >
+                                            <Image
+                                                className="mx-auto px-2"
+                                                style={{ width: "100%", height: "200px", objectFit: "contain" }}
+                                                src={card.image}
+                                            />
+                                        </Link>
                                     </Col>
                                 ))}
                             </Row>
-                        )}
+                        }
                     </Container>
                 </Row>
-                <Container className="pt-5 pb-3">
-                    <h5>Not Sure Where To Start?</h5>
+                <Container className="mt-5 pt-4 pb-3">
+                    <h6>Not Sure Where To Start?</h6>
                     <h3 className="text-danger mb-4">Watch Our Training Videos</h3>
-                    <Row>
+                    <Row className="my-5">
                         <Col lg={4}>
-                            <Image src="http://www.coastairbrushtv.com/thumbnail.asp?file=assets/images/thmbwoodgrain2.png&maxx=0&maxy=150"
-                                style={{ width: "100%" }} />
-                            <h5 className="mt-3 mb-0 text-center text-danger">Lucky FX Woodgraining </h5>
-                            <p className="text-center">with Ryno</p>
+                            <Link to={`https://www.youtube.com`} className="linkBox" >
+                                <Image src="/images/Video_mixing.png"
+                                    style={{ width: "100%" }} />
+                                <h5 className="mt-3 mb-0 text-center text-danger">Mixing the House of Kolor Urethanes </h5>
+                                <p className="text-center">With Dave Monning</p>
+                            </Link>
                         </Col>
                         <Col lg={4}>
-                            <Image src="http://www.coastairbrushtv.com/thumbnail.asp?file=assets/images/thmbrccar1.png&maxx=0&maxy=150"
-                                style={{ width: "100%" }} />
-                            <h5 className="mt-3 mb-0 text-center text-danger">Race Ready RC Car Painting </h5>
-                            <p className="text-center">with Charlie Barnes</p>
+                            <Link to={`https://www.youtube.com`} className="linkBox" >
+                                <Image src="/images/Vide_airbrush.png"
+                                    style={{ width: "100%" }} />
+                                <h5 className="mt-3 mb-0 text-center text-danger">Airbrush Overview </h5>
+                                <p className="text-center">with Dave Monning</p>
+                            </Link>
                         </Col>
                         <Col lg={4}>
-                            <Image src="http://www.coastairbrushtv.com/thumbnail.asp?file=assets/images/thmbTHOR.png&maxx=0&maxy=150"
-                                style={{ width: "100%" }} />
-                            <h5 className="mt-3 mb-0 text-center text-danger">Organic Texture & Dynamic Lighting </h5>
-                            <p className="text-center">with Cory Saint Clair</p>
+                            <Link to={`https:www.youtube.com`} className="linkBox" >
+                                <Image src="/images/Video_FlamingSkull.png"
+                                    style={{ width: "100%" }} />
+                                <h5 className="mt-3 mb-0 text-center text-danger">The "Flaming" Skull</h5>
+                                <p className="text-center">Creating Skulls & Realistic Blue Fire w/ Craig Fraser</p>
+                            </Link>
                         </Col>
                     </Row>
                 </Container>
-                <Row className="seeDave">
-                    <Container >
-                        <Row className="pb-5 mb-5" >
-                            <Col lg={7}>
-                            </Col>
-                            <Col lg={5} >
-                                <h3 className="" style={{ letterSpacing: "0px" }}>Look Familiar?</h3>
-                                <h2 className="mt-5 mt-lg-0 text-danger">See David On</h2>
-                                <p className="text-dark">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
-                                <div className="ml-auto">
-                                    <Button>Shop Now</Button>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Container>
+                <Row className="seeDave" style={{ backgroundImage: "url('/images/David_Section_BG.png')", height: "600px" }}>
+                    {/* <Container > */}
+                    {/* <Row className="my-0" style={{ height: "500px" }}> */}
+                    <Col lg={8}
+                        style={{
+                            backgroundImage: "url('/images/David.png')",
+                            backgroundSize: "cover"
+                        }}>
+                    </Col>
+                    <Col lg={4} className="pr-4">
+                        <h3 className="" style={{ letterSpacing: "0px" }}>Look Familiar?</h3>
+                        <h2 className="mt-5 mt-lg-0 mb-4 text-danger">See David On</h2>
+                        <Image src="/images/Asset32.png" style={{ width: "120px" }} />
+                        <Image src="/images/Asset33.png" style={{ width: "120px" }} className="mx-2" />
+                        <Image src="/images/Asset34.png" style={{ width: "120px" }} />
+                        <p className="text-dark my-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
+                        <div className="ml-auto">
+                            <Button>Shop Now</Button>
+                        </div>
+                    </Col>
+                    {/* </Row> */}
+                    <div style={{ position: "absolute", width: "100vw" }}>
+                        <Image src="/images/texture1_only.png"
+                            style={{ height: "80px", position: "absolute", top: "420px", left: "-50px", zIndex: 5 }}></Image>
+                    </div>
+                    <div style={{ position: "absolute", width: "100vw" }}>
+                        <Image src="/images/David_favorite.png"
+                            style={{ height: "120px", position: "absolute", top: "450px", left: "50px", zIndex: 5 }}></Image>
+                    </div>
+                    {/* </Container> */}
                 </Row>
-                <Row className="favorites">
-                    <Container>
-                        <Row className="mb-5">
-                            <Col lg={5}>
-                                <div className="bg-danger favoriteText">
-                                    <h2 className="text-white m-0">David's Favorites</h2>
-                                </div>
-                            </Col>
-                        </Row>
+                <Row className="favorites mt-5 pt-5">
+                    <Container className="mt-5 pt-5">
                         <TopThree />
                     </Container>
                 </Row>
@@ -170,10 +250,12 @@ const HomeScreen = ({ match }) => {
                     <Container >
                         <Row>
                             <Col lg={6} className="my-5 mt-lg-0">
+                                <Image src="/images/Map.png"
+                                    style={{ width: "100%", paddingRight: "60px" }} />
                             </Col>
                             <Col lg={3} className="my-5 mt-lg-0 text-center text-lg-left">
                                 <h3 className="text-danger">Location</h3>
-                                <p>blah blah blah blah blah blah blah blah blah blah blah blah </p>
+                                <p>lorem ipsum dolor sit amet, consecte adipiscing elit, sed diam laoreet</p>
                                 <br />
                                 <p>312 N Anaheim Blvd.</p>
                                 <p>Anahiem CA 92805</p>
