@@ -9,7 +9,7 @@ const SubNav = () => {
 
     return (
         <>
-            <LinkContainer to='/category/0' className=''>
+            <LinkContainer to='/categories' className=''>
                 <Nav.Link active={false} className='mx-4'>Categories</Nav.Link>
             </LinkContainer>
             <LinkContainer to='/products'>

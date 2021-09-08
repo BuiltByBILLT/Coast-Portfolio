@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Container } from 'react-bootstrap'
+import { Table, Button, Container, Form, InputGroup, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listUsers, deleteUser } from '../actions/userActions'
 
 const UserListScreen = ({ history }) => {
+
+    const [search, setSearch] = useState("")
 
     const dispatch = useDispatch()
 
@@ -32,12 +34,38 @@ const UserListScreen = ({ history }) => {
         if (window.confirm(`Delete ${name} \nAre you sure?`))
             dispatch(deleteUser(id))
     }
+    const searchHandler = (e) => {
+        e.preventDefault()
+        alert(search)
+        // dispatch()
+    }
     return (
         <Container className="my-5 py-3">
-            <h1>Users</h1>
+            <Row>
+                <Col>
+                    <h1>Users</h1>
+                </Col>
+                <Col className="my-auto mr-4">
+                    <Form onSubmit={searchHandler}>
+                        <InputGroup>
+                            <Form.Control
+                                placeholder="Search by Name or Email"
+                                aria-label="Search by Name or Email"
+                                style={{ height: "50px" }}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <InputGroup.Append>
+                                <Button variant="primary" onClick={searchHandler}>
+                                    <i className="fas fa-search"></i>
+                                </Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Form>
+                </Col>
+            </Row>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
                 : (
-                    <Table striped borded hover responsive className='table-sm'>
+                    <Table striped borded hover responsive className='table-sm mt-3'>
                         <thead>
                             <tr>
                                 <th>CREATED</th>

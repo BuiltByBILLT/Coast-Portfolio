@@ -97,7 +97,7 @@ const ProductEditScreen = ({ match, history }) => {
 
     return (
         <Container className="my-5 py-3">
-            <Link to='/admin/productlist' className='btn btn-light my-3'> Go Back</Link>
+            <Link to='/admin/productlist' className='btn btn-light my-3'>{`<-- Product List`}</Link>
             <h1>Edit Product</h1>
             {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
             {loadingUpdate && <Loader />}
@@ -125,7 +125,7 @@ const ProductEditScreen = ({ match, history }) => {
                                     onChange={(e) => setListPrice(e.target.value)}>
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group controlId='image'>
+                            {/* <Form.Group controlId='image'>
                                 <Form.Label>Image</Form.Label>
                                 <Form.Control type='text' placeholder='Enter image URL' value={image} disabled={!edit}
                                     onChange={(e) => setImage(e.target.value)}>
@@ -134,7 +134,7 @@ const ProductEditScreen = ({ match, history }) => {
                                     onChange={uploadFileHandler}>
                                 </Form.File>
                                 {uploading && <Loader />}
-                            </Form.Group>
+                            </Form.Group> */}
                             <Form.Group controlId='brand'>
                                 <Form.Label>Brand</Form.Label>
                                 <Form.Control type='text' placeholder='Enter brand' value={brand} disabled={!edit}

@@ -76,7 +76,9 @@ const HomeScreen = ({ match }) => {
                                 <h2 className="mt-5 text-danger">Featured Product</h2>
                                 <h3 className="mt-3" style={{ letterSpacing: "0px" }}>IWATA Airbrush</h3>
                                 <p className="pr-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
-                                <Button>Shop Now</Button>
+                                <Link to={`/product/DKTX81PVDX2C6`}  >
+                                    <Button>Shop Now</Button>
+                                </Link>
                             </Col>
                         </Row>
                         <h1 className="text-center text-danger mb-5">Top Products</h1>
@@ -100,7 +102,7 @@ const HomeScreen = ({ match }) => {
                                                 style={{ width: "100%", height: "200px", objectFit: "contain" }}
                                                 src={card.image}
                                             />
-                                            <h5 className="text-center my-4">{card.name}</h5>
+                                            <h5 className="redTextHover text-center my-4">{card.name}</h5>
                                         </Link>
                                     </Col>
                                 ))}
@@ -110,7 +112,7 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { name: "Leafing/Pinstripe", url: "607", image: "/images/Pinstripe.png" },
+                                    { name: "Leafing/Pinstripe", url: "21", image: "/images/Pinstripe.png" },
                                     { name: "Hobby", url: "0", image: "/images/Hobby.png" },
                                     { name: "Mural", url: "589", image: "/images/Mural.png" },
                                     { name: "Model", url: "404", image: "/images/Model.png" }
@@ -140,11 +142,11 @@ const HomeScreen = ({ match }) => {
                                     { image: "/images/3m.png" },
                                     { image: "/images/CreateXColors.png" }
                                 ].map(card => (
-                                    <Col key={card.name} xs='6' lg='3' className='p-4'>
+                                    <Col key={card.name} xs='6' lg='3' className='p-4 text-center'>
                                         <Link to={`/brands`} className="linkBox" >
                                             <Image
-                                                className="mx-auto px-2"
-                                                style={{ width: "100%", height: "200px", objectFit: "contain" }}
+                                                className="mx-auto yellowBorderHover"
+                                                style={{ width: "200px", height: "200px", objectFit: "contain", padding: "0px" }}
                                                 src={card.image}
                                             />
                                         </Link>
@@ -161,11 +163,11 @@ const HomeScreen = ({ match }) => {
                                     { image: "/images/1shot.png" },
                                     { image: "/images/MissionModels.png" }
                                 ].map(card => (
-                                    <Col key={card.name} xs='6' lg='3' className='p-4'>
+                                    <Col key={card.name} xs='6' lg='3' className='p-4 text-center'>
                                         <Link to={`/brands`} className="linkBox" >
                                             <Image
-                                                className="mx-auto px-2"
-                                                style={{ width: "100%", height: "200px", objectFit: "contain" }}
+                                                className="mx-auto yellowBorderHover"
+                                                style={{ width: "200px", height: "200px", objectFit: "contain", padding: "0px" }}
                                                 src={card.image}
                                             />
                                         </Link>
@@ -182,10 +184,15 @@ const HomeScreen = ({ match }) => {
                         <Col lg={4}>
                             <Link to={`https://www.youtube.com`} className="linkBox" >
                                 <Image src="/images/Video_mixing.png"
-                                    style={{ width: "100%" }} />
+                                    style={{ width: "100%" }} >
+                                </Image>
                                 <h5 className="mt-3 mb-0 text-center text-danger">Mixing the House of Kolor Urethanes </h5>
                                 <p className="text-center">With Dave Monning</p>
+                                <div className="overlayYellow">
+                                    <Button className="middle">Watch Video</Button>
+                                </div>
                             </Link>
+
                         </Col>
                         <Col lg={4}>
                             <Link to={`https://www.youtube.com`} className="linkBox" >
@@ -193,6 +200,9 @@ const HomeScreen = ({ match }) => {
                                     style={{ width: "100%" }} />
                                 <h5 className="mt-3 mb-0 text-center text-danger">Airbrush Overview </h5>
                                 <p className="text-center">with Dave Monning</p>
+                                <div className="overlayYellow">
+                                    <Button className="middle">Watch Video</Button>
+                                </div>
                             </Link>
                         </Col>
                         <Col lg={4}>
@@ -201,6 +211,9 @@ const HomeScreen = ({ match }) => {
                                     style={{ width: "100%" }} />
                                 <h5 className="mt-3 mb-0 text-center text-danger">The "Flaming" Skull</h5>
                                 <p className="text-center">Creating Skulls & Realistic Blue Fire w/ Craig Fraser</p>
+                                <div className="overlayYellow">
+                                    <Button className="middle">Watch Video</Button>
+                                </div>
                             </Link>
                         </Col>
                     </Row>
@@ -253,25 +266,25 @@ const HomeScreen = ({ match }) => {
                                 <Image src="/images/Map.png"
                                     style={{ width: "100%", paddingRight: "60px" }} />
                             </Col>
-                            <Col lg={3} className="my-5 mt-lg-0 text-center text-lg-left">
-                                <h3 className="text-danger">Location</h3>
+                            <Col lg={4} className="my-5 mt-lg-0 text-center text-lg-left">
+                                <h3 className="text-danger">Contact Us</h3>
                                 <p>lorem ipsum dolor sit amet, consecte adipiscing elit, sed diam laoreet</p>
+                                <i className="fas fa-map-marker-alt"></i>
+                                <span className="ml-3 mb-0 font-weight-bold">312 N Anaheim Blvd.</span>
+                                <p className="font-weight-bold" style={{ marginLeft: "28px" }}>Anahiem CA 92805</p>
+                                <i className="fas fa-phone-alt"></i>
+                                <span className="ml-3 font-weight-bold">714-635-5557</span>
                                 <br />
-                                <p>312 N Anaheim Blvd.</p>
-                                <p>Anahiem CA 92805</p>
                                 <br />
-                                <p>714-635-5557</p>
-                                <br />
-                                <p>kustom@coastairbrush.com</p>
+                                <i className="fas fa-envelope"></i>
+                                <span className="ml-3 font-weight-bold">kustom@coastairbrush.com</span>
                             </Col>
-                            <Col lg={3} className="my-5 mt-lg-0 text-center text-lg-left">
+                            <Col lg={2} className="my-5 mt-lg-0 text-center text-lg-left">
                                 <h3 className="text-danger">Hours</h3>
-                                <p>Mon, Fri, Sat:</p>
+                                <p className="font-weight-bold mb-0">Mon, Fri, Sat:</p>
                                 <p>9:30am - 5:00pm</p>
-                                <br />
-                                <p>Tues, Wed, Thur:</p>
+                                <p className="font-weight-bold mb-0">Tues, Wed, Thur:</p>
                                 <p>9:30am - 6:00pm</p>
-                                <br />
                                 <p>CLOSED SUNDAYS</p>
                             </Col>
                         </Row>

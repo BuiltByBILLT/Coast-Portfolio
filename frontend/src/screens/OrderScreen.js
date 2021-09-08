@@ -92,6 +92,14 @@ const OrderScreen = ({ match, history }) => {
                                                 ))}
                                             </ListGroup>
                                         )}
+                                    {order.payment && (<ListGroup>
+                                        <ListGroup.Item>
+                                            <h4>Payment</h4>
+                                            <p>Status: {order.payment === "OPEN" ? "NOT PAID" : order.payment}</p>
+
+
+                                        </ListGroup.Item>
+                                    </ListGroup>)}
                                     {order.shippingLabel && (<ListGroup>
                                         <ListGroup.Item>
                                             <h4>Shipping</h4>

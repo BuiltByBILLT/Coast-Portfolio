@@ -5,13 +5,14 @@
 
 #lblCartCount {
   font-size: 10px;
-  background: #f0ad4e;
+  background: #fed815;
   color: #1a1a1a;
   padding: 0 4px;
   vertical-align: top;
-  margin-left: -8px;
+  margin-left: 6px;
   margin-top: -6px;
   padding-top: 2px;
+  padding-bottom: 1px;
 }
 .badge {
   padding-left: 9px;
@@ -23,5 +24,5 @@
 
 .label-warning[href],
 .badge-warning[href] {
-  background-color: #c67605;
+  background-color: #fed815;
 }

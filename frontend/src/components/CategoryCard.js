@@ -10,8 +10,13 @@ const CategoryCard = ({ category }) => {
                 <Image
                     className="mx-auto px-2"
                     style={{ width: "100%", height: "200px", objectFit: "contain" }}
-                    src={category.sectionImage ? "https://www.coastairbrush.com/" + category.sectionImage
-                        : "/images/sample.jpg"}
+                    src={category.sectionImage === ""
+                        ? "/images/sample.jpg"
+                        : category.sectionImage[0] === "p"
+                            ? "https://www.coastairbrush.com/" + category.sectionImage
+                            : category.sectionImage[0] === "/"
+                                ? category.sectionImage
+                                : "/images/sample.jpg"}
                 />
                 <h5 className="text-center text-danger py-2 px-1">
                     {category.sectionName}

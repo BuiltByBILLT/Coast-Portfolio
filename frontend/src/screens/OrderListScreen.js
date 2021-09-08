@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col, Container } from 'react-bootstrap'
+import { Table, Button, Row, Col, Container, Form, InputGroup } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
 
 const OrderListScreen = ({ history, match }) => {
+
+    const [search, setSearch] = useState("")
 
     const dispatch = useDispatch()
 
@@ -26,16 +28,39 @@ const OrderListScreen = ({ history, match }) => {
         return () => { }
     }, [dispatch, history, userInfo])
 
+    const searchHandler = (e) => {
+        e.preventDefault()
+        alert(search)
+        // dispatch()
+    }
+
     return (
         <Container className="my-5 py-3">
             <Row className='align-items-center'>
                 <Col>
                     <h1>ORDERS</h1>
                 </Col>
+                <Col className="my-auto mr-4">
+                    <Form onSubmit={searchHandler}>
+                        <InputGroup>
+                            <Form.Control
+                                placeholder="Search by Order ID"
+                                aria-label="Search by Order ID"
+                                style={{ height: "50px" }}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <InputGroup.Append>
+                                <Button variant="primary" onClick={searchHandler}>
+                                    <i className="fas fa-search"></i>
+                                </Button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Form>
+                </Col>
             </Row>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
                 : (
-                    <Table striped bordered hover responsive className='table-sm'>
+                    <Table striped bordered hover responsive className='table-sm mt-3'>
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -52,7 +77,8 @@ const OrderListScreen = ({ history, match }) => {
                                 <tr key={order.id}>
                                     <td>{order.id}</td>
                                     {/* <td>{order.user && order.user.name}</td> */}
-                                    <td>{Date(order.createdTime).substring(4, 24)}</td>
+                                    <td>{new Date(order.createdTime).toString().substring(4, 24)}</td>
+                                    {/* <td>{order.createdTime}</td> */}
                                     <td>{Number(order.total / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}</td>
                                     {/* <td>{order.isPaid ? (
                                         order.paidAt.substring(0, 10)

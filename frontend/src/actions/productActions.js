@@ -28,29 +28,30 @@ import {
     PRODUCT_SUGGESTED_FAIL
 } from '../constants/productConstants'
 
-export const listProducts = (keyword = '', pageNumber = '', limit = '') => async (dispatch) => {
-    try {
-        dispatch({ type: PRODUCT_LIST_REQUEST })
+export const listProducts =
+    (keyword = '', pageNumber = '', limit = '', sort = '', upDown = "", staff = false) => async (dispatch) => {
+        try {
+            dispatch({ type: PRODUCT_LIST_REQUEST })
 
-        const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}&limit=${limit}`)
+            const { data } = await axios.get(
+                `/api/products?keyword=${keyword}&pageNumber=${pageNumber}&limit=${limit}&staff=${staff}&sort=${sort}&upDown=${upDown}`
+            )
 
-        dispatch({
-            type: PRODUCT_LIST_SUCCESS,
-            payload: data
-        })
-    } catch (error) {
-        dispatch({
-            type: PRODUCT_LIST_FAIL,
-            payload: error.response && error.response.data.message
-                ? error.response.data.message : error.message
-        })
+            dispatch({
+                type: PRODUCT_LIST_SUCCESS,
+                payload: data
+            })
+        } catch (error) {
+            dispatch({
+                type: PRODUCT_LIST_FAIL,
+                payload: error.response && error.response.data.message
+                    ? error.response.data.message : error.message
+            })
 
+        }
     }
-}
 
-export const resetProducts = () => async (dispatch) => {
-    dispatch({ type: PRODUCT_LIST_RESET })
-}
+export const resetProducts = () => async (dispatch) => { dispatch({ type: PRODUCT_LIST_RESET }) }
 
 export const listProductDetails = (id) => async (dispatch) => {
     try {
@@ -72,9 +73,7 @@ export const listProductDetails = (id) => async (dispatch) => {
     }
 }
 
-export const resetProductDetails = () => async (dispatch) => {
-    dispatch({ type: PRODUCT_DETAILS_RESET })
-}
+export const resetProductDetails = () => async (dispatch) => { dispatch({ type: PRODUCT_DETAILS_RESET }) }
 
 export const deleteProduct = (id) => async (dispatch, getState) => {
     try {
@@ -161,34 +160,6 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     }
 }
 
-export const createProductReview = (productId, review) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: PRODUCT_CREATE_REVIEW_REQUEST
-        })
-
-        const { userLogin: { userInfo } } = getState()
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`
-            }
-        }
-        await axios.post(`/api/products/${productId}/reviews`, review, config)
-
-        dispatch({
-            type: PRODUCT_CREATE_REVIEW_SUCCESS,
-        })
-
-    } catch (error) {
-        dispatch({
-            type: PRODUCT_CREATE_REVIEW_FAIL,
-            payload: error.response && error.response.data.message
-                ? error.response.data.message : error.message
-        })
-    }
-}
-
 
 export const listTopProducts = () => async (dispatch) => {
     try {
@@ -229,3 +200,32 @@ export const getSuggestedProducts = () => async (dispatch) => {
 
     }
 }
+
+
+// export const createProductReview = (productId, review) => async (dispatch, getState) => {
+//     try {
+//         dispatch({
+//             type: PRODUCT_CREATE_REVIEW_REQUEST
+//         })
+
+//         const { userLogin: { userInfo } } = getState()
+//         const config = {
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: `Bearer ${userInfo.token}`
+//             }
+//         }
+//         await axios.post(`/api/products/${productId}/reviews`, review, config)
+
+//         dispatch({
+//             type: PRODUCT_CREATE_REVIEW_SUCCESS,
+//         })
+
+//     } catch (error) {
+//         dispatch({
+//             type: PRODUCT_CREATE_REVIEW_FAIL,
+//             payload: error.response && error.response.data.message
+//                 ? error.response.data.message : error.message
+//         })
+//     }
+// }

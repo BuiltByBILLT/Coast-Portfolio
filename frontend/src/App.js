@@ -25,7 +25,9 @@ import ReturnStatic from './screens/static/ReturnStatic'
 import ShippingStatic from './screens/static/ShippingStatic'
 import InternationalStatic from './screens/static/InternationalStatic'
 import AboutStatic from './screens/static/AboutStatic'
+import ContactStatic from './screens/static/ContactStatic'
 import ShippingMethodScreen from './screens/ShippingMethodScreen'
+import CategoryStatic from './screens/static/CategoryStatic'
 
 const App = () => {
   return (
@@ -37,6 +39,8 @@ const App = () => {
         <Route path='/returnpolicy' component={ReturnStatic} />
         <Route path='/shippingpolicy' component={ShippingStatic} />
         <Route path='/about' component={AboutStatic} />
+        <Route path='/contact' component={ContactStatic} />
+        <Route path='/categories' component={CategoryStatic} exact />
 
         <Route path='/category/:id' component={CategoryScreen} />
         <Route path='/order/:id' component={OrderScreen} />

@@ -75,7 +75,7 @@ const productSchema = mongoose.Schema({
     pDescription: {
         type: String,
     },
-    dLongDescription: {
+    pLongDescription: {
         type: String,
     },
     reviews: [reviewSchema],

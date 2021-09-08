@@ -7,10 +7,14 @@ import axios from 'axios'
 // @route GET /api/orders/:id
 // @access Public -> Private&Staff
 const getOrderByID = asyncHandler(async (req, res) => {
-    const { data } = await axios.get(
+    var { data } = await axios.get(
         process.env.CLOVER_URL + `/orders/${req.params.id}?expand=lineItems&expand=customers&expand=payments`,
         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
     )
+    if (data.paymentState === "OPEN") {
+        console.log(data)
+    }
+
 
     // Group Line Items
     var lineItems = data.lineItems.elements
@@ -53,7 +57,8 @@ const getOrderByID = asyncHandler(async (req, res) => {
     }
 
     // if customerID does not match (protect)
-    res.json({ lineItems, shippingLabel, payment: data.payments.elements[0] })
+    // res.json({ lineItems, shippingLabel, payment: data.payments.elements[0] })
+    res.json({ lineItems, shippingLabel, payment: data.paymentState })
 })
 
 // @desc Get logged in user orders

@@ -37,7 +37,7 @@ const UserEditScreen = ({ match, history }) => {
                 } else {
                     setName(user.name)
                     setEmail(user.email)
-                    setIsStaff(user.isAdmin)
+                    setIsStaff(user.isStaff)
                     setIsAdmin(user.isAdmin)
                 }
             } else {

@@ -47,8 +47,8 @@ const Header = ({ history }) => {
                         <LinkContainer to='/cart'>
                             <Nav.Link active={false} className='mx-2 mx-xl-4'>
                                 <i className='fas fa-shopping-cart mx-1'></i>
-                                {cartItems.length > 0 && (<span class='badge badge-warning' id='lblCartCount'>{cartItems.length}</span>)}
                                 Cart
+                                {cartItems.length > 0 && (<span class='badge badge-warning' id='lblCartCount'>{cartItems.length}</span>)}
                             </Nav.Link>
                         </LinkContainer>
                         {userInfo ? (
@@ -86,13 +86,15 @@ const Header = ({ history }) => {
                         )}
                     </Nav>
 
-                    <Nav className='d-lg-none' style={{ backgroundColor: "maroon", margin: "1rem -40px -24px", padding: "0px 40px" }}>
+                    <Nav className='d-lg-none' style={{ backgroundColor: "#3e3e3e", margin: "1rem -40px -24px", padding: "0px 40px" }}>
                         <SubNav />  {/* Mobile */}
                     </Nav>
                 </Navbar.Collapse >
             </Navbar >
 
-            <Navbar variant='dark' expand="lg" collapseOnSelect className='p-0 p-lg-1' style={{ backgroundColor: "maroon" }}>
+            <div style={{ position: "", height: "7px", backgroundColor: "#b51320" }}></div>
+            <Navbar variant='dark' expand="lg" collapseOnSelect className='py-0 py-lg-2'
+                style={{ backgroundColor: "#3e3e3e" }}>
                 <Navbar.Collapse>
                     <Nav className='mx-auto'>
                         <SubNav /> {/* Desktop */}

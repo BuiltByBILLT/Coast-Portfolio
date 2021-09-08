@@ -6,7 +6,7 @@ import Product from '../models/productModel.js'
 // @route GET /api/categories/
 // @access Public
 const getCategories = asyncHandler(async (req, res) => {
-    const categories = await Category.find({})
+    const categories = await Category.find({ sectionDisabled: 0 })
     res.json(categories)
 })
 
@@ -14,7 +14,7 @@ const getCategories = asyncHandler(async (req, res) => {
 // @route GET /api/categories/:id/products
 // @access Public
 const getCategoryProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({ pSection: req.params.id, pDisplay: true, cloverID: { $ne: null } })
+    const products = await Product.find({ pSection: req.params.id, pDisplay: true })
     if (products) {
         res.json(products)
     } else {

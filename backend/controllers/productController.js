@@ -10,20 +10,50 @@ const getProducts = asyncHandler(async (req, res) => {
     // const pageSize = 100
     const pageSize = Number(req.query.limit) || 100
     const page = Number(req.query.pageNumber) || 1
+    const staff = Number(req.query.staff)
+    const sort = req.query.sort
+    const upDown = Number(req.query.upDown)
 
-    const keyword = req.query.keyword ? {
-        pName: {
-            $regex: req.query.keyword,
-            $options: 'i'
-        }
-    } : {}
+    const keyword = req.query.keyword
+        ? {
+            $or: [
+                { pName: { $regex: req.query.keyword, $options: 'i' } },
+                { pID: { $regex: req.query.keyword, $options: 'i' } }
+            ]
+        } : {}
 
-    const count = await Product.countDocuments({ ...keyword })
-    const products = await Product.find({ ...keyword })
-        .limit(pageSize).skip(pageSize * (page - 1))
-    res.json({ products, page, pages: Math.ceil(count / pageSize) })
+
+    if (staff) {
+        const count = await Product.countDocuments({ ...keyword })
+        const products = await Product.find({ ...keyword })
+            .sort({ [sort]: upDown })
+            .limit(pageSize).skip(pageSize * (page - 1))
+        res.json({ products, page, pages: Math.ceil(count / pageSize) })
+        console.log("staff: ", staff)
+
+    } else {
+        const count = await Product.countDocuments({ ...keyword, pDisplay: true })
+        const products = await Product.find({ ...keyword, pDisplay: true })
+            .sort({ updatedAt: -1 })
+            .limit(pageSize).skip(pageSize * (page - 1))
+        res.json({ products, page, pages: Math.ceil(count / pageSize) })
+        console.log("guest: ", staff)
+    }
 })
 
+// @desc Get Suggested Products
+// @route Get /api/products/suggested
+// @access Public
+const getSuggestedProducts = asyncHandler(async (req, res) => {
+    const array = []
+    const count = await Product.countDocuments({ pDisplay: true, pSell: true })
+    for (let i = 0; i < 4; i++) {
+        let random = Math.floor(Math.random() * count)
+        let product = await Product.findOne({ pDisplay: true, pSell: true }).skip(random)
+        array.push(product)
+    }
+    res.json(array)
+})
 
 // @desc Fetch single product
 // @route GET /api/products/:id
@@ -42,19 +72,9 @@ const getProductById = asyncHandler(async (req, res) => {
 })
 
 
-// @desc Delete single product
-// @route DELETE /api/products/:id
-// @access Private/Admin
-const deleteProduct = asyncHandler(async (req, res) => {
-    const product = await Product.findOne({ cloverID: req.params.id })
-    if (product) {
-        await product.remove()
-        res.json({ message: 'Product Removed' })
-    } else {
-        res.status(404)
-        throw new Error('Product not found')
-    }
-})
+//========================================================================================================================
+//===============================================Edit=====================================================================
+//========================================================================================================================
 
 // @desc Create a product
 // @route POST /api/products/
@@ -79,13 +99,12 @@ const createProduct = asyncHandler(async (req, res) => {
         pSection: 999,
         pLongDescription: 'Sample description',
         pInStock: 0,
+        pDisplay: 1,
         user: req.user._id
     })
     const createdProduct = await product.save()
     res.status(201).json(createdProduct)
-
 })
-
 
 // @desc Update a product
 // @route PUT /api/products/:id
@@ -107,6 +126,27 @@ const updateProduct = asyncHandler(async (req, res) => {
 
         const updatedProduct = await product.save()
         res.json(updatedProduct)
+    } else {
+        res.status(404)
+        throw new Error('Product not found')
+    }
+})
+
+// @desc Delete single product
+// @route DELETE /api/products/:id
+// @access Private/Admin
+const deleteProduct = asyncHandler(async (req, res) => {
+    const product = await Product.findOne({ cloverID: req.params.id })
+    if (product) {
+        // DB
+        await product.remove()
+        // Clover
+        await axios.delete(
+            process.env.CLOVER_URL + `/items/${req.params.id}`,
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        ).catch(error => console.log(error.response.data))
+
+        res.json({ message: 'Product Removed' })
     } else {
         res.status(404)
         throw new Error('Product not found')
@@ -144,11 +184,19 @@ const syncToClover = async (req) => {
             { "quantity": req.body.countInStock },
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         ).catch(error => console.log(error.response.data))
-
     }
-
-
     return cloverResponse
+}
+
+export {
+    getProducts,
+    getProductById,
+    deleteProduct,
+    createProduct,
+    updateProduct,
+    // createProductReview,
+    // getTopProducts,
+    getSuggestedProducts,
 }
 
 // @desc Create new review
@@ -196,29 +244,3 @@ const syncToClover = async (req) => {
 
 //     res.json(products)
 // })
-
-// @desc Get Suggested Products
-// @route Get /api/products/suggested
-// @access Public
-const getSuggestedProducts = asyncHandler(async (req, res) => {
-    const array = []
-    const count = await Product.countDocuments({ pDisplay: true, pSell: true })
-    for (let i = 0; i < 4; i++) {
-        let random = Math.floor(Math.random() * count)
-        let product = await Product.findOne({ pDisplay: true, pSell: true }).skip(random)
-        array.push(product)
-    }
-    res.json(array)
-})
-
-
-export {
-    getProducts,
-    getProductById,
-    deleteProduct,
-    createProduct,
-    updateProduct,
-    // createProductReview,
-    // getTopProducts,
-    getSuggestedProducts,
-}

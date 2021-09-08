@@ -27,7 +27,7 @@ const ProfileInfoScreen = ({ location, history }) => {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const { success } = userUpdateProfile
+    const { success, loading: updateLoading } = userUpdateProfile
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -116,6 +116,7 @@ const ProfileInfoScreen = ({ location, history }) => {
                 {error && <Message variant='danger'>{error}</Message>}
                 {successMessage && <Message variant='success'>Profile Updated</Message>}
                 {loading && <Loader />}
+                {updateLoading && <Loader />}
                 <Form>
                     <Row className="mt-5">
                         <Col lg={6} className="p-5">

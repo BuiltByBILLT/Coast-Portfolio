@@ -33,6 +33,23 @@
   border: darkkhaki 2px solid;
 }
 
+.overlayYellow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: rgb(255, 220, 21, 0.7);
+}
+
+.overlayYellow:hover {
+  opacity: 1;
+}
+
 .overlay {
   position: absolute;
   top: 0;
@@ -43,7 +60,7 @@
   width: 100%;
   opacity: 0;
   transition: 0.5s ease;
-  background-color: rgb(255, 191, 0, 0.7);
+  /* background-color: rgb(255, 191, 0, 0.7); */
 }
 
 .overlay:hover {
@@ -51,12 +68,19 @@
 }
 
 .middle {
+  background-color: #cbcdce;
   transition: 0.5s ease;
-  opacity: 1;
+  opacity: 0.9;
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
+  border: none;
+  color: white;
+}
+.middle:hover {
+  background-color: #cbcdce;
+  color: white;
 }

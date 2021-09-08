@@ -78,7 +78,7 @@ const importData = async () => {
             product.pHeight = 10
             product.user = adminUser
             for (const clover of cloverInv) {
-                if (clover.SKU === product.pID) {
+                if (clover.SKU === product.pID) { // And not Null
                     product.cloverID = clover["Clover ID"]
                     fullProducts.push(product)
                     count++

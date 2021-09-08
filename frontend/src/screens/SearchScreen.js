@@ -21,7 +21,7 @@ const SearchScreen = ({ history, match }) => {
 
 
     useEffect(() => {
-        dispatch(listProducts(keyword, pageNumber, 16))
+        dispatch(listProducts(keyword, pageNumber, 16, "updatedAt", -1, 0))
     }, [])
 
     return (
