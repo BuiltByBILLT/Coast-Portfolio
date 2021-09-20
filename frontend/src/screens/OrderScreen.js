@@ -94,13 +94,24 @@ const OrderScreen = ({ match, history }) => {
                                         )}
                                     {order.payment && (<ListGroup>
                                         <ListGroup.Item>
-                                            <h4>Payment</h4>
-                                            <p>Status: {order.payment === "OPEN" ? "NOT PAID" : order.payment}</p>
+                                            <h4 className="mb-3">Payment</h4>
+                                            {order.payment.state === "PAID" ? (
+                                                <>
+                                                    {
+                                                        order.payment.discounts &&
+                                                        <p><strong>Discount: </strong>{(order.payment.discounts.elements[0].amount / 100)
+                                                            .toLocaleString("en-US", { style: "currency", currency: "USD" })}</p>
+                                                    }
+                                                    <p><strong>Tax: </strong>{(order.payment.tax / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}</p>
+                                                    <p><strong>Total: </strong>{(order.payment.total / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}</p>
+                                                </>
+                                            ) : <p><strong>Status: </strong>{order.payment.state === "OPEN" ? "NOT PAID / PROCESSING" : "PAID"}</p>
+                                            }
 
 
                                         </ListGroup.Item>
                                     </ListGroup>)}
-                                    {order.shippingLabel && (<ListGroup>
+                                    {order.shippingLabel && (<ListGroup className="mb-4">
                                         <ListGroup.Item>
                                             <h4>Shipping</h4>
                                             <p>

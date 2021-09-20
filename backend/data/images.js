@@ -2773,9 +2773,15 @@ const images = [
     },
     {
         "imageProduct": 13001,
-        "imageSrc": "prodimages/13001.gif\"><br/><img src=\"/prodimages/13001-2.gif",
-        "imageType": 1,
+        "imageSrc": "prodimages/13001.gif",
+        "imageType": 0,
         "imageNumber": 0
+    },
+    {
+        "imageProduct": 13001,
+        "imageSrc": "prodimages/13001-2.gif",
+        "imageType": 0,
+        "imageNumber": 1
     },
     {
         "imageProduct": 1301,
@@ -3559,7 +3565,7 @@ const images = [
     },
     {
         "imageProduct": 146157,
-        "imageSrc": "146157.gif",
+        "imageSrc": "prodimages/146157.gif",
         "imageType": 1,
         "imageNumber": 0
     },
@@ -20203,121 +20209,121 @@ const images = [
     },
     {
         "imageProduct": "AOLN1",
-        "imageSrc": "/prodimages/AOLN-1SM.png",
+        "imageSrc": "prodimages/AOLN-1SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN1",
-        "imageSrc": "/prodimages/AOLN-1LG.png",
+        "imageSrc": "prodimages/AOLN-1LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN2",
-        "imageSrc": "/prodimages/AOLN-2SM.png",
+        "imageSrc": "prodimages/AOLN-2SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN2",
-        "imageSrc": "/prodimages/AOLN-2LG.png",
+        "imageSrc": "prodimages/AOLN-2LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN3",
-        "imageSrc": "/prodimages/AOLN-3SM.png",
+        "imageSrc": "prodimages/AOLN-3SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN3",
-        "imageSrc": "/prodimages/AOLN-3LG.png",
+        "imageSrc": "prodimages/AOLN-3LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN4",
-        "imageSrc": "/prodimages/AOLN-4SM.png",
+        "imageSrc": "prodimages/AOLN-4SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN4",
-        "imageSrc": "/prodimages/AOLN-4LG.png",
+        "imageSrc": "prodimages/AOLN-4LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN5",
-        "imageSrc": "/prodimages/AOLN-5SM.png",
+        "imageSrc": "prodimages/AOLN-5SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN5",
-        "imageSrc": "/prodimages/AOLN-5LG.png",
+        "imageSrc": "prodimages/AOLN-5LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN6",
-        "imageSrc": "/prodimages/AOLN-6SM.png",
+        "imageSrc": "prodimages/AOLN-6SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN6",
-        "imageSrc": "/prodimages/AOLN-6LG.png",
+        "imageSrc": "prodimages/AOLN-6LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN7",
-        "imageSrc": "/prodimages/AOLN-7SM.png",
+        "imageSrc": "prodimages/AOLN-7SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN7",
-        "imageSrc": "/prodimages/AOLN-7LG.png",
+        "imageSrc": "prodimages/AOLN-7LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN8",
-        "imageSrc": "/prodimages/AOLN-8SM.png",
+        "imageSrc": "prodimages/AOLN-8SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN8",
-        "imageSrc": "/prodimages/AOLN-8LG.png",
+        "imageSrc": "prodimages/AOLN-8LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN9",
-        "imageSrc": "/prodimages/AOLN-9SM.png",
+        "imageSrc": "prodimages/AOLN-9SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLN9",
-        "imageSrc": "/prodimages/AOLN-9LG.png",
+        "imageSrc": "prodimages/AOLN-9LG.png",
         "imageType": 1,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLNSET-4",
-        "imageSrc": "/prodimages/AOLN-Group-SM.png",
+        "imageSrc": "prodimages/AOLN-Group-SM.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "AOLNSET-4",
-        "imageSrc": "/prodimages/AOLN-GroupLG.png",
+        "imageSrc": "prodimages/AOLN-GroupLG.png",
         "imageType": 1,
         "imageNumber": 0
     },
@@ -34759,13 +34765,13 @@ const images = [
     },
     {
         "imageProduct": "HC-895G",
-        "imageSrc": "/prodimages/HC895-IntercoatClearsm.png",
+        "imageSrc": "prodimages/HC895-IntercoatClearsm.png",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "HC-895G",
-        "imageSrc": "/prodimages/HC895-IntercoatClearlg.png",
+        "imageSrc": "prodimages/HC895-IntercoatClearlg.png",
         "imageType": 1,
         "imageNumber": 0
     },
@@ -35797,15 +35803,27 @@ const images = [
     },
     {
         "imageProduct": "HSSB22-16",
-        "imageSrc": "prodimages/hssbf.gif\"><img src=\"/prodimages/hssb-b.gif",
+        "imageSrc": "prodimages/hssbf.gif",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "HSSB22-16",
-        "imageSrc": "prodimages/hssbflg.gif\"><img src=\"/prodimages/hssb-blg.gif",
+        "imageSrc": "prodimages/hssbflg.gif",
         "imageType": 1,
         "imageNumber": 0
+    },
+    {
+        "imageProduct": "HSSB22-16",
+        "imageSrc": "prodimages/hssb-b.gif",
+        "imageType": 0,
+        "imageNumber": 1
+    },
+    {
+        "imageProduct": "HSSB22-16",
+        "imageSrc": "prodimages/hssb-blg.gif",
+        "imageType": 1,
+        "imageNumber": 1
     },
     {
         "imageProduct": "HSSB30-16",
@@ -53263,15 +53281,27 @@ const images = [
     },
     {
         "imageProduct": "TRAY",
-        "imageSrc": "prodimages/traysm.gif\"><br/><img src=\"/prodimages/tray2sm.gif",
+        "imageSrc": "prodimages/traysm.gif",
         "imageType": 0,
         "imageNumber": 0
     },
     {
         "imageProduct": "TRAY",
-        "imageSrc": "prodimages/tray.gif\"><br/><img src=\"/prodimages/tray2.gif",
+        "imageSrc": "prodimages/tray.gif",
         "imageType": 1,
         "imageNumber": 0
+    },
+    {
+        "imageProduct": "TRAY",
+        "imageSrc": "prodimages/tray2sm.gif",
+        "imageType": 0,
+        "imageNumber": 1
+    },
+    {
+        "imageProduct": "TRAY",
+        "imageSrc": "prodimages/tray2.gif",
+        "imageType": 1,
+        "imageNumber": 1
     },
     {
         "imageProduct": "TRF201",

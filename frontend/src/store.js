@@ -1,11 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer, productReviewCreateReducer, productTopRatedReducer, productSuggestedReducer } from './reducers/productReducers'
+import { productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer, productUpdateImagesReducer, productReviewCreateReducer, productTopRatedReducer, productSuggestedReducer } from './reducers/productReducers'
 import { cartReducer, cloverReducer } from './reducers/cartReducers'
 import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer, userListReducer, userDeleteReducer, userUpdateReducer } from './reducers/userReducers'
 import { orderCreateReducer, orderDeliverReducer, orderDetailsReducer, orderListMyReducer, orderListReducer, orderPayReducer } from './reducers/orderReducers'
 import { categoryProductsReducer, categoryDetailsReducer, categoryTopReducer } from './reducers/categoryReducers'
+import { reportAverageReducer, reportLowInvReducer } from './reducers/reportReducers'
 
 const reducer = combineReducers({
     cart: cartReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
     productTopRated: productTopRatedReducer,
     productSuggested: productSuggestedReducer,
     productUpdate: productUpdateReducer,
+    productUpdateImages: productUpdateImagesReducer,
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
@@ -31,6 +33,8 @@ const reducer = combineReducers({
     orderDeliver: orderDeliverReducer,
     orderListMy: orderListMyReducer,
     orderList: orderListReducer,
+    reportLowInv: reportLowInvReducer,
+    reportAverage: reportAverageReducer,
     categoryDetails: categoryDetailsReducer,
     categoryProducts: categoryProductsReducer,
     categoryTop: categoryTopReducer,

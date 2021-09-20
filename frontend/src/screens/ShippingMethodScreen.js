@@ -16,22 +16,20 @@ const ShippingMethodScreen = ({ history, location }) => {
         history.push('/shipping')
     }
 
-
+    const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
     const [methods, setMethods] = useState([])
     const [selected, setSelected] = useState(shippingMethod)
 
     var items = cartItems.reduce((acc, curr) => acc + Number(curr.qty), 0)
     let samplePrices = [
-        { method: "USPS Standard", price: 200 * items },
-        { method: "USPS Same-Day", price: 2000 * items },
-        { method: "UPS Standard", price: 100 * items },
-        { method: "UPS Express", price: 1500 * items },
+        { method: "USPS (Standard)", price: subtotal < 10000 ? 900 : subtotal * 0.09 },
+        { method: "UPS (Standard)", price: subtotal < 10000 ? 900 : subtotal * 0.09 },
     ]
 
     useEffect(() => {
         setMethods(samplePrices)
 
-    }, [])
+    }, [subtotal])
 
     const dispatch = useDispatch()
 

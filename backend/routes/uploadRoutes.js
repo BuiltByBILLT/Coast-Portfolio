@@ -7,10 +7,11 @@ const router = express.Router()
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'uploads/')
+        cb(null, path.join(process.cwd(), "frontend", "public", 'prodimages'))
     },
     filename(req, file, cb) {
-        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
+        // cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`)
+        cb(null, file.originalname)
     }
 })
 
@@ -48,7 +49,8 @@ router.post('/', protect, admin, upload.single('image'), errorHandler, (req, res
         throw new Error('Please select file') //catch by custom error handler
         //next(new Error('Please select file')) //mandatory if inside async function otherwise use express-async-handler which will also redirect implicit errors to custom error handler
     }
-    res.send(`/${req.file.path.replace('\\', '/')}`)
+    // res.send(`/${req.file.path.replace('\\', '/')}`)
+    res.send(`${req.file.filename}`)
 })
 
 export default router

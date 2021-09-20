@@ -1,6 +1,9 @@
 import asyncHandler from 'express-async-handler'
 import axios from 'axios'
-
+// var shippo = require('shippo')('shippo_test_1b82302123cffb410225ec6ba7d461eceb2d6c48');
+// import { shippo_test_1b82302123cffb410225ec6ba7d461eceb2d6c48 } from 'shippo';
+import shippo from 'shippo'
+const shippoAcc = shippo("shippo_test_5985f1330d8b2d4f4ce525d47b482933f4c0378f")
 
 // @desc Submit Clover Order
 // @route POST /api/clover
@@ -47,7 +50,6 @@ const orderClover = asyncHandler(async (req, res) => {
                 }
                 bulkLineItems.items.push(lineItem)
             }
-
         }
         // Add Shipping
         const { email, firstName, lastName, company, address, address2, city, country, region, postalCode, phone } = cart.shippingInfo
@@ -58,7 +60,15 @@ const orderClover = asyncHandler(async (req, res) => {
                 "name": "Website Shipping",
                 "alternateName": `Shipping (${cart.shippingMethod.method})`,
                 "price": cart.shippingMethod.price,
-                "note": JSON.stringify(shippingLabel)
+                "note": JSON.stringify(shippingLabel),
+                "taxRates": [
+                    {
+                        "id": "FNC2N54SC3QXG", //Has to match existing ID
+                        "name": "", // doesnt matter
+                        "rate": 0, // Manual Entry
+                        "isDefault": false
+                    }
+                ],
             })
         await axios.post(
             process.env.CLOVER_URL + `/orders/${orderID}/bulk_line_items`, bulkLineItems,
@@ -87,6 +97,28 @@ const orderClover = asyncHandler(async (req, res) => {
             { "customers": [{ "id": customerID }] },
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
+
+
+        // Add Discount
+        //If userLogin = isStaff
+        if (userLogin.userInfo && userLogin.userInfo.isStaff == true) {
+            if (cart.discount && cart.discount.discountType === "%") {
+                await axios.post(
+                    process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
+                    { percentage: Number(cart.discount.discountAmount), name: cart.discount.discountName },
+                    { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+                )
+            }
+            if (cart.discount && cart.discount.discountType === "$") {
+                await axios.post(
+                    process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
+                    { amount: Number(cart.discount.discountAmount * -100), name: cart.discount.discountName },
+                    { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+                )
+            }
+        } else {
+            throw new Error("Discount not Authorized")
+        }
 
         //
         // Modifcation Later
@@ -136,9 +168,49 @@ const fetchTax = asyncHandler(async (req, res) => {
     res.json(taxRate)
 })
 
+// @desc Validate Address
+// @route POST /api/clover/validate
+// @access Public
+const validate = asyncHandler(async (req, res) => {
+    // console.log("hi")
+    // shippoAcc.address.create({
+    //     "name": "Shawn Ippotle",
+    //     "company": "Shippo",
+    //     "street1": "215 Clayton St.",
+    //     "city": "San Fracisco",
+    //     "state": "CA",
+    //     "zip": "94117",
+    //     "country": "US",
+    //     "email": "shippotle@goshippo.com",
+    //     "validate": true
+    // }, function (err, address) {
+    //     console.log(address)
+    //     console.log(err)
+    // });
+    const { data } = await axios.post("https://api.goshippo.com/addresses/",
+        {
+            name: "Shawn Ippotle",
+            company: "Shippo",
+            street1: "215 Clayton St.",
+            city: "San Frncisco",
+            state: "CA",
+            zip: 94117,
+            country: "US",
+            email: "shippotle@goshippo.com",
+            validate: true
+        }, {
+        headers: {
+            Authorization: `ShippoToken shippo_test_b1e9eaaf14c14052f3d6983ccf727d760dd66f23`
+        }
+    })
+    console.log(data)
+    res.json(data)
+})
+
 
 
 export {
     orderClover,
-    fetchTax
+    fetchTax,
+    validate,
 }

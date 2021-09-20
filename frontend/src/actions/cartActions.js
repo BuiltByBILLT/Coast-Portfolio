@@ -94,9 +94,11 @@ export const saveShippingInfo = (shippingInfo) => async (dispatch) => {
         type: CART_SAVE_SHIPPING_INFO,
         payload: shippingInfo
     })
-    const { data } = await axios.post(`/api/clover/tax`, shippingInfo)
+    const { data: taxRate } = await axios.post(`/api/clover/tax`, shippingInfo)
+    const { data: validated } = await axios.post(`/api/clover/validate`, shippingInfo)
     var infoWithTax = shippingInfo
-    infoWithTax.taxRate = data
+    infoWithTax.taxRate = taxRate
+    infoWithTax.validated = validated
     dispatch({
         type: CART_SAVE_SHIPPING_INFO,
         payload: infoWithTax

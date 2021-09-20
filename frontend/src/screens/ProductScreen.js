@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import Meta from '../components/Meta'
 import Suggested from '../components/Suggested'
 import ProductCrumbs from '../components/ProductCrumbs'
+import ImageDisplay from '../components/ImageDisplay'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails, resetProductDetails, createProductReview } from '../actions/productActions'
@@ -37,6 +38,7 @@ const ProductScreen = ({ history, match }) => {
     }
 
 
+
     return (
         <Container className="my-5 py-3">
             {loading ? <Loader />
@@ -46,11 +48,7 @@ const ProductScreen = ({ history, match }) => {
                         {product && <ProductCrumbs product={product} />}
                         <Row className="mb-5 productPage">
                             <Col lg={5} className="pr-5 mt-3">
-                                {product.images && product.images[0] &&
-                                    <Image src={"https://www.coastairbrush.com/" + product.images[0].imageSrc} alt={product.pName}
-                                        style={{ width: "100%", objectFit: "contain" }}
-
-                                    />}
+                                {product.images && <ImageDisplay product={product} />}
                             </Col>
                             <Col lg={7} >
                                 <h3 className="text-danger">{product.topSection}</h3>

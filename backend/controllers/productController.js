@@ -29,7 +29,7 @@ const getProducts = asyncHandler(async (req, res) => {
             .sort({ [sort]: upDown })
             .limit(pageSize).skip(pageSize * (page - 1))
         res.json({ products, page, pages: Math.ceil(count / pageSize) })
-        console.log("staff: ", staff)
+        // console.log("staff: ", staff)
 
     } else {
         const count = await Product.countDocuments({ ...keyword, pDisplay: true })
@@ -37,7 +37,7 @@ const getProducts = asyncHandler(async (req, res) => {
             .sort({ updatedAt: -1 })
             .limit(pageSize).skip(pageSize * (page - 1))
         res.json({ products, page, pages: Math.ceil(count / pageSize) })
-        console.log("guest: ", staff)
+        // console.log("guest: ", staff)
     }
 })
 
@@ -188,12 +188,30 @@ const syncToClover = async (req) => {
     return cloverResponse
 }
 
+// @desc Update product Images
+// @route PuUT /api/product/images/:id
+// @access Private/Staff
+const updateImages = asyncHandler(async (req, res) => {
+    const product = await Product.findOne({ cloverID: req.params.id })
+    if (product) {
+        product.images = req.body
+        console.log(req.body)
+        const updatedProduct = await product.save()
+        res.json(updatedProduct)
+    } else {
+        res.status(404)
+        throw new Error('Product not found')
+    }
+})
+
+
 export {
     getProducts,
     getProductById,
     deleteProduct,
     createProduct,
     updateProduct,
+    updateImages,
     // createProductReview,
     // getTopProducts,
     getSuggestedProducts,

@@ -7,7 +7,8 @@ import {
     getProducts,
     getSuggestedProducts,
     // getTopProducts,
-    updateProduct
+    updateProduct,
+    updateImages
 } from '../controllers/productController.js'
 import { staff, protect } from '../middleware/authMiddleware.js'
 
@@ -23,5 +24,7 @@ router.route('/:id')
     .get(getProductById)
     .delete(protect, staff, deleteProduct)
     .put(protect, staff, updateProduct)
+router.route('/images/:id')
+    .put(protect, staff, updateImages)
 
 export default router

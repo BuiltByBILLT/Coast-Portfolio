@@ -14,7 +14,8 @@ import {
     CLOVER_FAIL,
     CLOVER_RESET,
     CLOVER_SUBMIT,
-    CLOVER_SUCCESS
+    CLOVER_SUCCESS,
+    CART_SET_DISCOUNT,
 } from '../constants/cartConstants'
 
 export const cartReducer = (state = { cartItems: [], shippingInfo: {}, shippingMethod: {} }, action) => {
@@ -104,6 +105,11 @@ export const cartReducer = (state = { cartItems: [], shippingInfo: {}, shippingM
             return {
                 ...state,
                 cartFromDB: "reset"
+            }
+        case CART_SET_DISCOUNT:
+            return {
+                ...state,
+                discount: action.payload
             }
         default:
             return state

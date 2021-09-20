@@ -1,13 +1,14 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Container } from 'react-bootstrap'
+import { Form, Button, Container, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import ImageEditer from '../components/ImageEditer'
 
 const ProductEditScreen = ({ match, history }) => {
     const productId = match.params.id
@@ -15,11 +16,11 @@ const ProductEditScreen = ({ match, history }) => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
     const [listPrice, setListPrice] = useState(0)
-    const [image, setImage] = useState('')
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState(0)
     const [description, setDescription] = useState('')
+    const [imageEdit, setImageEdit] = useState(false)
 
     const [uploading, setUploading] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -32,8 +33,7 @@ const ProductEditScreen = ({ match, history }) => {
     const productUpdate = useSelector(state => state.productUpdate)
     const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate
 
-    const userLogin = useSelector(state => state.userLogin);
-    const { userInfo } = userLogin;
+    const { userInfo } = useSelector(state => state.userLogin);
 
     useEffect(() => {
         dispatch(listProductDetails(productId))
@@ -56,27 +56,7 @@ const ProductEditScreen = ({ match, history }) => {
         setDescription(product.dLongDescription || product.pDescription)
     }, [product])
 
-    const uploadFileHandler = async (e) => {
-        const file = e.target.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-        setUploading(true)
 
-        try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${userInfo.token}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-            const { data } = await axios.post('/api/upload', formData, config)
-            setImage(data)
-            setUploading(false)
-        } catch (error) {
-            console.error(error)
-            setUploading(false)
-        }
-    }
 
     const submitHandler = () => {
         // e.preventDefault()
@@ -160,6 +140,15 @@ const ProductEditScreen = ({ match, history }) => {
                                 </Form.Control>
                             </Form.Group>
                         </Form>
+                        <Modal show={imageEdit} onHide={() => setImageEdit(false)}
+                            backdrop="static" keyboard={false} size="xl"
+                        >
+                            <Modal.Header closeButton>
+                                <Modal.Title>Edit Product Images</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body> <ImageEditer product={product} /> </Modal.Body>
+                        </Modal>
+
                         {edit
                             ? <Button variant='primary'
                                 onClick={() => submitHandler()}>
@@ -172,6 +161,10 @@ const ProductEditScreen = ({ match, history }) => {
                                 }}>
                                 Edit
                             </Button>}
+                        <Button variant='secondary'
+                            onClick={() => setImageEdit(true)}>
+                            Edit Images
+                        </Button>
                     </>
                 )}
 

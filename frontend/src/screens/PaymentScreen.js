@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Col, Row, ListGroup, Modal, Container } from 'react-bootstrap'
+import { Form, Button, Col, Row, ListGroup, Modal, Container, DropdownButton, Dropdown, InputGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet'
 import Message from '../components/Message'
 import { SideCart } from '../components/SideCart'
 import Loader from '../components/Loader'
-import { CLOVER_RESET } from '../constants/cartConstants'
+import { CLOVER_RESET, CART_SET_DISCOUNT } from '../constants/cartConstants'
 
 
 const PaymentScreen = ({ history }) => {
@@ -22,23 +22,20 @@ const PaymentScreen = ({ history }) => {
     }
 
     const [buttonDisable, setButtonDisable] = useState(false)
+    const [discountEdit, setDiscountEdit] = useState(false)
+    const [discountName, setDiscountName] = useState("")
+    const [discountType, setDiscountType] = useState("$")
+    const [discountAmount, setDiscountAmount] = useState("")
 
     const styles = {
-        body: {
-            fontFamily: 'Roboto, Open Sans, sans-serif',
-            fontSize: '16px',
-
-        },
+        body: { fontFamily: 'Roboto, Open Sans, sans-serif', fontSize: '16px', },
         input: {
             fontSize: '13px',
             border: " 1px solid rgba(0, 0, 0, 0.125)",
             height: '50px',
             padding: '8px'
         },
-        img: {
-            right: '10px !important',
-            top: '10px !important',
-        }
+        img: { right: '10px !important', top: '10px !important', }
     };
     const elements = window.clover.elements();
     const cardNumber = elements.create('CARD_NUMBER', styles);
@@ -48,8 +45,8 @@ const PaymentScreen = ({ history }) => {
 
 
     const dispatch = useDispatch()
+    // Load iFrame 
     useEffect(() => {
-
         cardNumber.mount('#card-number');
         cardDate.mount('#card-date');
         cardCvv.mount('#card-cvv');
@@ -63,6 +60,7 @@ const PaymentScreen = ({ history }) => {
         return () => { if (cloverFooter) cloverFooter.style.display = "none" }
     }, []);
 
+    // Redirect to Order after Submit
     useEffect(() => {
         if (order) {
             dispatch(resetCart())
@@ -70,6 +68,7 @@ const PaymentScreen = ({ history }) => {
             history.push(`/order/${order.id}`)
         }
     }, [order])
+
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -90,9 +89,9 @@ const PaymentScreen = ({ history }) => {
             })
     }
 
-    // const testHandler = async (e) => {
-    //     e.preventDefault()
-    // }
+    const discountHandler = async (e) => {
+        e.preventDefault()
+    }
 
 
     return (
@@ -143,6 +142,75 @@ const PaymentScreen = ({ history }) => {
                                 </Col>
                             </Row>
                         </ListGroup.Item>
+                        {userInfo && userInfo.isStaff === true &&
+                            (<ListGroup.Item>
+                                <Form >
+                                    <Row>
+                                        <Col>
+                                            {discountEdit ?
+                                                (
+                                                    <Form.Row>
+                                                        <Col>
+                                                            <Form.Control type="text" placeholder="Name (Required)" value={discountName} className="p-3"
+                                                                onChange={(e) => setDiscountName(e.target.value)}
+                                                            ></Form.Control>
+                                                        </Col>
+                                                        <Col>
+                                                            <InputGroup>
+                                                                <DropdownButton
+                                                                    as={InputGroup.Prepend}
+                                                                    variant="outline-secondary"
+                                                                    title={discountType === "$" ? "$" : "%"}
+                                                                    className="p-0"
+                                                                    style={{ height: "47px" }}
+                                                                >
+                                                                    <Dropdown.Item onClick={() => setDiscountType("$")}>
+                                                                        $
+                                                                    </Dropdown.Item>
+                                                                    <Dropdown.Item onClick={() => setDiscountType("%")}>
+                                                                        %
+                                                                    </Dropdown.Item>
+                                                                </DropdownButton>
+                                                                <Form.Control type="text" placeholder="0.00" value={discountAmount} className="p-3"
+                                                                    onChange={(e) => setDiscountAmount(e.target.value)}>
+                                                                </Form.Control>
+                                                            </InputGroup>
+                                                        </Col>
+                                                    </Form.Row>
+                                                ) : (
+                                                    <>
+                                                        <strong>{'Discount: '}</strong>
+                                                        {discountAmount !== "" ?
+                                                            discountType === "$"
+                                                                ? `(${discountName}) ${discountType}${discountAmount} off`
+                                                                : `(${discountName}) ${discountAmount}${discountType} off`
+                                                            : ""
+                                                        }
+                                                    </>
+                                                )
+                                            }
+                                        </Col>
+                                        <Col xs="auto" className="text-right">
+                                            {discountEdit ?
+                                                (<Link to="#" className="text-danger"
+                                                    onClick={() => {
+                                                        setDiscountEdit(false)
+                                                        dispatch({
+                                                            type: CART_SET_DISCOUNT, payload: {
+                                                                discountName, discountType, discountAmount
+                                                            }
+                                                        })
+                                                    }}
+                                                >Save</Link>
+                                                ) : (<Link to="#" className="text-muted"
+                                                    onClick={() => setDiscountEdit(true)}
+                                                >Change</Link>)
+                                            }
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </ListGroup.Item>)
+                        }
                     </ListGroup>
 
                     <h5 className="mt-5">Payment Information</h5>
@@ -186,7 +254,7 @@ const PaymentScreen = ({ history }) => {
                     <SideCart />
                 </Col>
             </Row>
-        </Container>
+        </Container >
 
     )
 }

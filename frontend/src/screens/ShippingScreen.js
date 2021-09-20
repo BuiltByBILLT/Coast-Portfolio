@@ -33,6 +33,7 @@ const ShippingScreen = ({ history, location }) => {
     const dispatch = useDispatch()
 
     const submitHandler = async (e) => {
+
         e.preventDefault()
         dispatch(saveShippingInfo({ email, news, firstName, lastName, company, address, address2, city, country, region, postalCode, phone }))
         history.push('/shippingmethod')

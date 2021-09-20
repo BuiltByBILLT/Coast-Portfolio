@@ -8,7 +8,7 @@ import axios from 'axios'
 // @access Public -> Private&Staff
 const getOrderByID = asyncHandler(async (req, res) => {
     var { data } = await axios.get(
-        process.env.CLOVER_URL + `/orders/${req.params.id}?expand=lineItems&expand=customers&expand=payments`,
+        process.env.CLOVER_URL + `/orders/${req.params.id}?expand=lineItems&expand=discounts&expand=payments`,
         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
     )
     if (data.paymentState === "OPEN") {
@@ -56,9 +56,21 @@ const getOrderByID = asyncHandler(async (req, res) => {
         }
     }
 
+    //Payment
+    var payment = {}
+    if (data.paymentState === "OPEN") {
+        payment.state = "OPEN"
+    } else {
+        payment.state = "PAID"
+        payment.total = data.payments.elements[0].amount
+        payment.tax = data.payments.elements[0].taxAmount
+        payment.discounts = data.discounts
+    }
+
     // if customerID does not match (protect)
     // res.json({ lineItems, shippingLabel, payment: data.payments.elements[0] })
-    res.json({ lineItems, shippingLabel, payment: data.paymentState })
+    // res.json({ lineItems, shippingLabel, payment: data.paymentState, payments })
+    res.json({ lineItems, shippingLabel, payment })
 })
 
 // @desc Get logged in user orders

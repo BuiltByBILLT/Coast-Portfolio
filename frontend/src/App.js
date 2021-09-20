@@ -20,6 +20,8 @@ import OrderListScreen from './screens/OrderListScreen'
 import OrderHistoryScreen from './screens/OrderHistoryScreen'
 import CategoryScreen from './screens/CategoryScreen'
 import SearchScreen from './screens/SearchScreen'
+import ReportsScreen from './screens/ReportsScreen'
+import UploadsScreen from './screens/UploadsScreen'
 
 import ReturnStatic from './screens/static/ReturnStatic'
 import ShippingStatic from './screens/static/ShippingStatic'
@@ -54,6 +56,8 @@ const App = () => {
         <Route path='/product/:id' component={ProductScreen} />
         <Route path='/cart' component={CartScreen} exact />
         <Route path='/cart/:id' component={CartScreen} />
+        <Route path='/admin/uploads' component={UploadsScreen} />
+        <Route path='/admin/reports' component={ReportsScreen} />
         <Route path='/admin/userlist' component={UserListScreen} />
         <Route path='/admin/productlist' component={ProductListScreen} exact />
         <Route path='/admin/productlist/:pageNumber' component={ProductListScreen} exact />
