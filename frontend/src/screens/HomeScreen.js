@@ -142,7 +142,7 @@ const HomeScreen = ({ match }) => {
                                     { image: "/images/3m.png" },
                                     { image: "/images/CreateXColors.png" }
                                 ].map(card => (
-                                    <Col key={card.name} xs='6' lg='3' className='p-4 text-center'>
+                                    <Col key={card.image} xs='6' lg='3' className='p-4 text-center'>
                                         <Link to={`/brands`} className="linkBox" >
                                             <Image
                                                 className="mx-auto yellowBorderHover"
@@ -163,7 +163,7 @@ const HomeScreen = ({ match }) => {
                                     { image: "/images/1shot.png" },
                                     { image: "/images/MissionModels.png" }
                                 ].map(card => (
-                                    <Col key={card.name} xs='6' lg='3' className='p-4 text-center'>
+                                    <Col key={card.image} xs='6' lg='3' className='p-4 text-center'>
                                         <Link to={`/brands`} className="linkBox" >
                                             <Image
                                                 className="mx-auto yellowBorderHover"

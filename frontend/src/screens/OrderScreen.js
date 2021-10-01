@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useMutation, useQuery } from 'react-query'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button, Container } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button, Container, Nav, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, deliverOrder } from '../actions/orderActions'
+// import { createUPS } from '../actions/shippingActions'
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 
 const OrderScreen = ({ match, history }) => {
-    const orderId = match.params.id
+    const orderID = match.params.id
+
+
+    const [size, setSize] = useState("")
 
     const { order, loading, error } = useSelector(state => state.orderDetails)
     const { userInfo } = useSelector(state => state.userLogin)
@@ -18,10 +23,29 @@ const OrderScreen = ({ match, history }) => {
 
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getOrderDetails(orderId))
+        dispatch(getOrderDetails(orderID))
         return () => { }
     }, [])
 
+    const mutation = useMutation(data => {
+        return axios.post(`/api/shipping/ups/${orderID}/${size}`, data,
+            { headers: { Authorization: `Bearer ${userInfo.token}` } })
+    })
+
+    const { isLoading, isError, data: labelData, error: labelError, refetch } = useQuery('label', () =>
+        axios.get(`/api/shipping/tracking/${orderID}`)
+    )
+
+
+    const handleUPS = () => {
+        mutation.mutate(order.shippingLabel)
+    }
+
+    useEffect(() => {
+        if (mutation.data) {
+            refetch()
+        }
+    }, [mutation.isSuccess])
 
     return (
         <Container className="my-5">
@@ -31,7 +55,7 @@ const OrderScreen = ({ match, history }) => {
                         <>
                             <Row className="mt-5 mb-3">
                                 <Col lg="auto">
-                                    <h3 className="text-danger text-break m-0">Order #{orderId}</h3>
+                                    <h3 className="text-danger text-break m-0">Order #{orderID}</h3>
                                 </Col>
                                 <Col className="mt-3 mt-lg-auto">
                                     <p className="my-0">{Date(order.createdTime).toLocaleString().substr(4, 11)}</p>
@@ -114,79 +138,63 @@ const OrderScreen = ({ match, history }) => {
                                     {order.shippingLabel && (<ListGroup className="mb-4">
                                         <ListGroup.Item>
                                             <h4>Shipping</h4>
-                                            <p>
-                                                {/* <strong>Name: </strong>{order.user.name} */}
-                                            </p>
-                                            <p>
-                                                <strong>Email: </strong>
-                                                <a href={`mailto:${order.shippingLabel.email}`}>{order.shippingLabel.email}</a>
-                                            </p>
-                                            <p>
-                                                <strong>Address: </strong>
-                                                {order.shippingLabel.address} {order.shippingLabel.address2}, {order.shippingLabel.city},
-                                                {order.shippingLabel.region}, {order.shippingLabel.country}, {order.shippingLabel.postalCode}
-                                            </p>
-                                            {order.shippingLabel.phone &&
-                                                (<p>
-                                                    <strong>Phone: </strong>
-                                                    {order.shippingLabel.phone}
-                                                </p>)}
-                                            {/* {order.isDelivered
-                                        ? <Message variant='success'>Delivered on {order.deliveredAt}</Message>
-                                        : <Message variant='danger'>Not Delivered</Message>
-                                    } */}
+                                            <Row>
+                                                <Col>
+                                                    <p>
+                                                        {/* <strong>Name: </strong>{order.user.name} */}
+                                                    </p>
+                                                    <p>
+                                                        <strong>Email: </strong>
+                                                        <a href={`mailto:${order.shippingLabel.email}`}>{order.shippingLabel.email}</a>
+                                                    </p>
+                                                    <p>
+                                                        <strong>Address: </strong>
+                                                        {order.shippingLabel.address} {order.shippingLabel.address2}, {order.shippingLabel.city},
+                                                        {order.shippingLabel.region}, {order.shippingLabel.country}, {order.shippingLabel.postalCode}
+                                                    </p>
+                                                    {order.shippingLabel.phone &&
+                                                        (<p>
+                                                            <strong>Phone: </strong>
+                                                            {order.shippingLabel.phone}
+                                                        </p>)}
+                                                    {labelData && labelData.data.tracking &&
+                                                        (<p>
+                                                            <strong>Tracking Number: </strong>
+                                                            {labelData.data.tracking}
+                                                        </p>)}
+                                                </Col>
+
+                                                {userInfo && userInfo.isStaff && <Col>
+                                                    {labelData && labelData.data.tracking
+                                                        ? <a href={`data:image/png;base64,${labelData.data.raw}`} target="_self" type="image/png">Right Click to Open Label</a>
+                                                        : (<>
+                                                            <Form.Control type="number" value={size} placeholder="Weight in lbs"
+                                                                onChange={(e) => setSize(e.target.value)}
+                                                            >
+
+                                                            </Form.Control>
+                                                            <Button
+                                                                disabled={mutation.isLoading || mutation.isSuccess || size === ""}
+                                                                block
+                                                                onClick={handleUPS}>
+                                                                {mutation.isLoading ? "Loading" : "Create UPS Label"}
+                                                            </Button>
+                                                            <p>{mutation.error}</p>
+                                                        </>)
+                                                    }
+                                                </Col>}
+                                            </Row>
+
                                         </ListGroup.Item>
                                     </ListGroup>)}
 
                                 </Col>
-                                {/* <Col lg={3} className="pl-lg-5">
-                            <Card>
-                            <ListGroup>
-                            <ListGroup.Item>
-                            <h4>Order Summary</h4>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                            <Row>
-                            <Col>Items</Col>
-                            <Col>{order.itemsPrice}</Col>
-                            </Row>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                            <Row>
-                            <Col>Shipping</Col>
-                            <Col>{order.shippingPrice}</Col>
-                            </Row>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                            <Row>
-                            <Col>Tax</Col>
-                            <Col>{order.taxPrice}</Col>
-                            </Row>
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                            <Row>
-                            <Col>Total</Col>
-                            <Col>{order.totalPrice}</Col>
-                            </Row>
-                            </ListGroup.Item>
-                            {userInfo && userInfo.isAdmin && !order.isDelivered && (
-                                <ListGroup.Item>
-                                <Button type='button' className='btn btn-block'
-                                onClick={deliverHandler}
-                                disabled={!order.isPaid}
-                                >
-                                Mark as Delivered
-                                </Button>
-                                </ListGroup.Item>
-                                )}
-                                </ListGroup>
-                                </Card>
-                            </Col> */}
+
                             </Row>
                         </>
                     )
             }
-        </Container>
+        </Container >
     )
 
 }

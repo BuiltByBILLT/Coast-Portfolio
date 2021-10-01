@@ -22,7 +22,7 @@ const SearchScreen = ({ history, match }) => {
 
     useEffect(() => {
         dispatch(listProducts(keyword, pageNumber, 16, "updatedAt", -1, 0))
-    }, [])
+    }, [keyword])
 
     return (
         <Container className="my-5 pt-5">

@@ -7,6 +7,9 @@ import products from './data/products.js'
 import categories from './data/categories.js'
 import images from './data/images.js'
 import cloverInv from './data/cloverInv.js'
+import options from './data/options.js'
+import optionGroups from './data/optionGroups.js'
+import productOptions from './data/productOptions.js'
 
 import User from './models/userModel.js'
 import Product from './models/productModel.js'
@@ -62,9 +65,39 @@ const importData = async () => {
             }
         }
 
+        //Load Options
+        products.forEach(product => {
+            product.options = []
+        });
+        for (let i = 0; i < productOptions.length; i++) {
+            const productOption = productOptions[i]
+            const productIndex = products.findIndex(product => product.pID == productOption.pID)
+            // If pID Match
+            if (productIndex != -1) {
+                const optionGroupID = productOption.Option_Group_IDs.split(',')[0]
+                const optionGroupIndex = optionGroups.findIndex(optionGroup => optionGroup.optGrpID == optionGroupID)
+                // If Option_Group_IDs Match
+                if (optionGroupIndex != -1) {
+                    const optionGroupText = optionGroups[optionGroupIndex].optGrpName
+                    products[productIndex].optionGroup = optionGroupText
+                    options.forEach(option => {
+                        if (option.optGroup == optionGroupID) {
+                            const newOption = {
+                                optName: option.optName,
+                                priceDiff: (Number(option.optPriceDiff) * 100)
+                            }
+                            products[productIndex].options.push(newOption)
+                            // console.log("pushed", products[productIndex].pID)
+                        }
+                    }
+                    )
+                }
+            }
+        }
+
         // Count Clover ID
         let count = 0
-
+        let countOptions = 0
         // Fill Details
         var fullProducts = []
         for (let i = 0; i < products.length; i++) {
@@ -77,16 +110,24 @@ const importData = async () => {
             product.pWidth = 10
             product.pHeight = 10
             product.user = adminUser
-            for (const clover of cloverInv) {
-                if (clover.SKU === product.pID) { // And not Null
-                    product.cloverID = clover["Clover ID"]
-                    fullProducts.push(product)
-                    count++
-                    break
+            if (product.options.length > 0) {
+                product.cloverID = product.pID
+                fullProducts.push(product)
+                countOptions++
+            }
+            else {
+                for (const clover of cloverInv) {
+                    if (clover.SKU === product.pID) { // And not Null
+                        product.cloverID = clover["Clover ID"]
+                        fullProducts.push(product)
+                        count++
+                        break
+                    }
                 }
             }
         }
         console.log(count + " products loaded with Clover ID")
+        console.log(countOptions + " products loaded with Options")
 
         await Product.insertMany(fullProducts)
 

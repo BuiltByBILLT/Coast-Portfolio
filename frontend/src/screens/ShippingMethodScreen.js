@@ -22,8 +22,8 @@ const ShippingMethodScreen = ({ history, location }) => {
 
     var items = cartItems.reduce((acc, curr) => acc + Number(curr.qty), 0)
     let samplePrices = [
-        { method: "USPS (Standard)", price: subtotal < 10000 ? 900 : subtotal * 0.09 },
-        { method: "UPS (Standard)", price: subtotal < 10000 ? 900 : subtotal * 0.09 },
+        { method: "UPS (Ground)", price: subtotal < 10000 ? 900 : subtotal * 0.09, disabled: false },
+        { method: "USPS (Coming Soon)", price: subtotal < 10000 ? 900 : subtotal * 0.09, disabled: true },
     ]
 
     useEffect(() => {
@@ -62,7 +62,8 @@ const ShippingMethodScreen = ({ history, location }) => {
                             <Row>
                                 <Col>
                                     <strong>Ship to: </strong>
-                                    <br /> {shippingInfo.address} {shippingInfo.address2}
+                                    <br /> {shippingInfo.address}
+                                    {shippingInfo.address2 && <><br /> {shippingInfo.address2}</>}
                                     <br />{shippingInfo.city}, {shippingInfo.region}, {shippingInfo.country}, {shippingInfo.postalCode}
                                 </Col>
                                 <Col xs="auto" className="text-right">
@@ -81,7 +82,7 @@ const ShippingMethodScreen = ({ history, location }) => {
                                     <Row >
                                         <Col>
                                             <Form.Check type="radio" name="method" id="standard" value={index} label={method.method}
-                                                defaultChecked={method.method == selected.method}
+                                                defaultChecked={method.method == selected.method} disabled={method.disabled}
                                                 onChange={radioHandler} />
                                         </Col>
                                         <Col xs="auto" className="text-right">

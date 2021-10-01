@@ -21,7 +21,10 @@ const ProductDetailsCard = ({ product }) => {
                 <Row className="px-4 mb-3">
                     <Col className="p-0">
                         <h5 className="text-center text-danger m-0">
-                            {Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                            {product.pPrice
+                                ? Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
+                                : "See Options"
+                            }
                         </h5>
                     </Col>
                     <Col xs="auto" className="px-2 my-auto">

@@ -48,6 +48,41 @@ const imageSchema = mongoose.Schema({
     timestamps: true,
 })
 
+const optionsSchema = mongoose.Schema({
+    optName: {
+        type: String,
+        required: true,
+    },
+    priceDiff: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    weightDiff: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    optThumb: {
+        type: String,
+    },
+    optImageLarge: {
+        type: String,
+    },
+    optStock: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    optClover: {
+        type: String,
+    },
+
+
+}, {
+    timestamps: true,
+})
+
 
 const productSchema = mongoose.Schema({
     user: {
@@ -65,6 +100,10 @@ const productSchema = mongoose.Schema({
         required: true
     },
     images: [imageSchema],
+    options: [optionsSchema],
+    optionGroup: {
+        type: String,
+    },
     pManufacturer: {
         type: String,
     },

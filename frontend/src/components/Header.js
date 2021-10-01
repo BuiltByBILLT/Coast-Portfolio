@@ -48,7 +48,7 @@ const Header = ({ history }) => {
                             <Nav.Link active={false} className='mx-2 mx-xl-4'>
                                 <i className='fas fa-shopping-cart mx-1'></i>
                                 Cart
-                                {cartItems.length > 0 && (<span class='badge badge-warning' id='lblCartCount'>{cartItems.length}</span>)}
+                                {cartItems.length > 0 && (<span className='badge badge-warning' id='lblCartCount'>{cartItems.length}</span>)}
                             </Nav.Link>
                         </LinkContainer>
                         {userInfo ? (

@@ -35,17 +35,17 @@ const storeCart = async (state, dispatch, reset) => {
         else { dispatch({ type: CART_FROM_DB_RESET }) }
 }
 
-export const addToCart = (product, qty) => async (dispatch, getState) => {
+export const addToCart = (product, name, qty, price, cloverID) => async (dispatch, getState) => {
 
     // Add to Cart
     dispatch({
         type: CART_ADD_ITEM,
         payload: {
             pID: product.pID,
-            cloverID: product.cloverID,
-            name: product.pName,
+            cloverID,
+            name,
             image: product.images[0].imageSrc,
-            price: product.pPrice,
+            price,
             pWeight: product.pWeight,
             pLength: product.pLength,
             pWidth: product.pWidth,

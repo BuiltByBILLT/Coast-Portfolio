@@ -13,6 +13,7 @@ import cloverRoutes from './routes/cloverRoutes.js'
 import cartRoutes from './routes/cartRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
 import fileRoutes from './routes/fileRoutes.js'
+import shippingRoutes from './routes/shippingRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -37,6 +38,7 @@ app.use('/api/clover', cloverRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/reports', reportRoutes)
 app.use('/api/files', fileRoutes)
+app.use('/api/shipping', shippingRoutes)
 
 // app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 
