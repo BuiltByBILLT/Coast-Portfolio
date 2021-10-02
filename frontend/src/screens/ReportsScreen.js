@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col, Container, Form, InputGroup } from 'react-bootstrap'
+import { Table, Button, Row, Col, Container, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Paginate from '../components/Paginate'
-import { listProducts, deleteProduct, createProduct } from '../actions/productActions'
 import { getAverage, getLowInv } from '../actions/reportActions'
 
 const ReportScreen = ({ history, match }) => {

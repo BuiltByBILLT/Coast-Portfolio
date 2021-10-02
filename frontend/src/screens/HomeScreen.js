@@ -1,21 +1,12 @@
 import React, { useEffect } from 'react'
 import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Product from '../components/Product'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import Paginate from '../components/Paginate'
-import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
-import Suggested from '../components/Suggested'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { listProducts, resetProducts } from '../actions/productActions'
 
 import "../styles/HomeScreen.css"
 import TopThree from '../components/TopThree'
-import CategoryCard from '../components/CategoryCard'
-import { getTopCategories } from '../actions/categoryActions'
 
 
 const HomeScreen = ({ match }) => {
@@ -124,7 +115,7 @@ const HomeScreen = ({ match }) => {
                                                 style={{ width: "100%", height: "200px", objectFit: "contain" }}
                                                 src={card.image}
                                             />
-                                            <h5 className="text-center my-4">{card.name}</h5>
+                                            <h5 className="redTextHover text-center my-4">{card.name}</h5>
                                         </Link>
                                     </Col>
                                 ))}
