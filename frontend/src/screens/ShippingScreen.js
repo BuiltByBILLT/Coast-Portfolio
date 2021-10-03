@@ -21,7 +21,7 @@ const ShippingScreen = ({ history, location }) => {
         history.push('/cart')
     }
 
-    const [email, setEmail] = useState(shippingInfo.email || (userInfo && userInfo.email) || "")
+    const [email, setEmail] = useState(shippingInfo.email || (userInfo && userInfo.email && !userInfo.isStaff) || "")
     const [news, setNews] = useState(shippingInfo.news || false)
     const [firstName, setFirstName] = useState(shippingInfo.firstName || "")
     const [lastName, setLastName] = useState(shippingInfo.lastName || "")
@@ -41,8 +41,7 @@ const ShippingScreen = ({ history, location }) => {
     })
 
     const dispatch = useDispatch()
-    const submitHandler = async (e) => {
-        e.preventDefault()
+    const submitHandler = async () => {
         dispatch(saveShippingInfo({
             email,
             news,
@@ -62,8 +61,6 @@ const ShippingScreen = ({ history, location }) => {
             phone
         }))
         history.push('/shippingmethod')
-
-        // dispatch(shippingInfoToClover())
     }
 
     const verifyHandler = async (e) => {
@@ -90,7 +87,7 @@ const ShippingScreen = ({ history, location }) => {
                         </Col>
                     </Row>
 
-                    <Form onSubmit={verified ? submitHandler : verifyHandler}>
+                    <Form onSubmit={verifyHandler}>
                         <Form.Group controlId='email'>
                             <Form.Control type='text' placeholder='Email' value={email} required
                                 onChange={(e) => setEmail(e.target.value)}>
@@ -181,17 +178,20 @@ const ShippingScreen = ({ history, location }) => {
                                     </Col>
                                 </Row>
                                 <Form.Group controlId='phone'>
-                                    <Form.Control type='tel' placeholder='Phone (Optional)' value={phone}
+                                    <Form.Control type='tel' placeholder='Phone' value={phone} required
                                         onChange={(e) => setPhone(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
                             </>)}
-                        <Button type="submit" disabled={verified && error} className="mt-2">
-                            {verified ? "Accept and Continue" : "Verify and Continue"}
-                        </Button>
+                        {!verified && <Button type="submit" disabled={verified && error} className="mt-2">
+                            Verify and Continue
+                        </Button>}
+                        {verified && <Button type="button" className="mt-2"
+                            onClick={() => submitHandler()}
+                        >Accept and Continue</Button>}
                         {verified && <Button type="button" variant="secondary" className="mx-2 mt-2"
                             onClick={() => setVerified(false)}
-                        >Edit</Button>}
+                        >Go Back & Edit</Button>}
                     </Form>
 
                 </Col>

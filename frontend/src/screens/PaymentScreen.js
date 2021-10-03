@@ -17,6 +17,9 @@ const PaymentScreen = ({ history }) => {
     const { userInfo } = useSelector(state => state.userLogin)
     const { loading, order, error } = useSelector(state => state.clover)
 
+    if (shippingInfo && Object.keys(shippingInfo).length == 0) {
+        history.push('/shipping')
+    }
     if (shippingMethod && Object.keys(shippingMethod).length == 0) {
         history.push('/shippingmethod')
     }

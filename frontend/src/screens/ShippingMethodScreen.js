@@ -12,9 +12,9 @@ const ShippingMethodScreen = ({ history, location }) => {
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     const { cartItems, shippingInfo, shippingMethod } = useSelector(state => state.cart)
-    if (shippingInfo && Object.keys(shippingInfo).length == 0) {
-        history.push('/shipping')
-    }
+    // if (shippingInfo && Object.keys(shippingInfo).length == 0) {
+    //     history.push('/shipping')
+    // }
 
     const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
     const [methods, setMethods] = useState([])
