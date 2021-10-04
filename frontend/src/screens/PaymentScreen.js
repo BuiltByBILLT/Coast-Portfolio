@@ -113,7 +113,7 @@ const PaymentScreen = ({ history }) => {
                 </Modal.Header>
                 <Modal.Body> <Loader /> </Modal.Body>
             </Modal>
-            {error && <Message variant='danger'>{error.response ? JSON.stringify(error.response.data.message) : error.message}</Message>}
+            {error && <Message variant='danger'>{error.response ? "!" + JSON.stringify(error.response.data.message) : "~" + error.message}</Message>}
             {order && <Message variant='success'>{"Success! " + order.id}</Message>}
 
             <Row>

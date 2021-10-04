@@ -139,11 +139,11 @@ const orderClover = asyncHandler(async (req, res) => {
         res.json(data)
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error.message)
+            throw new Error(JSON.stringify(error.response.data))
         } else if (error.request) {
             throw new Error("Request Error")
         } else {
-            throw new Error("Server Error: " + error.message)
+            throw new Error("Server Error: " + JSON.stringify(error))
         }
     }
 })
