@@ -5,7 +5,7 @@ import axios from 'axios'
 // @route POST /api/clover
 // @access Public
 const orderClover = asyncHandler(async (req, res) => {
-    const { cart, userLogin, token } = req.body
+    const { cart, userInfo, token } = req.body
     // await new Promise((res) => setTimeout(res, 3000))
     try {
         //Create Order
@@ -17,8 +17,8 @@ const orderClover = asyncHandler(async (req, res) => {
                 "orderType": { "id": process.env.ORDER_TYPE },
                 "employee": {
                     "id": process.env.WEBSITE
-                    // "id": userLogin.userInfo && userLogin.userInfo.employeeID ?
-                    //     userLogin.userInfo.employeeID : WEBSITE
+                    // "id": userInfo && userInfo.employeeID ?
+                    //     userInfo.employeeID : WEBSITE
                 }
             }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
@@ -72,8 +72,8 @@ const orderClover = asyncHandler(async (req, res) => {
         )
 
         // Attach Customer
-        var customerID = userLogin.userInfo && userLogin.userInfo.customerID
-        if (!userLogin.userInfo || userLogin.userInfo.employeeID || !userLogin.userInfo.customerID) {
+        var customerID = userInfo && userInfo.customerID
+        if (!userInfo || userInfo.employeeID || !userInfo.customerID) {
             //Create Customer
             const newCustomer = await axios.post(process.env.CLOVER_URL + `/customers`,
                 {
@@ -97,7 +97,7 @@ const orderClover = asyncHandler(async (req, res) => {
 
         // Add Discount
         //If userLogin = isStaff
-        // if (userLogin.userInfo && userLogin.userInfo.isStaff == true) {
+        // if (userInfo && userInfo.isStaff == true) {
         if (cart.discount && cart.discount.discountType === "%") {
             await axios.post(
                 process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
@@ -141,9 +141,9 @@ const orderClover = asyncHandler(async (req, res) => {
         if (error.response) {
             throw new Error(error.response.data.error.message)
         } else if (error.request) {
-            throw new Error(error.request)
+            throw new Error("Request Error")
         } else {
-            throw new Error(error.message)
+            throw new Error("Server Error: " + error.message)
         }
     }
 })

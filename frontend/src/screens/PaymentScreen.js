@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Col, Row, ListGroup, Modal, Container, DropdownButton, Dropdown, InputGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import { useMutation } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
@@ -14,7 +15,8 @@ import { CLOVER_RESET, CART_SET_DISCOUNT } from '../constants/cartConstants'
 
 
 const PaymentScreen = ({ history }) => {
-    const { shippingMethod, shippingInfo, cartItems } = useSelector(state => state.cart)
+    const cart = useSelector(state => state.cart)
+    const { shippingMethod, shippingInfo, cartItems } = cart
     const { userInfo } = useSelector(state => state.userLogin)
     // const { loading, order, error } = useSelector(state => state.clover)
 
@@ -64,18 +66,22 @@ const PaymentScreen = ({ history }) => {
         return () => { if (cloverFooter) cloverFooter.style.display = "none" }
     }, []);
 
+
+
+    const { data: order, error, isLoading: loading, mutate } = useMutation(data => {
+        return axios.post(`/api/clover`, data)
+    })
+
     // Redirect to Order after Submit
     useEffect(() => {
         if (order) {
             dispatch(resetCart())
             dispatch({ type: CLOVER_RESET })
-            history.push(`/order/${order.id}`)
+            history.push(`/order/${order.data.id}`)
+            // console.log(JSON.stringify(order))
         }
     }, [order])
 
-    const { data: order, error, isLoading: loading, mutate } = useMutation(data => {
-        return axios.post(`/api/clover`, data)
-    })
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -91,7 +97,8 @@ const PaymentScreen = ({ history }) => {
                     setButtonDisable(false)
                 } else {
                     // dispatch(submitClover(result.token))
-                    mutate(result.token)
+                    // let body = { cart: state.cart, userLogin: state.userLogin, token }
+                    mutate({ cart, userInfo, token: result.token })
                 }
                 setButtonDisable(false)
             })
@@ -106,7 +113,7 @@ const PaymentScreen = ({ history }) => {
                 </Modal.Header>
                 <Modal.Body> <Loader /> </Modal.Body>
             </Modal>
-            {error && <Message variant='danger'>{JSON.stringify(error)}</Message>}
+            {error && <Message variant='danger'>{JSON.stringify(error.response.data.message)}</Message>}
             {order && <Message variant='success'>{"Success! " + order.id}</Message>}
 
             <Row>
