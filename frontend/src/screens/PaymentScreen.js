@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Col, Row, ListGroup, Modal, Container, DropdownButton, Dropdown, InputGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { useMutation } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -15,7 +16,7 @@ import { CLOVER_RESET, CART_SET_DISCOUNT } from '../constants/cartConstants'
 const PaymentScreen = ({ history }) => {
     const { shippingMethod, shippingInfo, cartItems } = useSelector(state => state.cart)
     const { userInfo } = useSelector(state => state.userLogin)
-    const { loading, order, error } = useSelector(state => state.clover)
+    // const { loading, order, error } = useSelector(state => state.clover)
 
     if (shippingInfo && Object.keys(shippingInfo).length == 0) {
         history.push('/shipping')
@@ -72,6 +73,9 @@ const PaymentScreen = ({ history }) => {
         }
     }, [order])
 
+    const { data: order, error, isLoading: loading, mutate } = useMutation(data => {
+        return axios.post(`/api/clover`, data)
+    })
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -86,16 +90,12 @@ const PaymentScreen = ({ history }) => {
                     });
                     setButtonDisable(false)
                 } else {
-                    dispatch(submitClover(result.token))
+                    // dispatch(submitClover(result.token))
+                    mutate(result.token)
                 }
                 setButtonDisable(false)
             })
     }
-
-    const discountHandler = async (e) => {
-        e.preventDefault()
-    }
-
 
     return (
         <Container className="my-5 py-3">
@@ -106,7 +106,7 @@ const PaymentScreen = ({ history }) => {
                 </Modal.Header>
                 <Modal.Body> <Loader /> </Modal.Body>
             </Modal>
-            {error && <Message variant='danger'>{error}</Message>}
+            {error && <Message variant='danger'>{JSON.stringify(error)}</Message>}
             {order && <Message variant='success'>{"Success! " + order.id}</Message>}
 
             <Row>

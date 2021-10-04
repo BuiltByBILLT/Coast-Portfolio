@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import axios from 'axios'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation } from 'react-query'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
