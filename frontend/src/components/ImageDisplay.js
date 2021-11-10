@@ -44,7 +44,7 @@ const ImageDisplay = ({ product }) => {
             <Image src={"https://www.coastairbrush.com/" + bigs[selected].imageSrc} alt={product.pName}
                 style={{ width: "100%", objectFit: "contain" }}
             />
-            <Row className="my-5 justify-content-center" >
+            {(images.length > 1) && <Row className="my-5 justify-content-center" >
                 {thumbs.map((thumb, index) => (
                     <Col key={index} xs="auto"
                     // className={selected == index && "border border-danger"}
@@ -55,7 +55,7 @@ const ImageDisplay = ({ product }) => {
                         />
                     </Col>
                 ))}
-            </Row>
+            </Row>}
         </>
     )
 }

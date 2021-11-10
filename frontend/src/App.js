@@ -14,6 +14,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
+import InventoryListScreen from './screens/InventoryListScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
@@ -22,6 +23,8 @@ import CategoryScreen from './screens/CategoryScreen'
 import SearchScreen from './screens/SearchScreen'
 import ReportsScreen from './screens/ReportsScreen'
 import UploadsScreen from './screens/UploadsScreen'
+import UnshippedScreen from './screens/UnshippedScreen'
+import WishListScreen from './screens/WishListScreen'
 
 import ReturnStatic from './screens/static/ReturnStatic'
 import ShippingStatic from './screens/static/ShippingStatic'
@@ -30,6 +33,7 @@ import AboutStatic from './screens/static/AboutStatic'
 import ContactStatic from './screens/static/ContactStatic'
 import ShippingMethodScreen from './screens/ShippingMethodScreen'
 import CategoryStatic from './screens/static/CategoryStatic'
+import EmployeeHistoryScreen from './screens/EmployeeHistoryScreen'
 
 const App = () => {
   return (
@@ -52,13 +56,17 @@ const App = () => {
         <Route path='/login' component={LoginScreen} />
         <Route path='/register' component={RegisterScreen} />
         <Route path='/orderhistory' component={OrderHistoryScreen} />
+        <Route path='/employeehistory' component={EmployeeHistoryScreen} />
+        <Route path='/wishlist' component={WishListScreen} />
         <Route path='/profile' component={ProfileScreen} />
         <Route path='/product/:id' component={ProductScreen} />
         <Route path='/cart' component={CartScreen} exact />
         <Route path='/cart/:id' component={CartScreen} />
+        <Route path='/admin/unshipped' component={UnshippedScreen} />
         <Route path='/admin/uploads' component={UploadsScreen} />
         <Route path='/admin/reports' component={ReportsScreen} />
         <Route path='/admin/userlist' component={UserListScreen} />
+        <Route path='/admin/inventorylist' component={InventoryListScreen} exact />
         <Route path='/admin/productlist' component={ProductListScreen} exact />
         <Route path='/admin/productlist/:pageNumber' component={ProductListScreen} exact />
         <Route path='/admin/orderlist' component={OrderListScreen} />

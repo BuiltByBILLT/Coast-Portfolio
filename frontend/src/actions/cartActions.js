@@ -35,7 +35,7 @@ const storeCart = async (state, dispatch, reset) => {
         else { dispatch({ type: CART_FROM_DB_RESET }) }
 }
 
-export const addToCart = (product, name, qty, price, cloverID) => async (dispatch, getState) => {
+export const addToCart = (product, name, qty, stock, price, cloverID) => async (dispatch, getState) => {
 
     // Add to Cart
     dispatch({
@@ -46,12 +46,8 @@ export const addToCart = (product, name, qty, price, cloverID) => async (dispatc
             name,
             image: product.images[0].imageSrc,
             price,
-            pWeight: product.pWeight,
-            pLength: product.pLength,
-            pWidth: product.pWidth,
-            pHeight: product.pHeight,
-            countInStock: product.pInStock,
             qty,
+            countInStock: stock
         }
     })
     await storeCart(getState(), dispatch, true)

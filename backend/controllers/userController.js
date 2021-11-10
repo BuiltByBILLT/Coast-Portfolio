@@ -20,7 +20,9 @@ const authUser = asyncHandler(async (req, res) => {
             isStaff: user.isStaff,
             isAdmin: user.isAdmin,
             cart: user.cart,
+            wishList: user.wishList,
             customerID: user.customerID,
+            employeeID: user.employeeID,
             token: generateToken(user._id),
         })
     } else {
@@ -30,7 +32,7 @@ const authUser = asyncHandler(async (req, res) => {
 })
 
 
-// @desc Get user profile 
+// @desc Get user profile (From Admin?)
 // @route GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -42,6 +44,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             customerID: user.customerID,
+            employeeID: user.employeeID,
             isStaff: user.isStaff,
             isAdmin: user.isAdmin,
         })
@@ -283,6 +286,74 @@ const getCartFromUser = asyncHandler(async (req, res) => {
     }
 })
 
+
+// @desc Add WishList Item to User
+// @route POST /api/users/wish/:pID
+// @access Private
+const addWishToUser = asyncHandler(async (req, res) => {
+    // console.log(req.body)
+    const user = await User.findById(req.user.id)
+    if (user) {
+        if (user.wishList.includes(req.params.pID)) {
+            res.status(201).json({
+                wishList: user.wishList
+            })
+        }
+        else {
+            user.wishList.push(req.params.pID)
+            const updatedUser = await user.save()
+            if (updatedUser) {
+                res.status(201).json({
+                    wishList: updatedUser.wishList
+                })
+            } else {
+                res.status(400)
+                throw new Error('Invalid Wish Data')
+            }
+        }
+    }
+    else {
+        res.status(400)
+        throw new Error('Invalid User Data')
+    }
+})
+
+// @desc Remove WishList Item From User
+// @route DELETE /api/users/wish/:pID
+// @access Private
+const removeWishFromUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id)
+    if (user) {
+        const index = user.wishList.indexOf(req.params.pID);
+        console.log(req.params.pID)
+        if (index > -1) {
+            user.wishList.splice(index, 1);
+            console.log("Removed")
+            console.log(user.wishList)
+            const updatedUser = await user.save()
+            if (updatedUser) {
+                res.status(201).json({
+                    wishList: updatedUser.wishList
+                })
+            } else {
+                res.status(400)
+                throw new Error('Invalid Wish Data')
+            }
+        }
+        else {
+            res.status(201).json({
+                wishList: user.wishList
+            })
+        }
+    }
+    else {
+        res.status(400)
+        throw new Error('Invalid User Data')
+    }
+})
+
+
+
 export {
     registerUser,
     authUser,
@@ -294,4 +365,6 @@ export {
     updateUser,
     addCartToUser,
     getCartFromUser,
+    addWishToUser,
+    removeWishFromUser,
 }

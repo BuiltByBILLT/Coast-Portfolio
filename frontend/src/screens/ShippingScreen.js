@@ -103,7 +103,7 @@ const ShippingScreen = ({ history, location }) => {
                                 {isLoading && <Loader />}
                                 {error && <Message variant="danger">{JSON.stringify(error.response.data.message)}</Message>}
                                 {data && (
-                                    <>
+                                    <div className="border px-3 my-3">
                                         <p className="mt-4">Is This Correct?</p>
                                         {/* <p>{JSON.stringify(data.data)}</p> */}
                                         {Array.isArray(data.data.XAVResponse.Candidate.AddressKeyFormat.AddressLine)
@@ -115,7 +115,7 @@ const ShippingScreen = ({ history, location }) => {
                                         }
                                         <h4>{data.data.XAVResponse.Candidate.AddressKeyFormat.Region}, {data.data.XAVResponse.Candidate.AddressKeyFormat.CountryCode} </h4>
                                         <br />
-                                    </>)}
+                                    </div>)}
                             </>)
                             : (<>
                                 <Row>

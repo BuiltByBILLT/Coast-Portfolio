@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import { Row, Col, Image, Breadcrumb } from 'react-bootstrap'
 import Rating from './Rating'
 import "../styles/Cards.css"
+import { HeartList } from './HeartList'
 
 const ProductDetailsCard = ({ product }) => {
     return (
-        <Link to={`/product/${product.cloverID}`} className="linkBox">
+        <Link to={`/product/${product.pID}`} className="linkBox">
             <div className="mb-5 productDetailsCard">
                 <p className="bg-danger text-light text-center py-1 mb-2">
                     {"Product ID " + product.pID}
@@ -28,7 +29,8 @@ const ProductDetailsCard = ({ product }) => {
                         </h5>
                     </Col>
                     <Col xs="auto" className="px-2 my-auto">
-                        <i className='far fa-heart fa-1x text-danger'></i>
+                        {/* <i className='far fa-heart fa-1x text-danger'></i> */}
+                        <HeartList pID={product.pID} size="1x" />
                     </Col>
                 </Row>
             </div>

@@ -26,6 +26,7 @@ import {
     USER_UPDATE_FAIL,
     USER_UPDATE_RESET,
     USER_REGISTER_RESET,
+    USER_WISH_SUCCESS,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = { userInfo: null }, action) => {
@@ -38,6 +39,8 @@ export const userLoginReducer = (state = { userInfo: null }, action) => {
             return { loading: false, error: action.payload }
         case USER_LOGOUT:
             return { userInfo: null }
+        case USER_WISH_SUCCESS:
+            return { loading: false, userInfo: { ...state.userInfo, wishList: action.payload } }
         default:
             return state
     }

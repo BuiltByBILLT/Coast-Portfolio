@@ -19,38 +19,21 @@ const cartItemsSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    countInStock: {
-        type: Number,
-        required: true
-    },
     qty: {
         type: Number,
         required: true
     },
-    pWeight: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pLength: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pWidth: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pHeight: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-
 }, {
     timestamps: true,
 })
+// const wishListItemSchema = mongoose.Schema({
+//     pID: {
+//         type: String,
+//         required: true
+//     },
+// }, {
+//     timestamps: true,
+// })
 
 const userSchema = mongoose.Schema({
     name: {
@@ -70,12 +53,12 @@ const userSchema = mongoose.Schema({
     },
     isStaff: {
         type: Boolean,
-        required: true,
+        // required: true,
         default: false
     },
     isAdmin: {
         type: Boolean,
-        required: true,
+        // required: true,
         default: false
     },
     customerID: {
@@ -90,6 +73,8 @@ const userSchema = mongoose.Schema({
         sparse: true,
     },
     cart: [cartItemsSchema],
+    // wishList: [wishListItemSchema],
+    wishList: [String],
 }, {
     timestamps: true
 })

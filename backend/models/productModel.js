@@ -1,27 +1,5 @@
 import mongoose from 'mongoose'
-
-const reviewSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    rating: {
-        type: Number,
-        required: true,
-    },
-    comment: {
-        type: String,
-        required: true,
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
-    },
-
-}, {
-    timestamps: true,
-})
+import Inventory from './inventoryModel.js'
 
 const imageSchema = mongoose.Schema({
     imageProduct: {
@@ -48,48 +26,8 @@ const imageSchema = mongoose.Schema({
     timestamps: true,
 })
 
-const optionsSchema = mongoose.Schema({
-    optName: {
-        type: String,
-        required: true,
-    },
-    priceDiff: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-    weightDiff: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-    optThumb: {
-        type: String,
-    },
-    optImageLarge: {
-        type: String,
-    },
-    optStock: {
-        type: Number,
-        required: true,
-        default: 0,
-    },
-    optClover: {
-        type: String,
-    },
-
-
-}, {
-    timestamps: true,
-})
-
 
 const productSchema = mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
-    },
     pID: {
         type: String,
         unique: true,
@@ -100,7 +38,6 @@ const productSchema = mongoose.Schema({
         required: true
     },
     images: [imageSchema],
-    options: [optionsSchema],
     optionGroup: {
         type: String,
     },
@@ -111,54 +48,23 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    pSectionName: {
+        type: String,
+        // required: true,
+    },
     pDescription: {
         type: String,
     },
     pLongDescription: {
         type: String,
     },
-    reviews: [reviewSchema],
-    rating: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    numReviews: {
-        type: Number,
-        required: true,
-        default: 0
-    },
     pPrice: {
         type: Number,
-        required: true,
+        // required: true,
         default: 0
     },
     pListPrice: {
         type: Number,
-    },
-    pInStock: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pWeight: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pLength: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pWidth: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    pHeight: {
-        type: Number,
-        required: true,
         default: 0
     },
     pDisplay: {
@@ -171,19 +77,25 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 0
     },
-    topSection: {
-        type: String
-    },
-    cloverID: {
-        type: String,
-        unique: true,
-        required: true,
-    }
 
 }, {
     timestamps: true
 })
 
-const Product = mongoose.model('Product', productSchema)
 
+
+// // productSchema.pre('find')
+// productSchema.pre('findOne', async function (next) {
+//     if (this) {
+//         next()
+//     }
+//     this.pPrice = 1111
+//     this.pListPrice = 2222
+//     console.log(this.pPrice)
+
+// })
+
+
+
+const Product = mongoose.model('Product', productSchema)
 export default Product

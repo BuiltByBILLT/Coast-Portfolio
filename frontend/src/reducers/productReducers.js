@@ -57,7 +57,7 @@ export const productListReducer = (state = { loading: true, products: [] }, acti
 export const productDetailsReducer = (state = { loading: true, product: {} }, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_RESET:
-            return { loading: true, product: { rating: 0, numReviews: 0 } }
+            return { loading: true, product: {} }
         case PRODUCT_DETAILS_REQUEST:
             return { ...state, loading: true }
         case PRODUCT_DETAILS_SUCCESS:

@@ -104,7 +104,7 @@ const CartScreen = ({ match, location, history }) => {
                                                 />
                                             </Col>
                                             <Col xs={12} lg className="mb-2 my-lg-auto text-center text-lg-left">
-                                                <Link to={`/product/${item.cloverID}`}>{item.name}</Link>
+                                                <Link to={`/product/${item.pID}`}>{item.name}</Link>
                                             </Col>
                                             <Col xs={4} lg={"auto"} className="text-center my-auto px-2"
                                                 style={{ width: "100px" }}

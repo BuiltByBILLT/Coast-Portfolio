@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import Inventory from '../models/inventoryModel.js'
 import Category from '../models/categoryModel.js'
 import axios from 'axios'
 
@@ -8,9 +9,9 @@ import axios from 'axios'
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
     // const pageSize = 100
-    const pageSize = Number(req.query.limit) || 100
+    const pageSize = Number(req.query.limit) || 24
     const page = Number(req.query.pageNumber) || 1
-    const staff = Number(req.query.staff)
+    const list = Number(req.query.staff)
     const sort = req.query.sort
     const upDown = Number(req.query.upDown)
 
@@ -22,23 +23,32 @@ const getProducts = asyncHandler(async (req, res) => {
             ]
         } : {}
 
-
-    if (staff) {
-        const count = await Product.countDocuments({ ...keyword })
-        const products = await Product.find({ ...keyword })
+    // console.log("staff", staff)
+    let count = 0
+    let products = []
+    if (list) {
+        count = await Product.countDocuments({ ...keyword })
+        products = await Product.find({ ...keyword })
             .sort({ [sort]: upDown })
             .limit(pageSize).skip(pageSize * (page - 1))
-        res.json({ products, page, pages: Math.ceil(count / pageSize) })
-        // console.log("staff: ", staff)
-
     } else {
-        const count = await Product.countDocuments({ ...keyword, pDisplay: true })
-        const products = await Product.find({ ...keyword, pDisplay: true })
-            .sort({ updatedAt: -1 })
+        count = await Product.countDocuments({ ...keyword, pDisplay: true })
+        products = await Product.find({ ...keyword, pDisplay: true })
+            .sort({ pName: 1 })
             .limit(pageSize).skip(pageSize * (page - 1))
-        res.json({ products, page, pages: Math.ceil(count / pageSize) })
-        // console.log("guest: ", staff)
+        console.log("here")
+
+        // Load Prices
+        for (let i = 0; i < products.length; i++) {
+            const product = products[i];
+            if (!product.optionGroup) {
+                const inv = await Inventory.findOne({ iParent: product.pID })
+                if (inv) { product.pPrice = inv.iPrice }
+            }
+        }
     }
+
+    res.json({ products, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc Get Suggested Products
@@ -46,10 +56,14 @@ const getProducts = asyncHandler(async (req, res) => {
 // @access Public
 const getSuggestedProducts = asyncHandler(async (req, res) => {
     const array = []
-    const count = await Product.countDocuments({ pDisplay: true, pSell: true })
+    const count = await Product.countDocuments({ pDisplay: true, pSell: true, optionGroup: null })
     for (let i = 0; i < 4; i++) {
         let random = Math.floor(Math.random() * count)
-        let product = await Product.findOne({ pDisplay: true, pSell: true }).skip(random)
+        let product = await Product.findOne({ pDisplay: true, pSell: true, optionGroup: null }).skip(random)
+
+        // Load Price
+        const inv = await Inventory.findOne({ iParent: product.pID })
+        if (inv) { product.pPrice = inv.iPrice }
         array.push(product)
     }
     res.json(array)
@@ -60,16 +74,36 @@ const getSuggestedProducts = asyncHandler(async (req, res) => {
 // @access Public
 const getProductById = asyncHandler(async (req, res) => {
     // const product = await Product.findOne({ pID: req.params.id })
-    const product = await Product.findOne({ cloverID: req.params.id })
-    if (product) {
+    const raw = await Product.findOne({ pID: req.params.id })
+    if (raw) {
+        const product = { ...raw._doc }
+
+        // Add Category Name
         const category = await Category.findOne({ sectionID: product.pSection })
-        product.topSection = category.sectionName
+        product.pSectionName = category.sectionName
+
+        // Add Price / Options
+        // if (product.optionGroup) {
+        product.options = []
+        const invArr = await Inventory.find({ iParent: product.pID })
+        invArr.forEach(inv => {
+            product.options.push(inv)
+        })
+        // } else {
+        //     const inv = await Inventory.findOne({ iParent: product.pID })
+        //     if (inv) {
+        //         product.pPrice = inv.iPrice
+        //         product.pListPrice = inv.iListPrice
+        //     }
+        // }
+        // product.test = "testeteste"
         res.json(product)
     } else {
         res.status(404)
         throw new Error('Product not found')
     }
 })
+
 
 
 //========================================================================================================================
@@ -113,7 +147,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
     const { data } = await syncToClover(req)
 
-    const product = await Product.findOne({ cloverID: req.params.id })
+    const product = await Product.findOne({ pID: req.params.id })
     if (product) {
         product.pName = req.body.name
         product.pPrice = req.body.price
@@ -136,7 +170,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 // @route DELETE /api/products/:id
 // @access Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
-    const product = await Product.findOne({ cloverID: req.params.id })
+    const product = await Product.findOne({ pID: req.params.id })
     if (product) {
         // DB
         await product.remove()
@@ -192,7 +226,7 @@ const syncToClover = async (req) => {
 // @route PuUT /api/product/images/:id
 // @access Private/Staff
 const updateImages = asyncHandler(async (req, res) => {
-    const product = await Product.findOne({ cloverID: req.params.id })
+    const product = await Product.findOne({ pID: req.params.id })
     if (product) {
         product.images = req.body
         console.log(req.body)
@@ -223,7 +257,7 @@ export {
 // const createProductReview = asyncHandler(async (req, res) => {
 //     const { rating, comment } = req.body
 
-//     const product = await Product.findOne({ cloverID: req.params.id })
+//     const product = await Product.findOne({ pID: req.params.id })
 //     if (product) {
 //         const alreadyReviewed = product.reviews.find(
 //             r => r.user.toString() === req.user._id.toString()

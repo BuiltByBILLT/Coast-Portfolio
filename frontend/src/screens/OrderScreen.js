@@ -16,6 +16,8 @@ const OrderScreen = ({ match, history }) => {
 
 
     const [size, setSize] = useState("")
+    const [amount, setAmount] = useState("")
+    const [lineID, setLineID] = useState("")
 
     const { order, loading, error } = useSelector(state => state.orderDetails)
     const { userInfo } = useSelector(state => state.userLogin)
@@ -27,25 +29,38 @@ const OrderScreen = ({ match, history }) => {
         return () => { }
     }, [])
 
-    const mutation = useMutation(data => {
+    // Check if Label already created
+    const { isLoading, isError, data: labelData, error: labelError, refetch } = useQuery('label', () =>
+        axios.get(`/api/shipping/tracking/${orderID}`),
+        { refetchOnWindowFocus: false }
+    )
+
+    // Shipping Label Mutations
+    const labelMutation = useMutation(data => {
         return axios.post(`/api/shipping/ups/${orderID}/${size}`, data,
             { headers: { Authorization: `Bearer ${userInfo.token}` } })
     })
-
-    const { isLoading, isError, data: labelData, error: labelError, refetch } = useQuery('label', () =>
-        axios.get(`/api/shipping/tracking/${orderID}`)
-    )
-
-
     const handleUPS = () => {
-        mutation.mutate(order.shippingLabel)
+        labelMutation.mutate(order.shippingLabel)
+    }
+
+    // Refund Mutation
+    const refundMutation = useMutation(data => {
+        return axios.post(`/api/clover/refund`, data,
+            { headers: { Authorization: `Bearer ${userInfo.token}` } })
+    })
+    const handleRefund = () => {
+        refundMutation.mutate({ amount, lineID, orderID })
     }
 
     useEffect(() => {
-        if (mutation.data) {
-            refetch()
+        if (labelMutation.data) { refetch() }
+        if (refundMutation.data) {
+            dispatch(getOrderDetails(orderID))
+            setAmount("")
+            setLineID("")
         }
-    }, [mutation.isSuccess])
+    }, [labelMutation.isSuccess, refundMutation.isSuccess])
 
     return (
         <Container className="my-5">
@@ -63,7 +78,7 @@ const OrderScreen = ({ match, history }) => {
                             </Row>
 
                             <Row>
-                                <Col lg={9}>
+                                <Col lg={12} xl={10}>
                                     {order.lineItems &&
                                         (
                                             <ListGroup className="mb-5">
@@ -131,15 +146,81 @@ const OrderScreen = ({ match, history }) => {
                                                 </>
                                             ) : <p><strong>Status: </strong>{order.payment.state === "OPEN" ? "NOT PAID / PROCESSING" : "PAID"}</p>
                                             }
+                                            {order.employee && (
+                                                <p>
+                                                    <strong>Employee: </strong>
+                                                    <a>{order.employee}</a>
+                                                </p>
+                                            )}
 
 
                                         </ListGroup.Item>
                                     </ListGroup>)}
+
+                                    {(<ListGroup>
+                                        <ListGroup.Item>
+                                            <Row>
+                                                <Col >
+                                                    <h4 className="mb-3">Refunds</h4>
+                                                    {order.refunds && order.refunds.map(refund => (
+                                                        <>
+                                                            <p>
+                                                                <strong>{new Date(refund.createdTime).toLocaleString()}: </strong>
+                                                                {Number(refund.amount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                                            </p>
+                                                            <p>{ }</p>
+                                                        </>
+                                                    ))
+                                                    }
+                                                </Col>
+
+                                                {userInfo && userInfo.isStaff &&
+                                                    <Col className="text-center">
+                                                        <Row>
+                                                            <Col>
+                                                                <Form.Control as="select"
+                                                                    value={lineID}
+                                                                    onChange={(e) => setLineID(e.target.value)}
+                                                                >
+                                                                    <option value="">Select Item</option>
+
+                                                                    {order.lineItems && order.lineItems.map(item => (
+                                                                        <option value={item.id}>{item.name}</option>
+                                                                    ))}
+                                                                </Form.Control>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row noGutters>
+                                                            <Col>
+                                                                <Form.Control type="number" value={amount} placeholder="Refund Amount (Cents)"
+                                                                    onChange={(e) => setAmount(e.target.value)}
+                                                                >
+                                                                </Form.Control>
+                                                            </Col>
+                                                            <Col xs="auto">
+                                                                <Button
+                                                                    disabled={!lineID || !amount || refundMutation.isLoading}
+                                                                    block style={{ height: "47px" }}
+                                                                    onClick={handleRefund}
+                                                                >
+                                                                    {refundMutation.isLoading ? "Loading" : "Refund"}
+                                                                </Button>
+                                                            </Col>
+                                                        </Row>
+                                                        <p className="text-danger">{refundMutation.error && "Error"}</p>
+                                                        <p className="text-danger">{refundMutation.error && JSON.parse(refundMutation.error.response.data.message).error.message}</p>
+                                                    </Col>
+                                                }
+
+                                            </Row>
+                                        </ListGroup.Item>
+                                    </ListGroup>)}
+
                                     {order.shippingLabel && (<ListGroup className="mb-4">
                                         <ListGroup.Item>
-                                            <h4>Shipping</h4>
                                             <Row>
                                                 <Col>
+                                                    <h4>Shipping</h4>
                                                     <p>
                                                         {/* <strong>Name: </strong>{order.user.name} */}
                                                     </p>
@@ -164,25 +245,27 @@ const OrderScreen = ({ match, history }) => {
                                                         </p>)}
                                                 </Col>
 
-                                                {userInfo && userInfo.isStaff && <Col>
-                                                    {labelData && labelData.data.tracking
-                                                        ? <a href={`data:image/png;base64,${labelData.data.raw}`} target="_self" type="image/png">Right Click to Open Label</a>
-                                                        : (<>
-                                                            <Form.Control type="number" value={size} placeholder="Weight in lbs"
-                                                                onChange={(e) => setSize(e.target.value)}
-                                                            >
+                                                {userInfo && userInfo.isStaff &&
+                                                    <Col className="text-center">
+                                                        {labelData && labelData.data.tracking
+                                                            ? <a href={`data:image/png;base64,${labelData.data.raw}`} target="_self" type="image/png">Right Click to Open Label</a>
+                                                            : (<>
+                                                                <Form.Control type="number" value={size} placeholder="Weight in lbs"
+                                                                    onChange={(e) => setSize(e.target.value)}
+                                                                >
 
-                                                            </Form.Control>
-                                                            <Button
-                                                                disabled={mutation.isLoading || mutation.isSuccess || size === ""}
-                                                                block
-                                                                onClick={handleUPS}>
-                                                                {mutation.isLoading ? "Loading" : "Create UPS Label"}
-                                                            </Button>
-                                                            <p>{mutation.error}</p>
-                                                        </>)
-                                                    }
-                                                </Col>}
+                                                                </Form.Control>
+                                                                <Button
+                                                                    disabled={labelMutation.isLoading || labelMutation.isSuccess || size === ""}
+                                                                    block
+                                                                    onClick={handleUPS}>
+                                                                    {labelMutation.isLoading ? "Loading" : "Create UPS Label"}
+                                                                </Button>
+                                                                <p className="text-danger">{labelMutation.error && JSON.stringify(labelMutation.error)}</p>
+                                                            </>)
+                                                        }
+                                                    </Col>
+                                                }
                                             </Row>
 
                                         </ListGroup.Item>

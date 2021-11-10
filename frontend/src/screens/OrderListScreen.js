@@ -33,6 +33,9 @@ const OrderListScreen = ({ history, match }) => {
         alert(search)
         // dispatch()
     }
+    const printHandler = (e) => {
+        history.push('/admin/unshipped')
+    }
 
     return (
         <Container className="my-5 py-3">
@@ -56,6 +59,11 @@ const OrderListScreen = ({ history, match }) => {
                             </InputGroup.Append>
                         </InputGroup>
                     </Form>
+                </Col>
+                <Col className="text-right" xs="auto">
+                    <Button variant="danger" className='my-3' onClick={printHandler}>
+                        Bulk Print Unshipped
+                    </Button>
                 </Col>
             </Row>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>

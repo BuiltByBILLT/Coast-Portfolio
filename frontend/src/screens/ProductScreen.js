@@ -16,15 +16,19 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 
 import "../styles/ProductPage.css"
 import { addToCart } from '../actions/cartActions'
+import { HeartList } from '../components/HeartList'
 
 const ProductScreen = ({ history, match }) => {
     const { loading, error, product } = useSelector(state => state.productDetails)
     const { category } = useSelector(state => state.categoryDetails)
+    const { userInfo } = useSelector(state => state.userLogin)
+
 
     const [qty, setQty] = useState(1)
+    const [stock, setStock] = useState(0)
     const [option, setOption] = useState(0)
     const [price, setPrice] = useState(product.pPrice)
-    const [cloverID, setCloverID] = useState(product.cloverID)
+    const [cloverID, setCloverID] = useState("")
     const [name, setName] = useState(product.pName)
 
     const dispatch = useDispatch()
@@ -40,16 +44,25 @@ const ProductScreen = ({ history, match }) => {
     useEffect(() => {
         setPrice(product.pPrice)
         setName(product.pName)
-        if (product.options && product.options.length && option != 0) {
-            setPrice(product.pPrice + product.options[option - 1].priceDiff)
-            setCloverID(product.pID)
-            setName(`${product.pName} (${product.options[option - 1].optName})`)
+        if (product.options && product.options.length == 1) {
+            setPrice(product.pPrice + product.options[0].iPrice)
+            setStock(product.options[0].iStock)
+            setCloverID(product.options[0].cloverID)
+            // setName(`${product.pName} (${product.options[0].iSelectionName})`)
+        }
+        else if (product.options && product.options.length > 1 && option != 0) {
+            setPrice(product.pPrice + product.options[option - 1].iPrice)
+            setCloverID(product.options[option - 1].cloverID)
+            setName(`${product.pName} (${product.options[option - 1].iSelectionName})`)
+            setStock(product.options[option - 1].iStock)
+        } else {
+
         }
     }, [option, product])
 
     const addToCartHandler = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        dispatch(addToCart(product, name, qty, price, cloverID))
+        dispatch(addToCart(product, name, qty, stock, price, cloverID))
     }
 
 
@@ -83,7 +96,7 @@ const ProductScreen = ({ history, match }) => {
                                                 onChange={(e) => setOption(e.target.value)}>
                                                 <option key={0} value={0}>{product.optionGroup}</option>
                                                 {product.options.map((option, index) => (
-                                                    <option key={index + 1} value={index + 1}>{option.optName}</option>
+                                                    <option key={index + 1} value={index + 1}>{option.iSelectionName}</option>
                                                 ))}
                                             </Form.Control>
                                         </Col>
@@ -91,24 +104,25 @@ const ProductScreen = ({ history, match }) => {
                                 </Row>
                                 <Row className="align-items-center mb-4">
                                     <Col xs="auto">
-                                        <Form.Control className='form-select' as='select' value={qty}
+                                        <Form.Control className='form-select' as='select' value={qty} disabled={stock < 1}
                                             onChange={(e) => setQty(e.target.value)}>
-                                            {[...Array(product.pInStock).keys()].map(x => (
-                                                <option key={x + 1} value={x + 1}>{x + 1}</option>
-                                            ))}
+                                            {stock < 1 && !product.optionGroup ? <option>Out of Stock</option>
+                                                : [...Array(stock > 0 ? stock : 0).keys()].map(x => (
+                                                    <option key={x + 1} value={x + 1}>{x + 1}</option>
+                                                ))}
                                         </Form.Control>
                                     </Col >
                                     <Col xs="auto">
                                         <Button
                                             block
                                             onClick={addToCartHandler}
-                                            disabled={product.options && product.options.length && option == 0}
+                                            disabled={product.optionGroup && option == 0 || stock < 1}
                                         // disabled={product.countInStock === 0}
                                         >Add to Cart
                                         </Button>
                                     </Col>
                                     <Col xs="auto" className="px-2">
-                                        <i className='far fa-heart fa-2x text-danger'></i>
+                                        <HeartList pID={product.pID} size="2x" />
                                     </Col>
                                 </Row>
                                 <h5 className="pt-3">Description</h5>

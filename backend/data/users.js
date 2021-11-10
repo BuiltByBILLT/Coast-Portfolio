@@ -7,6 +7,23 @@ const users = [
         password: bcrypt.hashSync('123456', 10),
         isStaff: true,
         isAdmin: true,
+        employeeID: 'TBSNZG5F3QJNJ'
+    },
+    {
+        name: 'Employee Tom',
+        email: 'tom@example.com',
+        password: bcrypt.hashSync('123456', 10),
+        isStaff: true,
+        isAdmin: false,
+        employeeID: 'A728RB8VMANMY'
+    },
+    {
+        name: 'Employee Jane',
+        email: 'jane@example.com',
+        password: bcrypt.hashSync('123456', 10),
+        isStaff: true,
+        isAdmin: false,
+        employeeID: '3G8S0E0WXACJW'
     },
     // {
     //     name: 'John Doe',

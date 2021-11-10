@@ -8,7 +8,7 @@ import {
 } from "../constants/reportConstants"
 
 
-export const reportAverageReducer = (state = { loading: true }, action) => {
+export const reportAverageReducer = (state = { loading: false }, action) => {
     switch (action.type) {
         case REPORT_AVERAGE_REQUEST:
             return { loading: true, }
@@ -21,7 +21,7 @@ export const reportAverageReducer = (state = { loading: true }, action) => {
     }
 }
 
-export const reportLowInvReducer = (state = { loading: true }, action) => {
+export const reportLowInvReducer = (state = { loading: false }, action) => {
     switch (action.type) {
         case REPORT_LOWINV_REQUEST:
             return { loading: true }

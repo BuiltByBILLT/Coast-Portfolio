@@ -62,6 +62,9 @@ const Header = ({ history }) => {
                                         <LinkContainer to='/admin/orderlist'>
                                             <NavDropdown.Item active={false}>Order List</NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/admin/inventorylist'>
+                                            <NavDropdown.Item active={false}>Inventory List</NavDropdown.Item>
+                                        </LinkContainer>
                                         <LinkContainer to='/admin/productlist'>
                                             <NavDropdown.Item active={false}>Product List</NavDropdown.Item>
                                         </LinkContainer>

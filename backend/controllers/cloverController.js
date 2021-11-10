@@ -16,10 +16,9 @@ const orderClover = asyncHandler(async (req, res) => {
                 "state": "Open",
                 "orderType": { "id": process.env.ORDER_TYPE },
                 "employee": {
-                    "id": process.env.WEBSITE
-                    // "id": userInfo && userInfo.employeeID ?
-                    //     userInfo.employeeID : WEBSITE
+                    "id": userInfo.employeeID ? userInfo.employeeID : process.env.WEBSITE
                 }
+
             }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
         const orderID = newOrder.data.id
@@ -73,26 +72,28 @@ const orderClover = asyncHandler(async (req, res) => {
 
         // Attach Customer
         var customerID = userInfo && userInfo.customerID
-        if (!userInfo || userInfo.employeeID || !userInfo.customerID) {
-            //Create Customer
-            const newCustomer = await axios.post(process.env.CLOVER_URL + `/customers`,
-                {
-                    "emailAddresses": [
-                        {
-                            "emailAddress": cart.shippingInfo.email
-                        }
-                    ],
-                    "firstName": cart.shippingInfo.firstName,
-                    "lastName": cart.shippingInfo.lastName
-                }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        if (customerID) {
+            // if (!userInfo || userInfo.employeeID || !userInfo.customerID) {
+            //     //Create Customer
+            //     const newCustomer = await axios.post(process.env.CLOVER_URL + `/customers`,
+            //         {
+            //             "emailAddresses": [
+            //                 {
+            //                     "emailAddress": cart.shippingInfo.email
+            //                 }
+            //             ],
+            //             "firstName": cart.shippingInfo.firstName,
+            //             "lastName": cart.shippingInfo.lastName
+            //         }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+            //     )
+            //     customerID = newCustomer.data.id
+            // }
+            await axios.post(
+                process.env.CLOVER_URL + `/orders/${orderID}`,
+                { "customers": [{ "id": customerID }] },
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
-            customerID = newCustomer.data.id
         }
-        await axios.post(
-            process.env.CLOVER_URL + `/orders/${orderID}`,
-            { "customers": [{ "id": customerID }] },
-            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
-        )
 
 
         // Add Discount
@@ -165,7 +166,52 @@ const fetchTax = asyncHandler(async (req, res) => {
 })
 
 
+// @desc Create a Refund
+// @route POST /api/clover/refund
+// @access Public
+const refundClover = asyncHandler(async (req, res) => {
+    const { amount, lineID, orderID } = req.body
+    // await new Promise((res) => setTimeout(res, 3000))
+    try {
+        console.log("orderID", orderID)
+        console.log("amount", amount)
+        console.log("line", lineID)
+
+        //Create Refund
+        const { data } = await axios.post(
+            process.env.CLOVER_PAY_URL + `/orders/${orderID}/returns`,
+            {
+                "items": [
+                    {
+                        "parent": lineID,
+                        "type": "sku",
+                        "amount": amount
+                    }
+                ]
+            },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        )
+
+        console.log(JSON.stringify(data))
+        res.json("success")
+
+    } catch (error) {
+        if (error.response) {
+            throw new Error(JSON.stringify(error.response.data))
+        } else if (error.request) {
+            throw new Error("Request Error")
+        } else {
+            throw new Error("Server Error: " + JSON.stringify(error))
+        }
+    }
+})
+
+
+
+
+
 export {
     orderClover,
     fetchTax,
+    refundClover
 }

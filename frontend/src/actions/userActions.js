@@ -25,6 +25,9 @@ import {
     USER_UPDATE_SUCCESS,
     USER_UPDATE_FAIL,
     USER_REGISTER_RESET,
+    USER_WISH_REQUEST,
+    USER_WISH_SUCCESS,
+    USER_WISH_FAIL,
 } from "../constants/userConstants"
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 import { CART_LOAD_USER, CART_RESET } from '../constants/cartConstants'
@@ -250,6 +253,63 @@ export const updateUser = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const addWishListItem = (pID) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_WISH_REQUEST })
+
+        const { userLogin: { userInfo } } = getState()
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const { data } = await axios.post(`/api/users/wish/${pID}`, {}, config)
+
+        userInfo.wishList.push(pID)
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+        dispatch({ type: USER_WISH_SUCCESS, payload: data.wishList })
+
+
+    } catch (error) {
+        dispatch({
+            type: USER_WISH_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message : error.message
+        })
+    }
+}
+export const removeWishListItem = (pID) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_WISH_REQUEST })
+
+        const { userLogin: { userInfo } } = getState()
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const { data } = await axios.delete(`/api/users/wish/${pID}`, config)
+
+        // For Local
+        const index = userInfo.wishList.indexOf(pID)
+        if (index > -1) userInfo.wishList.splice(index, 1)
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
+
+        // For Redux
+        dispatch({ type: USER_WISH_SUCCESS, payload: data.wishList })
+
+
+    } catch (error) {
+        dispatch({
+            type: USER_WISH_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message : error.message
         })
