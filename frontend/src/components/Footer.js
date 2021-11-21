@@ -5,7 +5,7 @@ import "../styles/Footer.css"
 
 const Footer = () => {
     return (
-        <footer>
+        <footer >
             <Container>
                 <Navbar variant='dark' expand="lg">
                     <Col lg={3} className="text-center text-lg-left">

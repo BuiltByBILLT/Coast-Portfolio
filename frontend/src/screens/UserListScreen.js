@@ -21,14 +21,14 @@ const UserListScreen = ({ history }) => {
     const userDelete = useSelector(state => state.userDelete)
     const { success: successDelete } = userDelete
 
-    useEffect(() => {
-        if (userInfo && userInfo.isStaff) {
-            dispatch(listUsers())
-        } else {
-            history.push('/login')
-        }
-        return () => { }
-    }, [dispatch, history, successDelete, userInfo])
+    // useEffect(() => {
+    //     if (userInfo && userInfo.isStaff) {
+    //         dispatch(listUsers())
+    //     } else {
+    //         history.push('/login')
+    //     }
+    //     return () => { }
+    // }, [dispatch, history, successDelete, userInfo])
 
     const deleteHandler = (id, name) => {
         if (window.confirm(`Delete ${name} \nAre you sure?`))
@@ -65,7 +65,7 @@ const UserListScreen = ({ history }) => {
             </Row>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
                 : (
-                    <Table striped borded hover responsive className='table-sm mt-3'>
+                    <Table striped bordered hover responsive className='table-sm mt-3'>
                         <thead>
                             <tr>
                                 <th>CREATED</th>

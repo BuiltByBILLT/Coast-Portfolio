@@ -4,17 +4,12 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
     return (pages > 1 && (
-        <Pagination>
-            {[...Array(pages).keys()].map(x => (
-                <LinkContainer key={x + 1}
-                    to={!isAdmin ?
-                        keyword ? `/search/${keyword}/page/${x + 1}`
-                            : `/page/${x + 1}`
-                        : `/admin/productlist/${x + 1}`
-                    }>
-                    <Pagination.Item active={x + 1 === page}>{x + 1}</Pagination.Item>
-                </LinkContainer>
-            ))}
+        <Pagination className="">
+            <Pagination.Item to="" disabled={page == 1}>&laquo;</Pagination.Item>
+            <Pagination.Item to="" disabled>{page}</Pagination.Item>
+            <Pagination.Item to="" disabled >of</Pagination.Item>
+            <Pagination.Item to="" disabled>{pages}</Pagination.Item>
+            <Pagination.Item to="" >&raquo;</Pagination.Item>
         </Pagination>
     ))
 }

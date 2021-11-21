@@ -37,45 +37,24 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    images: [imageSchema],
-    optionGroup: {
-        type: String,
-    },
     pManufacturer: {
-        type: String,
+        type: Number,
     },
     pSection: {
         type: Number,
         required: true,
     },
-    pSectionName: {
-        type: String,
-        // required: true,
-    },
     pDescription: {
         type: String,
-    },
-    pLongDescription: {
-        type: String,
-    },
-    pPrice: {
-        type: Number,
-        // required: true,
-        default: 0
-    },
-    pListPrice: {
-        type: Number,
-        default: 0
     },
     pDisplay: {
         type: Boolean,
         required: true,
         default: 0
     },
-    pSell: {
-        type: Boolean,
-        required: true,
-        default: 0
+    images: [imageSchema],
+    optionGroup: {
+        type: String,
     },
 
 }, {

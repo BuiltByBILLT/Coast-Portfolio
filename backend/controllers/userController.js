@@ -9,48 +9,52 @@ import axios from 'axios'
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body
-
     const user = await User.findOne({ email: email })
-
     if (user && await user.matchPassword(password)) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isStaff: user.isStaff,
-            isAdmin: user.isAdmin,
-            cart: user.cart,
-            wishList: user.wishList,
-            customerID: user.customerID,
-            employeeID: user.employeeID,
-            token: generateToken(user._id),
-        })
+        res.json({ ...user._doc, token: generateToken(user._id), password: undefined })
     } else {
         res.status(401)
         throw new Error('Invalid email or password')
     }
 })
 
-
-// @desc Get user profile (From Admin?)
+// @desc Get user's own profile
 // @route GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
+    res.json({ ...user._doc, password: undefined })
+})
 
-    if (user) {
+// @desc User Updates own profile 
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+
+    if (req.body.password) {
+        if (req.body.password.length > 8) {
+            user.password = req.body.password
+            await user.save()
+            res.json({ message: "Password Updated" })
+        }
+        else throw new Error('Password must be longer than 8 characters')
+    }
+    if (req.body.address) {
+        user.address = req.body.address
+        const updatedUser = await user.save()
         res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            customerID: user.customerID,
-            employeeID: user.employeeID,
-            isStaff: user.isStaff,
-            isAdmin: user.isAdmin,
+            message: "Address Updated",
+            userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
         })
-    } else {
-        res.status(404)
-        throw new Error('User not found')
+    }
+    if (req.body.delete === "ADDRESS") {
+        user.address = undefined
+        const updatedUser = await user.save()
+        res.json({
+            message: "Address Deleted",
+            userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
+        })
     }
 })
 
@@ -60,7 +64,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access Private/Staff/Admin
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find({}).sort({ createdAt: -1 })
-
     res.json(users)
 })
 
@@ -77,83 +80,55 @@ const getUserById = asyncHandler(async (req, res) => {
     }
 })
 
-//========================================================================================================================
-//===============================================Edit=====================================================================
-//========================================================================================================================
-
 // @desc Register a new user
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body
+    const { firstName, lastName, email, password } = req.body
 
     const userExists = await User.findOne({ email: email })
-
-    if (userExists) {
-        res.status(400)
-        throw new Error('User already exists')
-    }
-    const { data } = await syncToClover({ name: "", email: "", customerID: "" }, req.body)
-
-    const user = await User.create({
-        name,
-        email,
-        password,
-        customerID: data.id
-        // customerID: name + email
-    })
-
-    if (user) {
-
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            customerID: user.customerID,
-            isAdmin: false,
-            token: generateToken(user._id),
-            cart: user.cart
-        })
-    } else {
-        res.status(400)
-        throw new Error('Invalid User Data')
-    }
-})
-
-
-// @desc User Updates own profile 
-// @route PUT /api/users/profile
-// @access Private
-const updateUserProfile = asyncHandler(async (req, res) => {
-    console.log(req.body)
-    const user = await User.findById(req.user._id)
-    const oldUser = { ...user }
-
-    if (user) {
-
-        user.name = req.body.name || user.name
-        user.email = req.body.email || user.email
-        if (req.body.password) {
-            user.password = req.body.password
+    if (!userExists) {
+        if (req.body.password.length > 8) {
+            let cloverResponse = {}
+            try {
+                cloverResponse = await axios.post(
+                    process.env.CLOVER_URL + `/customers`,
+                    {
+                        "emailAddresses": [{ "emailAddress": email }],
+                        "firstName": firstName,
+                        "lastName": lastName
+                    },
+                    { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } })
+            } catch (e) {
+                console.log("e", e)
+                throw new Error('Clover Error')
+            }
+            if (cloverResponse.data.id) {
+                const user = await User.create({
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    customerID: cloverResponse.data.id
+                })
+                if (user) { // Success!
+                    res.status(201)
+                        .json({ ...user._doc, token: generateToken(user._id), password: undefined })
+                } else {
+                    res.status(400)
+                    throw new Error('Invalid User Data')
+                }
+            } else throw new Error('Customer ID Not Created')
         }
-
-        const updatedUser = await user.save()
-        await syncToClover(user, req.body)
-
-        res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            isStaff: updatedUser.isStaff,
-            isAdmin: updatedUser.isAdmin,
-            customerID: updatedUser.customerID,
-            token: generateToken(updatedUser._id),
-        })
-    } else {
-        res.status(404)
-        throw new Error('User not found')
+        else throw new Error('Password must be longer than 8 characters')
+    }
+    else {
+        res.status(400)
+        throw new Error('User Email already exists')
     }
 })
+
+
 
 
 // @desc Admin Updates User 
@@ -163,8 +138,6 @@ const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
 
     if (user) {
-
-
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
 
@@ -240,11 +213,6 @@ const deleteUser = asyncHandler(async (req, res) => {
         throw new Error('User not found')
     }
 })
-
-//========================================================================================================================
-//===============================================Cart=====================================================================
-//========================================================================================================================
-
 
 // @desc Add Cart to User
 // @route POST /api/users/cart

@@ -15,6 +15,8 @@ import cartRoutes from './routes/cartRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
 import fileRoutes from './routes/fileRoutes.js'
 import shippingRoutes from './routes/shippingRoutes.js'
+import brandRoutes from './routes/brandRoutes.js'
+import discountRoutes from './routes/discountRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -30,12 +32,15 @@ app.use(express.json())
 
 
 
-app.use('/api/inventory', inventoryRoutes)
-app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/products', productRoutes)
+app.use('/api/inventory', inventoryRoutes)
+app.use('/api/categories', categoryRoutes)
+app.use('/api/brands', brandRoutes)
+app.use('/api/discounts', discountRoutes)
+
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
-app.use('/api/categories', categoryRoutes)
 app.use('/api/clover', cloverRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/reports', reportRoutes)

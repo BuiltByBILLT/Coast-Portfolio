@@ -1,7 +1,8 @@
 import React from 'react'
 import { Spinner } from 'react-bootstrap'
 
-const Loader = () => {
+const Loader = ({ height }) => {
+
     return (
         <Spinner
 
@@ -9,7 +10,7 @@ const Loader = () => {
             role='status'
             style={{
                 width: '100px',
-                height: '100px',
+                height: height || '100px',
                 margin: '100px auto',
                 display: 'block',
 

@@ -1,190 +1,38 @@
-import React, { useState, useEffect } from 'react'
-import { Table, Form, Button, Row, Col, Container, Navbar, Nav } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import ProfileNav from '../components/ProfileNav'
-import { getUserDetails, updateUserProfile } from '../actions/userActions'
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import React, { useContext } from 'react'
+import { UserContext } from '../contexts/UserContext'
+
+import { Row, Col, Container } from 'react-bootstrap'
 import { UserNavBar } from '../components/UserNavBar'
+import EditPassword from '../components/EditPassword'
+import EditAddress from '../components/EditAddress'
+import ProtectedRoute from '../components/ProtectedRoute'
 
-const ProfileInfoScreen = ({ location, history }) => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [address, setAddress] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [nameEdit, setNameEdit] = useState(false)
-    const [emailEdit, setEmailEdit] = useState(false)
-    const [addressEdit, setAddressEdit] = useState(false)
-    const [passwordEdit, setPasswordEdit] = useState(false)
-    const [message, setMessage] = useState('')
-    const [successMessage, setSucessMessage] = useState(false)
 
-    const userDetails = useSelector(state => state.userDetails)
-    const { loading, error, user } = userDetails
-    const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
-    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const { success, loading: updateLoading } = userUpdateProfile
 
-    const dispatch = useDispatch()
-    useEffect(() => {
-        if (!userInfo) {
-            history.push('/login')
-        } else {
-            if (!user.name) {
-                dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                dispatch(getUserDetails('profile'))
-            } else if (success) {
-                dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                dispatch(getUserDetails('profile'))
-                successPopup()
-            } else {
-                setName(user.name)
-                setEmail(user.email)
-            }
-        }
-        return () => { }
-    }, [dispatch, history, userInfo, user, success])
+const ProfileInfoScreen = () => {
 
-    const nameHandler = (e) => {
-        e.preventDefault()
-        setNameEdit(!nameEdit)
-        if (nameEdit) {
-            console.log("sent: " + name)
-            dispatch(updateUserProfile({ name }))
-        }
-    }
-    const emailHandler = (e) => {
-        e.preventDefault()
-        setEmailEdit(!emailEdit)
-        if (emailEdit) {
-            console.log("sent: " + email)
-            dispatch(updateUserProfile({ email }))
-        }
-    }
-    const addressHandler = (e) => {
-        e.preventDefault()
-        setAddressEdit(!addressEdit)
-        if (emailEdit) {
-            console.log("sent: " + address)
-            // dispatch(updateUserProfile({ address }))
-        }
-    }
-    const passwordHandler = (e) => {
-        console.log(passwordEdit)
-        e.preventDefault()
-        let passEl = document.getElementById("password")
-        let confirmEl = document.getElementById("confirmPassword")
-
-        if (passwordEdit) {
-            if (password !== confirmPassword) {
-                setMessage('Passwords do not match')
-                passEl.focus()
-            } else if (password === "") {
-                setMessage('Please Enter Password')
-                passEl.focus()
-            } else {
-                console.log({ password })
-                setMessage('')
-                passEl.placeholder = "******"
-                confirmEl.parentElement.className = "d-none form-group"
-                setPasswordEdit(false)
-                dispatch(updateUserProfile({ password }))
-            }
-        } else {
-            passEl.placeholder = ""
-            passEl.focus()
-            confirmEl.parentElement.className = "form-group"
-            setPasswordEdit(true)
-        }
-    }
-
-    const successPopup = async () => {
-        setSucessMessage(true)
-        await new Promise(r => setTimeout(r, 5000));
-        setSucessMessage(false)
-    }
+    const user = useContext(UserContext)
 
     return (
-        <>
-            <Container className="my-5">
-                <UserNavBar />
-                {message && <Message variant='danger'>{message}</Message>}
-                {error && <Message variant='danger'>{error}</Message>}
-                {successMessage && <Message variant='success'>Profile Updated</Message>}
-                {loading && <Loader />}
-                {updateLoading && <Loader />}
-                <Form>
-                    <Row className="mt-5">
-                        <Col lg={6} className="p-5">
-                            <Form.Group controlId='name'>
-                                <Form.Label as="h3">Name</Form.Label>
-                                <Form.Control type='name' placeholder='Enter name' value={name} required
-                                    readOnly={!nameEdit} plaintext={!nameEdit}
-                                    onChange={(e) => setName(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Button variant='secondary' className="text-danger p-0"
-                                onClick={nameHandler}>
-                                {nameEdit ? "Save" : "Edit"}
-                            </Button>
-                        </Col>
+        <Container className="my-5 pb-5">
+            <UserNavBar />
+            <Row className="mt-5">
+                <Col lg={6} className="px-5">
+                    <h3>Name</h3>
+                    <p className="mt-3 mb-5">{user.firstName} {user.lastName}</p>
+                    <h3>Email</h3>
+                    <p className="mt-3 mb-5">{user.email}</p>
 
-                        <Col lg={6} className="p-5">
-                            <Form.Group controlId='email'>
-                                <Form.Label as="h3">Email</Form.Label>
-                                <Form.Control type='email' placeholder='Enter email' value={email} required
-                                    readOnly={!emailEdit} plaintext={!emailEdit}
-                                    onChange={(e) => setEmail(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Button variant='secondary' className="text-danger p-0"
-                                onClick={emailHandler}>
-                                {emailEdit ? "Save" : "Edit"}
-                            </Button>
-                        </Col>
+                    <h3>Password</h3>
+                    <EditPassword />
+                </Col>
 
-                        <Col lg={6} className="p-5">
-                            <Form.Group controlId='password'>
-                                <Form.Label as="h3">Password</Form.Label>
-                                <Form.Control type='password' placeholder='******' required
-                                    readOnly={!passwordEdit} plaintext={!passwordEdit}
-                                    onChange={(e) => setPassword(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='confirmPassword' className="d-none">
-                                <Form.Label>Confirm Password</Form.Label>
-                                <Form.Control type='password' placeholder='Confirm Password' value={confirmPassword} required
-                                    onChange={(e) => setConfirmPassword(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Button id="passwordBtn" variant='secondary' className="text-danger p-0"
-                                onClick={passwordHandler}>
-                                {passwordEdit ? "Save" : "Edit"}
-                            </Button>
-                        </Col>
-
-                        <Col lg={6} className="p-5">
-                            <Form.Group controlId='address'>
-                                <Form.Label as="h3">Address</Form.Label>
-                                <Form.Control type='text' placeholder='Enter Address' value={address}
-                                    readOnly={!addressEdit} plaintext={!addressEdit}
-                                    onChange={(e) => setAddress(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Button variant='secondary' className="text-danger p-0"
-                                onClick={addressHandler}>
-                                {addressEdit ? "Save" : "Edit"}
-                            </Button>
-                        </Col>
-                    </Row>
-
-                </Form>
-            </Container>
-        </>
+                <Col lg={6} className="px-5">
+                    <h3>Address</h3>
+                    <EditAddress />
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

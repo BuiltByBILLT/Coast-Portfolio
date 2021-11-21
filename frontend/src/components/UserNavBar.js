@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../contexts/UserContext'
 import { Navbar, Nav } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 
-
 export const UserNavBar = () => {
 
-    const { userInfo } = useSelector(state => state.userLogin)
-    const isStaff = userInfo && userInfo.isStaff
+    const user = useContext(UserContext)
 
     return (
         <Navbar variant='light' expand="lg" collapseOnSelect className='pb-4 mb-5 pt-0'
@@ -23,8 +22,8 @@ export const UserNavBar = () => {
                 <LinkContainer to='/profile'>
                     <Nav.Link active={false} className='mx-2 mx-xl-4'>About</Nav.Link>
                 </LinkContainer>
-                {isStaff
-                    ? <LinkContainer to='/employeehistory'>
+                {user.isStaff
+                    ? <LinkContainer to='/admin/employeehistory'>
                         <Nav.Link active={false} className='mx-2 mx-xl-4'>Employee History</Nav.Link>
                     </LinkContainer>
                     : <LinkContainer to='/orderhistory'>

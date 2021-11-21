@@ -27,7 +27,7 @@ const ProductScreen = ({ history, match }) => {
     const [qty, setQty] = useState(1)
     const [stock, setStock] = useState(0)
     const [option, setOption] = useState(0)
-    const [price, setPrice] = useState(product.pPrice)
+    const [price, setPrice] = useState(0)
     const [cloverID, setCloverID] = useState("")
     const [name, setName] = useState(product.pName)
 
@@ -42,16 +42,15 @@ const ProductScreen = ({ history, match }) => {
 
 
     useEffect(() => {
-        setPrice(product.pPrice)
         setName(product.pName)
         if (product.options && product.options.length == 1) {
-            setPrice(product.pPrice + product.options[0].iPrice)
+            setPrice(product.options[0].iPrice)
             setStock(product.options[0].iStock)
             setCloverID(product.options[0].cloverID)
             // setName(`${product.pName} (${product.options[0].iSelectionName})`)
         }
         else if (product.options && product.options.length > 1 && option != 0) {
-            setPrice(product.pPrice + product.options[option - 1].iPrice)
+            setPrice(product.options[option - 1].iPrice)
             setCloverID(product.options[option - 1].cloverID)
             setName(`${product.pName} (${product.options[option - 1].iSelectionName})`)
             setStock(product.options[option - 1].iStock)

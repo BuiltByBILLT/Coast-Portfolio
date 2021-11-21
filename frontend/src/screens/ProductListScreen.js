@@ -1,78 +1,79 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col, Container, Form, InputGroup } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
-import { listProducts, deleteProduct, createProduct } from '../actions/productActions'
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../contexts/UserContext'
+import { useMutation, useQuery } from 'react-query'
+import axios from 'axios'
 
-const ProductListScreen = ({ history, match }) => {
-    const pageNumber = match.params.pageNumber || 1
+const ProductListScreen = ({ history }) => {
 
-    const [search, setSearch] = useState('')
+    // States and Contexts
+    const user = useContext(UserContext)
+    const [search, setSearch] = useState("")
+    const [success, setSuccess] = useState("")
+    const [error, setError] = useState("")
 
-    const { loading, error, products, page, pages } = useSelector(state => state.productList)
-    const { userInfo } = useSelector(state => state.userLogin)
-    const productDelete = useSelector(state => state.productDelete)
-    const { loading: loadingDelete,
-        error: errorDelete,
-        success: successDelete
-    } = productDelete
-    const productCreate = useSelector(state => state.productCreate)
-    const { loading: loadingCreate,
-        error: errorCreate,
-        success: successCreate,
-        product: createdProduct
-    } = productCreate
-
-    const dispatch = useDispatch()
-    useEffect(() => {
-        if (userInfo && userInfo.isStaff) {
-            dispatch(listProducts('', pageNumber, 200, "updatedAt", -1, 1))
-        } else {
-            history.push('/login')
+    // List Query
+    const { isLoading: qLoading, data, refetch } = useQuery(`productListAdmin`, () => {
+        return axios.get(`/api/products?keyword=${search}`, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
         }
-        return () => { dispatch({ type: PRODUCT_CREATE_RESET }) }
-    }, [successDelete])
+    })
+    const products = data && data.data && data.data.products
+    const page = data && data.data && data.data.page
+    const pages = data && data.data && data.data.pages
 
-    useEffect(() => {
-        if (successCreate) {
-            history.push(`/admin/product/${createdProduct.cloverID}/edit`)
+    // Delete Mutation
+    const { mutate, isLoading: mLoading, reset } = useMutation(pID => {
+        return axios.delete(`/api/products/edit/${pID}`, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onSuccess: (data) => {
+            console.log(data.data)
+            setSuccess(`Deleted Product ${data.data.pID} Successfully`)
+            setError("")
+            reset()
+            refetch()
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
         }
-    }, [successCreate])
+    })
 
-
-    const deleteHandler = (id, name) => {
-        if (window.confirm(`Delete ${name} \nAre you sure?`)) {
-            dispatch(deleteProduct(id))
-        }
-    }
-    const createProductHandler = () => {
-        dispatch(createProduct())
-    }
+    // Handlers
     const searchHandler = (e) => {
         e.preventDefault()
-        dispatch(listProducts(search, pageNumber, 200, "updatedAt", -1, 1))
+        refetch()
     }
-    const sortHandler = (sort, upDown) => {
-        dispatch(listProducts(search, pageNumber, 200, sort, upDown, 1))
+    const createHandler = () => {
+        history.push('/admin/productnew')
+    }
+    const deleteHandler = (pID) => {
+        if (window.confirm(`Delete product: ${pID} \nAre you sure?`)) mutate(pID)
     }
 
     return (
         <Container className="my-5 py-3">
-            <Row className='align-items-center mb-4'>
-                <Col>
-                    <h1>Products</h1>
+            <Row className='align-items-center'>
+                <Col className="my-auto">
+                    <h2 className="my-0">Product Pages</h2>
                 </Col>
-                <Col className="my-auto mr-4">
+                <Col className="my-auto">
                     <Form onSubmit={searchHandler}>
                         <InputGroup>
-                            <Form.Control
-                                placeholder="Search by Name or SKU"
-                                aria-label="Search by Name or SKU"
+                            <Form.Control placeholder="Search by Name or SKU" aria-label="Search by Name or SKU"
                                 style={{ height: "50px" }}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -85,93 +86,56 @@ const ProductListScreen = ({ history, match }) => {
                     </Form>
                 </Col>
                 <Col className="text-right" xs="auto">
-                    <Button variant="danger" className='my-3' onClick={createProductHandler}>
-                        <i className='fas fa-plus'></i> Create Product
+                    <Button variant="danger" className='my-3' onClick={createHandler}>
+                        <i className='fas fa-plus'></i> New Page
                     </Button>
                 </Col>
             </Row>
-            {loadingDelete && <Loader />}
-            {errorDelete && <Message variant='danger'>{error}</Message>}
-            {loadingCreate && <Loader />}
-            {errorCreate && <Message variant='danger'>{error}</Message>}
-            {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
-                : (<>
-                    <Table striped bordered hover responsive className='table-sm mt-3'>
-                        <thead>
-                            <tr>
-                                <th>{"MODIFIED "}
-                                    <i className='fas fa-sort-up' onClick={() => { sortHandler("updatedAt", 1) }}></i>
-                                    /
-                                    <i className='fas fa-sort-down' onClick={() => { sortHandler("updatedAt", -1) }}></i>
-                                </th>
-                                <th>{"SKU "}
-                                    <i className='fas fa-sort-up' onClick={() => { sortHandler("pID", 1) }}></i>
-                                    /
-                                    <i className='fas fa-sort-down' onClick={() => { sortHandler("pID", -1) }}></i>
-                                </th>
-                                <th>{"NAME "}
-                                    <i className='fas fa-sort-up' onClick={() => { sortHandler("pName", 1) }}></i>
-                                    /
-                                    <i className='fas fa-sort-down' onClick={() => { sortHandler("pName", -1) }}></i>
-                                </th>
-                                {/* <th>{"PRICE "}
-                                    <i className='fas fa-sort-up' onClick={() => { sortHandler("pPrice", -1) }}></i>
-                                    /
-                                    <i className='fas fa-sort-down' onClick={() => { sortHandler("pPrice", 1) }}></i>
-                                </th>
-                                <th>{"STOCK "}
-                                    <i className='fas fa-sort-up' onClick={() => { sortHandler("pInStock", -1) }}></i>
-                                    /
-                                    <i className='fas fa-sort-down' onClick={() => { sortHandler("pInStock", 1) }}></i> */}
-                                {/* </th> */}
-                                <th>DISPLAY</th>
-                                <th>SELL</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map(product => (
-                                <tr key={product.cloverID}>
-                                    <td>{product.updatedAt.slice(0, 10)}</td>
-                                    <td>{product.pID}</td>
-                                    <td><Link to={`/product/${product.pID}`}>{product.pName}</Link></td>
-                                    <td >
-                                        {product.pDisplay
-                                            ? <i className='fas fa-check' style={{ color: 'green' }}></i>
-                                            : <i className='fas fa-times' style={{ color: 'red' }}></i>
-                                        }
-                                    </td>
-                                    <td>
-                                        {product.pSell
-                                            ? <i className='fas fa-check' style={{ color: 'green' }}></i>
-                                            : <i className='fas fa-times' style={{ color: 'red' }}></i>
-                                        }
-                                    </td>
-                                    {/* <td>{Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}</td> */}
-                                    {/* <td>{product.pInStock}</td> */}
-                                    <td className="text-center px-1">
-                                        {/* <LinkContainer to={`/product/${product.cloverID}`}>
-                                            <Button variant='dark' className='btn-sm'>
-                                                <i className="fas fa-link"></i>
-                                            </Button>
-                                        </LinkContainer> */}
-                                        <LinkContainer to={`/admin/product/${product.pID}/edit`}>
-                                            <Button variant='dark' className='btn-sm mr-2'>
-                                                <i className='fas fa-edit'></i>
-                                            </Button>
-                                        </LinkContainer>
-                                        <Button variant='danger' className='btn-sm'
-                                            onClick={() => deleteHandler(product.cloverID, product.pName)}>
-                                            <i className='fas fa-trash'></i>
+
+            {error && <Message variant="danger">{error}</Message>}
+            {success && <Message variant="success">{success}</Message>}
+            {qLoading || mLoading ? <Loader /> : (
+                <Table striped bordered hover responsive className='table-sm mt-3'>
+                    <thead>
+                        <tr>
+                            <th>MODIFIED</th>
+                            <th>SKU</th>
+                            <th>NAME</th>
+                            <th>DISPLAY</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {products && products.map(product => (
+                            <tr key={product.pID}>
+                                <td>{product.updatedAt.slice(0, 10)}</td>
+                                <td>{product.pID}</td>
+                                <td><Link to={`/product/${product.pID}`}>{product.pName}</Link></td>
+                                <td >
+                                    {product.pDisplay
+                                        ? <i className='fas fa-check text-success'></i>
+                                        : <i className='fas fa-times text-danger'></i>
+                                    }
+                                </td>
+                                <td className="text-center px-1">
+                                    <LinkContainer to={`/admin/product/${product.pID}/edit`}>
+                                        <Button variant='dark' className='btn-sm mr-2'>
+                                            <i className='fas fa-edit'></i>
                                         </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                    <Paginate pages={pages} page={page} isAdmin={true} />
-                </>
-                )}
+                                    </LinkContainer>
+                                    <Button variant='danger' className='btn-sm'
+                                        onClick={() => deleteHandler(product.pID)}>
+                                        <i className='fas fa-trash'></i>
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
+            <div className="d-flex justify-content-center">
+                <Paginate pages={pages} page={page} />
+            </div>
         </Container>
     )
 }

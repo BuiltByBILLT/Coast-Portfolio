@@ -1,5 +1,14 @@
-main {
-  min-height: 69vh;
+html,
+body,
+#root {
+  height: 100%;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+}
+footer {
+  margin-top: auto;
 }
 
 body,

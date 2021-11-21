@@ -31,8 +31,7 @@ const OrderScreen = ({ match, history }) => {
 
     // Check if Label already created
     const { isLoading, isError, data: labelData, error: labelError, refetch } = useQuery('label', () =>
-        axios.get(`/api/shipping/tracking/${orderID}`),
-        { refetchOnWindowFocus: false }
+        axios.get(`/api/shipping/tracking/${orderID}`)
     )
 
     // Shipping Label Mutations

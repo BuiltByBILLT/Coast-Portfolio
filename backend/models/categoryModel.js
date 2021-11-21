@@ -22,24 +22,24 @@ const categorySchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    sectionOrder: {
-        type: Number,
-        required: true,
-    },
-    rootSection: {
+    // sectionOrder: {
+    //     type: Number,
+    //     required: true,
+    // },
+    // rootSection: {
+    //     type: Boolean,
+    //     required: true,
+    // },
+    sectionDisabled: {
         type: Boolean,
         required: true,
     },
-    sectionDisabled: {
-        type: Number,
-        required: true,
-    },
-    sectionURL: {
-        type: String,
-    },
-    sectionDescription: {
-        type: String,
-    },
+    // sectionURL: {
+    //     type: String,
+    // },
+    // sectionDescription: {
+    //     type: String,
+    // },
 }, {
     timestamps: true
 })

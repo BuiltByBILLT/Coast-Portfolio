@@ -2,7 +2,8 @@ import bcrypt from 'bcryptjs'
 
 const users = [
     {
-        name: 'Admin User',
+        firstName: 'Admin',
+        lastName: 'Account',
         email: 'admin@example.com',
         password: bcrypt.hashSync('123456', 10),
         isStaff: true,
@@ -10,7 +11,8 @@ const users = [
         employeeID: 'TBSNZG5F3QJNJ'
     },
     {
-        name: 'Employee Tom',
+        firstName: 'Employee Tom',
+        lastName: 'Smith',
         email: 'tom@example.com',
         password: bcrypt.hashSync('123456', 10),
         isStaff: true,
@@ -18,7 +20,8 @@ const users = [
         employeeID: 'A728RB8VMANMY'
     },
     {
-        name: 'Employee Jane',
+        firstName: 'Employee Jane',
+        lastName: 'Doe',
         email: 'jane@example.com',
         password: bcrypt.hashSync('123456', 10),
         isStaff: true,

@@ -1,175 +1,191 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import { useMutation, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
-import { Form, Button, Container, Modal } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
 import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
-import { listProductDetails, updateProduct } from '../actions/productActions'
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
-import ImageEditer from '../components/ImageEditer'
+import Message from '../components/Message'
+import { UserContext } from '../contexts/UserContext'
 
-const ProductEditScreen = ({ match, history }) => {
-    const productId = match.params.id
+const ProductEditScreen = ({ match }) => {
+
+    // States and Contexts
+    const ID = match.params.id
+    const user = useContext(UserContext)
+
+    const [pID, setPID] = useState("")
+    const [pName, setPName] = useState("")
+    const [pSection, setPSection] = useState("")
+    const [pManufacturer, setPManufacturer] = useState("")
+    const [pDescription, setPDescription] = useState("")
+    const [hasOptions, setHasOptions] = useState(false)
+    const [optionGroup, setOptionGroup] = useState("")
+    const [pDisplay, setPDisplay] = useState(false)
+
     const [edit, setEdit] = useState(false)
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
-    const [listPrice, setListPrice] = useState(0)
-    const [brand, setBrand] = useState('')
-    const [category, setCategory] = useState('')
-    const [countInStock, setCountInStock] = useState(0)
-    const [description, setDescription] = useState('')
-    const [imageEdit, setImageEdit] = useState(false)
+    const [success, setSuccess] = useState("")
+    const [error, setError] = useState("")
 
-    const [uploading, setUploading] = useState(false)
-    const [success, setSuccess] = useState(false)
+    // Query: Product Details  
+    const { isLoading: queryLoading, refetch } = useQuery(["productEdit", ID], () => {
+        return axios.get(`/api/products/edit/${ID}`, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onSuccess: (data) => {
+            console.log(data.data)
+            setPID(data.data.pID)
+            setPName(data.data.pName)
+            setPSection(data.data.pSection)
+            setPManufacturer(data.data.pManufacturer)
+            setPDescription(data.data.pDescription)
+            setHasOptions(!!data.data.optionGroup)
+            setOptionGroup(data.data.optionGroup)
+            setPDisplay(data.data.pDisplay)
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
+        }
+    })
 
-    const dispatch = useDispatch()
-
-    const productDetails = useSelector(state => state.productDetails)
-    const { loading, error, product } = productDetails
-
-    const productUpdate = useSelector(state => state.productUpdate)
-    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate
-
-    const { userInfo } = useSelector(state => state.userLogin);
-
-    useEffect(() => {
-        dispatch(listProductDetails(productId))
-
-        return () => { dispatch({ type: PRODUCT_UPDATE_RESET }) }
-    }, [])
-
-    useEffect(() => {
-        setSuccess(successUpdate)
-    }, [successUpdate])
-
-    useEffect(() => {
-        setName(product.pName)
-        setPrice(product.pPrice)
-        setListPrice(product.pListPrice)
-        // setImage(product.images && product.images[0].imageSrc)
-        setBrand(product.pManufacturer)
-        setCategory(product.pSection)
-        setCountInStock(product.pInStock)
-        setDescription(product.dLongDescription || product.pDescription)
-    }, [product])
+    // Mutation: Update Product
+    const { mutate, isLoading: mutationLoading, reset } = useMutation(data => {
+        return axios.put(`/api/products/edit/${ID}`, data, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onSuccess: (data) => {
+            console.log(data.data)
+            setSuccess("Product Update Success!")
+            setError("")
+            setEdit(false)
+            reset()
+            refetch()
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
+        }
+    })
 
 
-
-    const submitHandler = () => {
-        // e.preventDefault()
+    // Handlers
+    const saveHandler = (e) => {
+        e.preventDefault()
+        mutate({ pID, pName, pSection, pManufacturer, pDescription, optionGroup, pDisplay })
+    }
+    const editHandler = (e) => {
+        e.preventDefault()
+        setEdit(true)
+        setError("")
+        setSuccess("")
+    }
+    const cancelHandler = () => {
         setEdit(false)
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        dispatch(updateProduct({
-            cloverID: product.cloverID,
-            name,
-            price,
-            listPrice,
-            brand,
-            // image,
-            category,
-            description,
-            countInStock
-        }))
+        refetch()
     }
 
     return (
-        <Container className="my-5 py-3">
-            <Link to='/admin/productlist' className='btn btn-light my-3'>{`<-- Product List`}</Link>
-            <h1>Edit Product</h1>
-            {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
-            {loadingUpdate && <Loader />}
-            {success && <Message variant='success'>Update Sucessful</Message>}
-            {loading && <Loader />}
-            {error ? <Message variant='danger'>{error}</Message> :
-                (
-                    <>
-                        <Form>
-                            <Form.Group controlId='name'>
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type='name' placeholder='Enter name' value={name} disabled={!edit}
-                                    onChange={(e) => setName(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='price'>
-                                <Form.Label>Price (In Cents)</Form.Label>
-                                <Form.Control type='number' placeholder='Enter price' value={price} disabled={!edit}
-                                    onChange={(e) => setPrice(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='listPrice'>
-                                <Form.Label>Listed Price (In Cents)</Form.Label>
-                                <Form.Control type='number' placeholder='Enter price' value={listPrice} disabled={!edit}
-                                    onChange={(e) => setListPrice(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            {/* <Form.Group controlId='image'>
-                                <Form.Label>Image</Form.Label>
-                                <Form.Control type='text' placeholder='Enter image URL' value={image} disabled={!edit}
-                                    onChange={(e) => setImage(e.target.value)}>
-                                </Form.Control>
-                                <Form.File id='image-file' label='Choose File' custom
-                                    onChange={uploadFileHandler}>
-                                </Form.File>
-                                {uploading && <Loader />}
-                            </Form.Group> */}
-                            <Form.Group controlId='brand'>
-                                <Form.Label>Brand</Form.Label>
-                                <Form.Control type='text' placeholder='Enter brand' value={brand} disabled={!edit}
-                                    onChange={(e) => setBrand(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='countInStock'>
-                                <Form.Label>Count In Stock</Form.Label>
-                                <Form.Control type='number' placeholder='Enter Count In Stock' value={countInStock} disabled={!edit}
-                                    onChange={(e) => setCountInStock(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='category'>
-                                <Form.Label>Category</Form.Label>
-                                <Form.Control type='text' placeholder='Enter category' value={category} disabled={!edit}
-                                    onChange={(e) => setCategory(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='description'>
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control as='textarea' placeholder='Enter description' value={description} disabled={!edit}
-                                    onChange={(e) => setDescription(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                        </Form>
-                        <Modal show={imageEdit} onHide={() => setImageEdit(false)}
-                            backdrop="static" keyboard={false} size="xl"
-                        >
-                            <Modal.Header closeButton>
-                                <Modal.Title>Edit Product Images</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body> <ImageEditer product={product} /> </Modal.Body>
-                        </Modal>
-
-                        {edit
-                            ? <Button variant='primary'
-                                onClick={() => submitHandler()}>
-                                Update
-                            </Button>
-                            : <Button variant='outline-danger'
-                                onClick={() => {
-                                    setEdit(!edit)
-                                    setSuccess(false)
-                                }}>
-                                Edit
-                            </Button>}
-                        <Button variant='secondary'
-                            onClick={() => setImageEdit(true)}>
-                            Edit Images
-                        </Button>
-                    </>
-                )}
-
+        <Container className="my-5 pb-5">
+            <Row>
+                <Col xs={8}>
+                    <Row>
+                        <Col>
+                            <Link to="/admin/productlist">{"<-- Product Page List"}</Link>
+                        </Col>
+                    </Row>
+                    <h2 className="mt-3">Edit Product Page</h2>
+                    {queryLoading ? <Loader />
+                        : mutationLoading ? <Loader /> : (
+                            <Form className="my-5" onSubmit={saveHandler}>
+                                {error && <Message variant="danger">{error}</Message>}
+                                {success && <Message variant="success">{success}</Message>}
+                                <Form.Group controlId='Product ID'>
+                                    <Form.Label>Product SKU</Form.Label>
+                                    <Form.Control type='text' placeholder='Product SKU' value={pID} required disabled={true}
+                                        onChange={(e) => setPID(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Name'>
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control type='text' placeholder='Name' value={pName} required disabled={!edit}
+                                        onChange={(e) => setPName(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Category'>
+                                    <Form.Label>Category ID</Form.Label>
+                                    <Form.Control type='number' placeholder='Category' value={pSection} required disabled={!edit}
+                                        onChange={(e) => setPSection(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Manufacturer'>
+                                    <Form.Label>Brand ID</Form.Label>
+                                    <Form.Control type='number' placeholder='Manufacturer' value={pManufacturer} required disabled={!edit}
+                                        onChange={(e) => setPManufacturer(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Description'>
+                                    <Form.Label>Description</Form.Label>
+                                    <Form.Control as='textarea' placeholder='Description' value={pDescription} disabled={!edit}
+                                        onChange={(e) => setPDescription(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Check type="checkbox" id="optionsCheck" className="mb-3" custom
+                                    label="Has Options" disabled={!edit}
+                                    checked={hasOptions}
+                                    onChange={(e) => { setHasOptions(e.target.checked); setOptionGroup(null) }}>
+                                </Form.Check>
+                                {hasOptions && <Form.Group controlId='hasOptions'>
+                                    <Form.Label>Option Group Text</Form.Label>
+                                    <Form.Control type='text' placeholder='ex: Select Size' value={optionGroup} required disabled={!edit}
+                                        onChange={(e) => setOptionGroup(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>}
+                                <Form.Check type="checkbox" id="displayCheck" className="mb-3" custom
+                                    label="Display Product" disabled={!edit}
+                                    checked={pDisplay}
+                                    onChange={(e) => setPDisplay(e.target.checked)}>
+                                </Form.Check>
+                                {edit ? (
+                                    <>
+                                        <Button variant='secondary' className="text-danger p-0" type="submit">
+                                            Save
+                                        </Button>
+                                        <Button variant='secondary' className="p-0 ml-5" type="button"
+                                            onClick={cancelHandler}>
+                                            Cancel
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button variant='secondary' className="text-danger p-0" type="button"
+                                            onClick={editHandler}>
+                                            Edit
+                                        </Button>
+                                        {/* <Button variant='secondary'
+                                                onClick={() => setImageEdit(true)}>
+                                                Edit Images
+                                            </Button>
+                                            <Modal show={imageEdit} onHide={() => setImageEdit(false)}
+                                                backdrop="static" keyboard={false} size="xl"
+                                            >
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Edit Product Images</Modal.Title>
+                                                </Modal.Header>
+                                                <Modal.Body> <ImageEditer product={product} /> </Modal.Body>
+                                            </Modal> */}
+                                    </>
+                                )}
+                            </Form>
+                        )}
+                </Col>
+            </Row>
         </Container>
     )
 }
 
 export default ProductEditScreen
+
+
+// const [imageEdit, setImageEdit] = useState(false)

@@ -26,6 +26,41 @@ const cartItemsSchema = mongoose.Schema({
 }, {
     timestamps: true,
 })
+const addressSchema = mongoose.Schema({
+    company: {
+        type: String,
+    },
+    address1: {
+        type: String,
+        required: true
+    },
+    address2: {
+        type: String,
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    region: {
+        type: String,
+        required: true
+    },
+    country: {
+        type: String,
+        required: true
+    },
+    postalCode: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+
+}, {
+    timestamps: true,
+})
 // const wishListItemSchema = mongoose.Schema({
 //     pID: {
 //         type: String,
@@ -36,7 +71,11 @@ const cartItemsSchema = mongoose.Schema({
 // })
 
 const userSchema = mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
@@ -73,8 +112,10 @@ const userSchema = mongoose.Schema({
         sparse: true,
     },
     cart: [cartItemsSchema],
-    // wishList: [wishListItemSchema],
+    // cart: [String],
     wishList: [String],
+    address: { type: addressSchema },
+    // wishList: [wishListItemSchema],
 }, {
     timestamps: true
 })

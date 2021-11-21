@@ -2,9 +2,25 @@ import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 
+const check = asyncHandler(async (req, res, next) => {
+    let token
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+
+        token = req.headers.authorization.split(' ')[1]
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        req.user = await User.findById(decoded.id).select('-password')
+        if (req.user) {
+            if (req.user.isStaff) console.log("Staff")
+            else console.log("Customer")
+        } else console.log('Invalid Token')
+    }
+    else console.log('No User')
+    next()
+})
+
 const protect = asyncHandler(async (req, res, next) => {
     let token
-
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1]
@@ -47,4 +63,4 @@ const staff = (req, res, next) => {
 }
 
 
-export { protect, admin, staff }
+export { check, protect, admin, staff }

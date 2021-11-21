@@ -1,23 +1,28 @@
 import express from 'express'
 import {
+    deleteInventory,
+    getCloverIDs,
     getInventory,
-    getInventoryById
+    getInventoryItem,
+    newInventory,
+    updateInventory
 } from '../controllers/inventoryController.js'
 import { staff, protect } from '../middleware/authMiddleware.js'
 
+// @route /api/inventory/
 const router = express.Router()
 
 router.route('/')
     .get(protect, staff, getInventory)
-// .post(protect, staff, createProduct)
-// router.route('/:id/reviews').post(protect, createProductReview)
-// router.get(`/top`, getTopProducts)
-// router.get(`/suggested`, getSuggestedProducts)
-router.route('/:id')
-    .get(protect, staff, getInventoryById)
-// .delete(protect, staff, deleteProduct)
-// .put(protect, staff, updateProduct)
-// router.route('/images/:id')
-// .put(protect, staff, updateImages)
+
+router.route('/cloverids')
+    .get(protect, staff, getCloverIDs)
+
+router.route('/edit/:id')
+    .get(getInventoryItem)
+    .post(protect, staff, newInventory)
+    .put(protect, staff, updateInventory)
+    .delete(protect, staff, deleteInventory)
+
 
 export default router
