@@ -6,6 +6,11 @@ node_modules/
 /.pnp
 .pnp.js
 
+#images
+/frontend/public/prodimages/
+/frontend/public/images/
+
+
 # testing
 /coverage
 

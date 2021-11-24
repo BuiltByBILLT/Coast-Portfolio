@@ -235,7 +235,7 @@ const HomeScreen = ({ match }) => {
                             style={{ height: "80px", position: "absolute", top: "420px", left: "-50px", zIndex: 5 }}></Image>
                     </div>
                     <div style={{ position: "absolute", width: "100vw" }}>
-                        <Image src="/static/David_favorite.png"
+                        <Image src="/static/David_Favorite.png"
                             style={{ height: "120px", position: "absolute", top: "450px", left: "50px", zIndex: 5 }}></Image>
                     </div>
                     {/* </Container> */}
