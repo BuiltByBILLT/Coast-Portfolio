@@ -1,37 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Form, Button, Col, Row, ListGroup, Modal, Container, DropdownButton, Dropdown, InputGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useMutation } from 'react-query'
-import { useDispatch, useSelector } from 'react-redux'
-import FormContainer from '../components/FormContainer'
-import CheckoutSteps from '../components/CheckoutSteps'
-import { afterOrderReset, resetCart, savePaymentMethod, submitClover } from '../actions/cartActions'
-import { Helmet } from 'react-helmet'
 import Message from '../components/Message'
 import { SideCart } from '../components/SideCart'
 import Loader from '../components/Loader'
 import { CLOVER_RESET, CART_SET_DISCOUNT } from '../constants/cartConstants'
+import { CartContext, CartContextUpdate } from '../contexts/CartContext'
+import { UserContext } from '../contexts/UserContext'
+import DiscountCode from '../components/DiscountCode'
+import DiscountNewScreen from './DiscountNewScreen'
 
 
 const PaymentScreen = ({ history }) => {
-    const cart = useSelector(state => state.cart)
-    const { shippingMethod, shippingInfo, cartItems } = cart
-    const { userInfo } = useSelector(state => state.userLogin)
-    // const { loading, order, error } = useSelector(state => state.clover)
+    const cart = useContext(CartContext)
+    const { shippingMethod, shippingInfo } = cart
+    const updateCart = useContext(CartContextUpdate)
+    const user = useContext(UserContext)
 
-    if (shippingInfo && Object.keys(shippingInfo).length == 0) {
-        history.push('/shipping')
-    }
-    if (shippingMethod && Object.keys(shippingMethod).length == 0) {
-        history.push('/shippingmethod')
-    }
+    useEffect(() => {
+        if (Object.keys(shippingMethod).length == 0) history.push('/shippingmethod')
+    }, [shippingMethod])
 
     const [buttonDisable, setButtonDisable] = useState(false)
-    const [discountEdit, setDiscountEdit] = useState(false)
-    const [discountName, setDiscountName] = useState("")
-    const [discountType, setDiscountType] = useState("$")
-    const [discountAmount, setDiscountAmount] = useState("")
+    const [discountModal, setDiscountModal] = useState(false)
+
 
     const styles = {
         body: { fontFamily: 'Roboto, Open Sans, sans-serif', fontSize: '16px', },
@@ -50,7 +44,6 @@ const PaymentScreen = ({ history }) => {
     const cardPostalCode = elements.create('CARD_POSTAL_CODE', styles);
 
 
-    const dispatch = useDispatch()
     // Load iFrame 
     useEffect(() => {
         cardNumber.mount('#card-number');
@@ -66,7 +59,14 @@ const PaymentScreen = ({ history }) => {
         return () => { if (cloverFooter) cloverFooter.style.display = "none" }
     }, []);
 
-
+    // Clean Up Shipping and Discount if Cart Edit
+    // useEffect(() => {
+    //     return () => {
+    //         updateCart({ type: "CLEAR_SHIPPING_METHOD" })
+    //         updateCart({ type: "ADD_DISCOUNT", discount: {} })
+    //         console.log("exit Payment")
+    //     }
+    // }, [])
 
     const { data: order, error, isLoading: loading, mutate } = useMutation(data => {
         return axios.post(`/api/clover`, data)
@@ -75,10 +75,8 @@ const PaymentScreen = ({ history }) => {
     // Redirect to Order after Submit
     useEffect(() => {
         if (order) {
-            dispatch(resetCart())
-            dispatch({ type: CLOVER_RESET })
+            updateCart({ type: "RESET_CART" })
             history.push(`/order/${order.data.id}`)
-            // console.log(JSON.stringify(order))
         }
     }, [order])
 
@@ -96,9 +94,7 @@ const PaymentScreen = ({ history }) => {
                     });
                     setButtonDisable(false)
                 } else {
-                    // dispatch(submitClover(result.token))
-                    // let body = { cart: state.cart, userLogin: state.userLogin, token }
-                    mutate({ cart, userInfo, token: result.token })
+                    mutate({ cart, userInfo: user, token: result.token })
                 }
                 setButtonDisable(false)
             })
@@ -134,7 +130,7 @@ const PaymentScreen = ({ history }) => {
                             <Row>
                                 <Col>
                                     <strong>Ship to: </strong>
-                                    <br /> {shippingInfo.address} {shippingInfo.address2}
+                                    <br /> {shippingInfo.address1} {shippingInfo.address2}
                                     <br />{shippingInfo.city}, {shippingInfo.region}, {shippingInfo.country}, {shippingInfo.postalCode}
                                 </Col>
                                 <Col xs="auto" className="text-right">
@@ -152,75 +148,9 @@ const PaymentScreen = ({ history }) => {
                                 </Col>
                             </Row>
                         </ListGroup.Item>
-                        {userInfo && userInfo.isStaff === true &&
-                            (<ListGroup.Item>
-                                <Form >
-                                    <Row>
-                                        <Col>
-                                            {discountEdit ?
-                                                (
-                                                    <Form.Row>
-                                                        <Col>
-                                                            <Form.Control type="text" placeholder="Name (Required)" value={discountName} className="p-3"
-                                                                onChange={(e) => setDiscountName(e.target.value)}
-                                                            ></Form.Control>
-                                                        </Col>
-                                                        <Col>
-                                                            <InputGroup>
-                                                                <DropdownButton
-                                                                    as={InputGroup.Prepend}
-                                                                    variant="outline-secondary"
-                                                                    title={discountType === "$" ? "$" : "%"}
-                                                                    className="p-0"
-                                                                    style={{ height: "47px" }}
-                                                                >
-                                                                    <Dropdown.Item onClick={() => setDiscountType("$")}>
-                                                                        $
-                                                                    </Dropdown.Item>
-                                                                    <Dropdown.Item onClick={() => setDiscountType("%")}>
-                                                                        %
-                                                                    </Dropdown.Item>
-                                                                </DropdownButton>
-                                                                <Form.Control type="text" placeholder="0.00" value={discountAmount} className="p-3"
-                                                                    onChange={(e) => setDiscountAmount(e.target.value)}>
-                                                                </Form.Control>
-                                                            </InputGroup>
-                                                        </Col>
-                                                    </Form.Row>
-                                                ) : (
-                                                    <>
-                                                        <strong>{'Discount: '}</strong>
-                                                        {discountAmount !== "" ?
-                                                            discountType === "$"
-                                                                ? `(${discountName}) ${discountType}${discountAmount} off`
-                                                                : `(${discountName}) ${discountAmount}${discountType} off`
-                                                            : ""
-                                                        }
-                                                    </>
-                                                )
-                                            }
-                                        </Col>
-                                        <Col xs="auto" className="text-right">
-                                            {discountEdit ?
-                                                (<Link to="#" className="text-danger"
-                                                    onClick={() => {
-                                                        setDiscountEdit(false)
-                                                        dispatch({
-                                                            type: CART_SET_DISCOUNT, payload: {
-                                                                discountName, discountType, discountAmount
-                                                            }
-                                                        })
-                                                    }}
-                                                >Save</Link>
-                                                ) : (<Link to="#" className="text-muted"
-                                                    onClick={() => setDiscountEdit(true)}
-                                                >Change</Link>)
-                                            }
-                                        </Col>
-                                    </Row>
-                                </Form>
-                            </ListGroup.Item>)
-                        }
+
+                        <DiscountCode />
+
                     </ListGroup>
 
                     <h5 className="mt-5">Payment Information</h5>
@@ -254,9 +184,15 @@ const PaymentScreen = ({ history }) => {
                                 onClick={submitHandler} >
                                 Pay Now
                             </Button>
-                            {/* <Button variant="outline-danger" size="large" onClick={testHandler} className="ml-3 mt-3 px-5">
-                                Test Now
-                            </Button> */}
+
+                            {user.isStaff && <Button variant="outline-secondary" size="large" className="mt-3 px-3 ml-5"
+                                onClick={() => setDiscountModal(true)} >
+                                Create Discount Code
+                            </Button>}
+                            <Modal show={discountModal} backdrop="static" keyboard={false} onHide={() => setDiscountModal(false)}>
+                                <Modal.Header closeButton></Modal.Header>
+                                <Modal.Body><DiscountNewScreen popup={true} />  </Modal.Body>
+                            </Modal>
                         </div>
                     </div>
                 </Col>

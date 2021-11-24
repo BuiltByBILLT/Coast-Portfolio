@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,39 +6,36 @@ import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { saveShippingInfo, saveShippingMethod } from '../actions/cartActions'
 import { SideCart } from '../components/SideCart'
+import { CartContext, CartContextUpdate } from '../contexts/CartContext'
 
 
 const ShippingMethodScreen = ({ history, location }) => {
-    const redirect = location.search ? location.search.split('=')[1] : '/'
 
-    const { cartItems, shippingInfo, shippingMethod } = useSelector(state => state.cart)
-    // if (shippingInfo && Object.keys(shippingInfo).length == 0) {
-    //     history.push('/shipping')
-    // }
+    const { cartItems, shippingInfo, shippingMethod } = useContext(CartContext)
+    const updateCart = useContext(CartContextUpdate)
 
+    useEffect(() => {
+        if (Object.keys(shippingInfo).length == 0) history.push('/shipping')
+    }, [shippingInfo])
+
+    const emptyMethod = { method: "", price: 0 }
     const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
-    const [methods, setMethods] = useState([])
-    const [selected, setSelected] = useState(shippingMethod)
-
-    var items = cartItems.reduce((acc, curr) => acc + Number(curr.qty), 0)
-    let samplePrices = [
-        { method: "UPS (Ground)", price: subtotal < 10000 ? 900 : subtotal * 0.09, disabled: false },
+    const fixedMethods = [
+        { method: "UPS Ground", price: subtotal < 10000 ? 900 : subtotal * 0.09, disabled: false },
         { method: "USPS (Coming Soon)", price: subtotal < 10000 ? 900 : subtotal * 0.09, disabled: true },
     ]
 
-    useEffect(() => {
-        setMethods(samplePrices)
+    const [methods, setMethods] = useState(fixedMethods)
+    const [selected, setSelected] = useState(Object.keys(shippingMethod).length != 0 ? shippingMethod : emptyMethod)
 
-    }, [subtotal])
-
-    const dispatch = useDispatch()
+    console.log(selected)
 
     const radioHandler = (e) => {
         setSelected(methods[e.target.value])
     }
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(saveShippingMethod(selected))
+        updateCart({ type: "ADD_SHIPPING_METHOD", shippingMethod: fixedMethods[0] })
         history.push('/payment')
     }
 
@@ -46,7 +43,6 @@ const ShippingMethodScreen = ({ history, location }) => {
         <Container className="my-5 py-3">
             <Row>
                 <Col lg={6}>
-                    {/* <h5 className="">Shipping Information</h5> */}
                     <ListGroup>
                         <ListGroup.Item>
                             <Row>
@@ -62,7 +58,7 @@ const ShippingMethodScreen = ({ history, location }) => {
                             <Row>
                                 <Col>
                                     <strong>Ship to: </strong>
-                                    <br /> {shippingInfo.address}
+                                    <br /> {shippingInfo.address1}
                                     {shippingInfo.address2 && <><br /> {shippingInfo.address2}</>}
                                     <br />{shippingInfo.city}, {shippingInfo.region}, {shippingInfo.country}, {shippingInfo.postalCode}
                                 </Col>
@@ -74,7 +70,6 @@ const ShippingMethodScreen = ({ history, location }) => {
                     </ListGroup>
 
                     <h5 className="mt-5">Shipping Method</h5>
-                    <p>(Items: {items})</p>
                     <Form onSubmit={submitHandler}>
                         <ListGroup>
                             {methods.map((method, index) => (

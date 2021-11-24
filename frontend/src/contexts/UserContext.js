@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { createContext, useReducer, useEffect } from 'react'
 
 export const UserContext = createContext()
@@ -8,10 +9,19 @@ const userReducer = (state, action) => {
     switch (action.type) {
         case "LOGIN":
             return action.payload;
-        case "LOGOUT":
-            return {};
         case "UPDATE":
             return action.payload;
+        case "LOGOUT":
+            return {};
+
+        case "CART":
+            if (JSON.stringify(state.cartItems) !== JSON.stringify(action.cartItems)) {
+                axios.put('/api/users/profile', { cartItems: action.cartItems }, {
+                    headers: { Authorization: `Bearer ${state.token}` }
+                }).then(data => console.log(data.data)).catch(e => console.log(e))
+                return { ...state, cartItems: action.cartItems }
+            } else return state
+
         default:
             return state;
     }
@@ -27,6 +37,7 @@ export const UserContextProvider = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(state))
         console.log(state)
     }, [state])
+
 
     return (
         <UserContext.Provider value={state}>

@@ -1,33 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Card, Button, Row, Col, ListGroup, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { CartContext } from '../contexts/CartContext'
+import { envImage, toUSD } from '../common'
+
 
 export const SideCart = () => {
 
-    const { cartItems, shippingInfo, shippingMethod, discount } = useSelector(state => state.cart)
-    if (discount) var { discountAmount, discountType, discountName } = discount
+    const { cartItems, shippingInfo, shippingMethod, discount } = useContext(CartContext)
+    const { discountAmount, discountType, discountDescription, discountExclude, discountTotal } = discount
+
 
     const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
-    const taxRate = shippingInfo.taxRate / 10000000
+    // const taxRate = shippingInfo.taxRate / 10000000
+    const taxRate = 0
     const shippingTotal = shippingMethod.price
 
-    if (discount && discountAmount && discountType === "$") {
-        var totalDiscount = discountAmount * 100
-        var totalTax = (subtotal - totalDiscount) * taxRate
-        var totalTotal = subtotal + totalTax + shippingTotal - totalDiscount
-    }
-    else if (discount && discountAmount && discountType === "%") {
-        var totalTax = subtotal * taxRate * (100 - discountAmount) / 100
-        var totalDiscount = (subtotal + shippingTotal) * (discountAmount) / 100
-        var totalTotal = subtotal + totalTax + shippingTotal - totalDiscount
-    }
-    else {
-        var totalTax = subtotal * taxRate
-        var totalDiscount = 0
-        var totalTotal = subtotal + totalTax + shippingTotal
-    }
 
+    var totalTax = (subtotal + shippingTotal) * taxRate
+    var totalTotal = subtotal + totalTax + shippingTotal - (discountTotal ? discountTotal : 0)
+
+    const percentDiscount = (cents) => {
+        if (discountType === "PERCENT")
+            return (Number(cents) * discountAmount) / 100
+    }
 
     return (
         <Card>
@@ -39,7 +36,7 @@ export const SideCart = () => {
                                 ({item.qty})
                             </Col>
                             <Col xs={2} className="p-0">
-                                <Image src={"https://www.coastairbrush.com/" + item.image}
+                                <Image src={envImage(item.image)}
                                     alt={item.name} fluid rounded
                                 // style={{ height: "100px" }} 
                                 />
@@ -48,11 +45,39 @@ export const SideCart = () => {
                                 {item.name}
                             </Col>
                             <Col xs="auto" className="pr-0 my-auto">
-                                {Number(item.qty * item.price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                {toUSD(item.qty * item.price)}
+                            </Col>
+                        </Row>
+                        {discountType == "PERCENT" &&
+                            (discountExclude.split(',').includes(item.pID)
+                                ? <Row className="m-0">
+                                    <Col xs="auto" className="pl-0 my-auto text-danger">
+                                        Discounts cannot be applied on this item
+                                    </Col>
+                                </Row>
+                                : <Row className="m-0">
+                                    <Col xs="auto" className="pl-0 my-auto text-success">
+                                        {discountDescription}
+                                    </Col>
+                                    <Col xs="auto" className="ml-auto pr-0 my-auto text-success">
+                                        -{toUSD(percentDiscount(item.qty * item.price))}
+                                    </Col>
+                                </Row>)
+                        }
+                    </ListGroup.Item>
+                ))}
+                {discountType == "FLAT" &&
+                    <ListGroup.Item className="border-0 text-success">
+                        <Row className="m-0">
+                            <Col xs="auto" className="pl-0 my-auto text-success">
+                                {discountDescription}
+                            </Col>
+                            <Col xs="auto" className="ml-auto pr-0 my-auto text-success">
+                                -{toUSD(discountTotal)}
                             </Col>
                         </Row>
                     </ListGroup.Item>
-                ))}
+                }
 
                 <div style={{ height: "2px" }} />
 
@@ -62,45 +87,43 @@ export const SideCart = () => {
                             Subtotal:
                         </Col>
                         <Col xs="auto" className="pr-0">
-                            {Number(subtotal / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                            {toUSD(subtotal)}
                         </Col>
                     </Row>
                 </ListGroup.Item>
-                <ListGroup.Item className="border-0">
-                    <Row className="m-0">
-                        <Col xs className="pl-0">
-                            Tax:
-                        </Col>
-                        <Col xs="auto" className="pr-0">
-                            {shippingInfo && Object.keys(shippingInfo).length != 0 ?
-                                Number(totalTax / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
-                                : "-"
-                            }
-                        </Col>
-                    </Row>
-                </ListGroup.Item>
-                <ListGroup.Item className="border-top-0 border-left-0 border-right-0 pb-4">
-                    <Row className="m-0">
-                        <Col xs className="pl-0">
-                            Shipping:
-                        </Col>
-                        <Col xs="auto" className="pr-0">
-                            {shippingMethod && Object.keys(shippingMethod).length != 0 ?
-                                Number(shippingMethod.price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
-                                : "-"
-                            }
-                        </Col>
-                    </Row>
-                </ListGroup.Item>
-                {discount && discount.discountAmount != 0 &&
+                {Object.keys(shippingInfo).length != 0 &&
                     <ListGroup.Item className="border-0">
                         <Row className="m-0">
                             <Col xs className="pl-0">
-                                Discounts:
+                                Tax:
                             </Col>
-                            <Col>{discount && discount.discountAmount != 0 && discount.discountName}</Col>
                             <Col xs="auto" className="pr-0">
-                                {"(" + Number(totalDiscount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" }) + ")"}
+                                {toUSD(totalTax)}
+                            </Col>
+                        </Row>
+                    </ListGroup.Item>
+                }
+                {Object.keys(shippingMethod).length != 0 &&
+                    <ListGroup.Item className="border-top-0 border-left-0 border-right-0 pb-4">
+                        <Row className="m-0">
+                            <Col xs className="pl-0">
+                                Shipping:
+                            </Col>
+                            <Col xs="auto" className="pr-0">
+                                {toUSD(shippingMethod.price)}
+                            </Col>
+                        </Row>
+                    </ListGroup.Item>
+                }
+                {Object.keys(discount).length != 0 &&
+                    <ListGroup.Item className="border-0">
+                        <Row className="m-0">
+                            <Col xs className="pl-0">
+                                Discount Total:
+                            </Col>
+                            {/* <Col>{discountDescription}</Col> */}
+                            <Col xs="auto" className="pr-0">
+                                {"(" + toUSD(discountTotal) + ")"}
                             </Col>
                         </Row>
                     </ListGroup.Item>
@@ -108,20 +131,19 @@ export const SideCart = () => {
 
                 <div style={{ height: "2px" }} />
 
-                <ListGroup.Item className="border-0 pt-4">
-                    <Row className="m-0">
-                        <Col xs className="pl-0">
-                            Total:
-                        </Col>
-                        <Col xs="auto" className="pr-0">
-                            {Object.keys(shippingMethod).length != 0 && Object.keys(shippingInfo).length != 0 ?
-                                Number(totalTotal / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
-                                : "-"
-                            }
-                        </Col>
-                    </Row>
-                </ListGroup.Item>
+                {Object.keys(shippingMethod).length != 0 && Object.keys(shippingInfo).length != 0 &&
+                    <ListGroup.Item className="border-0 pt-4">
+                        <Row className="m-0">
+                            <Col xs className="pl-0">
+                                Total:
+                            </Col>
+                            <Col xs="auto" className="pr-0">
+                                {toUSD(totalTotal)}
+                            </Col>
+                        </Row>
+                    </ListGroup.Item>
+                }
             </ListGroup>
-        </Card>
+        </Card >
     )
 }

@@ -18,6 +18,7 @@ const DiscountEditScreen = ({ match }) => {
     const [discountType, setDiscountType] = useState("")
     const [discountAmount, setDiscountAmount] = useState("")
     const [discountLive, setDiscountLive] = useState(true)
+    const [discountExclude, setDiscountExclude] = useState("")
 
     const [edit, setEdit] = useState(false)
     const [success, setSuccess] = useState("")
@@ -36,6 +37,7 @@ const DiscountEditScreen = ({ match }) => {
             setDiscountAmount(data.data.discountAmount)
             setDiscountCode(data.data.discountCode)
             setDiscountLive(data.data.discountLive)
+            setDiscountExclude(data.data.discountExclude)
         },
         onError: (error) => {
             setError(error.response && error.response.data.message
@@ -66,7 +68,7 @@ const DiscountEditScreen = ({ match }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive })
+        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive, discountExclude })
     }
     const editHandler = (e) => {
         e.preventDefault()
@@ -78,6 +80,10 @@ const DiscountEditScreen = ({ match }) => {
         setEdit(false)
         refetch()
     }
+    const excludeHandler = (e) => {
+        setDiscountExclude(e.target.value)
+    }
+
 
     return (
         <Container className="my-5 pb-5">
@@ -121,6 +127,18 @@ const DiscountEditScreen = ({ match }) => {
                                     <Form.Control type='number' placeholder={discountType == 'FLAT' ? 'Amount Off In Cents' : "Percent Off"}
                                         value={discountAmount} required disabled={!edit}
                                         onChange={(e) => setDiscountAmount(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Exclude'>
+                                    <Form.Label>{discountType == 'FLAT' ? "Minimun Order (Cents)" : "Excluded Products"}</Form.Label>
+                                    <Form.Control
+                                        as={discountType == 'FLAT' ? "input" : 'textarea'}
+                                        type={discountType == 'FLAT' ? "number" : 'textarea'}
+                                        placeholder={discountType == 'FLAT' ? "Minimun Order Value (Cents)"
+                                            : `Product SKU's Seperated by Commas, No Spaces
+                                        ex: T6131,126823,50-0231`}
+                                        value={discountExclude} disabled={!edit}
+                                        onChange={excludeHandler}>
                                     </Form.Control>
                                 </Form.Group>
                                 <Form.Check label="Discount Live" disabled={!edit}

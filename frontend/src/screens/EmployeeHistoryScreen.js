@@ -8,6 +8,7 @@ import { listMyOrders } from '../actions/orderActions'
 import { UserNavBar } from '../components/UserNavBar'
 import { useQuery } from 'react-query'
 import axios from 'axios'
+import { envImage } from '../common'
 
 const EmployeeHistoryScreen = ({ history }) => {
 
@@ -47,7 +48,7 @@ const EmployeeHistoryScreen = ({ history }) => {
                                     <Row className="justify-content-center">
                                         <Col lg={4} className="text-center">
                                             {order.orderImage &&
-                                                <Image src={"https://www.coastairbrush.com/" + order.orderImage}
+                                                <Image src={envImage(order.orderImage)}
                                                     alt={order.lineItems.elements[0].name} fluid rounded
                                                     style={{ height: "200px" }}
                                                 />}

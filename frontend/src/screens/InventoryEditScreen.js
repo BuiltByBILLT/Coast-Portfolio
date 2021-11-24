@@ -34,7 +34,7 @@ const InventoryEditScreen = ({ match }) => {
         })
     }, {
         onSuccess: (data) => {
-            console.log(data.data)
+            // console.log(data.data)
             setCloverID(data.data.cloverID)
             setCloverName(data.data.cloverName)
             setParent(data.data.iParent)
@@ -58,7 +58,7 @@ const InventoryEditScreen = ({ match }) => {
         })
     }, {
         onSuccess: (data) => {
-            console.log(data.data)
+            // console.log(data.data)
             setSuccess("Inventory Update Success!")
             setError("")
             setEdit(false)

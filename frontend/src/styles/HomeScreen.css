@@ -1,6 +1,6 @@
 .homePage .hero {
   /* background-color: grey; */
-  /* background-image: url('./images/Hero_image_withtexture.png'); */
+  /* background-image: url('./static/Hero_image_withtexture.png'); */
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;

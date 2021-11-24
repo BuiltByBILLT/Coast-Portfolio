@@ -39,7 +39,7 @@ const InventoryListScreen = ({ history }) => {
         })
     }, {
         onSuccess: (data) => {
-            console.log(data.data)
+            // console.log(data.data)
             setSuccess(`Deleted Inventory ${data.data.cloverID} Successfully`)
             setError("")
             reset()
@@ -114,7 +114,7 @@ const InventoryListScreen = ({ history }) => {
                             <tr key={inventory.cloverID}>
                                 <td style={{ minWidth: "110px" }}>{inventory.updatedAt.slice(0, 10)}</td>
                                 <td style={{ minWidth: "110px" }}>{inventory.cloverID}</td>
-                                <td>{inventory.iParent}</td>
+                                <td><Link to={`/product/${inventory.iParent}`}>{inventory.iParent}</Link></td>
                                 <td>{inventory.cloverName}</td>
                                 <td>{Number(inventory.iPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
                                 }</td>

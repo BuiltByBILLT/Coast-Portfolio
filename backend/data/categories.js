@@ -435,7 +435,7 @@ const categories = [
         "sectionID": 106,
         "sectionName": "Airbrush Action",
         "sectionWorkingName": "ABA Videos",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoaba.png",
+        "sectionImage": "prodimages/logoaba.png",
         "topSection": 14,
         "sectionOrder": 2,
         "rootSection": 0,
@@ -447,7 +447,7 @@ const categories = [
         "sectionID": 107,
         "sectionName": "House Of Kolor",
         "sectionWorkingName": "HOK Videos",
-        "sectionImage": "http://www.coastairbrush.com/images/logohok.png",
+        "sectionImage": "images/logohok.png",
         "topSection": 14,
         "sectionOrder": 3,
         "rootSection": 1,
@@ -615,7 +615,7 @@ const categories = [
         "sectionID": 20,
         "sectionName": "Automotive Painting Supplies",
         "sectionWorkingName": "Automotive Painting Supplies",
-        "sectionImage": "/images/Automobile.png",
+        "sectionImage": "static/Automobile.png",
         "topSection": 0,
         "sectionOrder": 12,
         "rootSection": 0,
@@ -627,7 +627,7 @@ const categories = [
         "sectionID": 21,
         "sectionName": "Striping & Lettering Supplies",
         "sectionWorkingName": "Striping & Lettering",
-        "sectionImage": "/images/Pinstripe.png",
+        "sectionImage": "static/Pinstripe.png",
         "topSection": 0,
         "sectionOrder": 13,
         "rootSection": 0,
@@ -639,7 +639,7 @@ const categories = [
         "sectionID": 22,
         "sectionName": "Fine Art Supplies",
         "sectionWorkingName": "Fine Art Supplies",
-        "sectionImage": "/images/FineArts.png",
+        "sectionImage": "static/FineArts.png",
         "topSection": 0,
         "sectionOrder": 14,
         "rootSection": 0,
@@ -957,7 +957,7 @@ const categories = [
         "rootSection": 0,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/createxhowto.html\">Click Here For How to Articles</a>"
+        "sectionDescription": "<a href=\"createxhowto.html\">Click Here For How to Articles</a>"
     },
     {
         "sectionID": 54,
@@ -1023,7 +1023,7 @@ const categories = [
         "sectionID": 108,
         "sectionName": "Auto Air",
         "sectionWorkingName": "AA Videos",
-        "sectionImage": "http://www.coastairbrush.com/images/logoautoair.png",
+        "sectionImage": "images/logoautoair.png",
         "topSection": 14,
         "sectionOrder": 4,
         "rootSection": 1,
@@ -1059,7 +1059,7 @@ const categories = [
         "sectionID": 228,
         "sectionName": "Steve Kafka DVD",
         "sectionWorkingName": "DVD-Kafka",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logokafka.png",
+        "sectionImage": "prodimages/logokafka.png",
         "topSection": 14,
         "sectionOrder": 6,
         "rootSection": 1,
@@ -1071,7 +1071,7 @@ const categories = [
         "sectionID": 229,
         "sectionName": "Old School Flake DVD",
         "sectionWorkingName": "DVD-OSF",
-        "sectionImage": "http://www.coastairbrush.com/images/logooldschoolflake.png",
+        "sectionImage": "images/logooldschoolflake.png",
         "topSection": 14,
         "sectionOrder": 7,
         "rootSection": 1,
@@ -1107,7 +1107,7 @@ const categories = [
         "sectionID": 232,
         "sectionName": "Tattoo Stencil",
         "sectionWorkingName": "Temptu Stencils",
-        "sectionImage": "http://www.coastairbrush.com/images/logotemptu.png",
+        "sectionImage": "images/logotemptu.png",
         "topSection": 19,
         "sectionOrder": 2,
         "rootSection": 1,
@@ -1172,7 +1172,7 @@ const categories = [
         "sectionOrder": 1,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/plusparts.asp",
+        "sectionURL": "partsairbrush/plusparts.asp",
         "sectionDescription": "HP-A+<br>HP-B+<br>HP-SB+<br>HP-C+<br>HP-BC+</br>"
     },
     {
@@ -1599,7 +1599,7 @@ const categories = [
         "sectionID": 146,
         "sectionName": "Regular Flake",
         "sectionWorkingName": "OSF-Regular",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/osf01.png",
+        "sectionImage": "prodimages/osf01.png",
         "topSection": 145,
         "sectionOrder": 124,
         "rootSection": 1,
@@ -1611,7 +1611,7 @@ const categories = [
         "sectionID": 147,
         "sectionName": "Shifty Flake",
         "sectionWorkingName": "OSF-Shifty",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/sf01.png",
+        "sectionImage": "prodimages/sf01.png",
         "topSection": 145,
         "sectionOrder": 125,
         "rootSection": 1,
@@ -1923,7 +1923,7 @@ const categories = [
         "sectionID": 216,
         "sectionName": "Auto Air Stencils",
         "sectionWorkingName": "Stencils-Auto Air",
-        "sectionImage": "http://www.coastairbrush.com/images/logoautoair.png",
+        "sectionImage": "images/logoautoair.png",
         "topSection": 19,
         "sectionOrder": 1,
         "rootSection": 1,
@@ -1983,7 +1983,7 @@ const categories = [
         "sectionID": 221,
         "sectionName": "Steve Kafka's Pinstriping Brushes & Accessories",
         "sectionWorkingName": "Kafka",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logokafka.png",
+        "sectionImage": "prodimages/logokafka.png",
         "topSection": 21,
         "sectionOrder": 1,
         "rootSection": 0,
@@ -2108,7 +2108,7 @@ const categories = [
         "sectionOrder": 248,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/74514parts.asp",
+        "sectionURL": "partsairbrush/74514parts.asp",
         "sectionDescription": ""
     },
     {
@@ -2156,7 +2156,7 @@ const categories = [
         "sectionOrder": 10,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=234",
+        "sectionURL": "categories.asp?cat=234",
         "sectionDescription": ""
     },
     {
@@ -2168,7 +2168,7 @@ const categories = [
         "sectionOrder": 236,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=236",
+        "sectionURL": "categories.asp?cat=236",
         "sectionDescription": ""
     },
     {
@@ -2331,7 +2331,7 @@ const categories = [
         "sectionID": 343,
         "sectionName": "Mad Fabricators Society",
         "sectionWorkingName": "Mad Fabricators",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomadfab.png",
+        "sectionImage": "prodimages/logomadfab.png",
         "topSection": 14,
         "sectionOrder": 9,
         "rootSection": 1,
@@ -2373,7 +2373,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil12.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil14.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil12.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil14.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a>"
     },
     {
         "sectionID": 245,
@@ -2456,7 +2456,7 @@ const categories = [
         "sectionOrder": 2,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/revolutionparts.asp",
+        "sectionURL": "partsairbrush/revolutionparts.asp",
         "sectionDescription": "HP-BCR<br>HP-CR<br>HP-SAR</br>"
     },
     {
@@ -2468,7 +2468,7 @@ const categories = [
         "sectionOrder": 3,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/eclipseparts.asp",
+        "sectionURL": "partsairbrush/eclipseparts.asp",
         "sectionDescription": "HP-BCS<br>HP-CS<br>HP-BS<br>HP-SBS</br>"
     },
     {
@@ -2480,7 +2480,7 @@ const categories = [
         "sectionOrder": 4,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/hpparts.asp",
+        "sectionURL": "partsairbrush/hpparts.asp",
         "sectionDescription": "HP-A<br>HP-B<br>HP-SB<br>HP-C<br>HP-BC<br>HP-BC2</br>"
     },
     {
@@ -2492,7 +2492,7 @@ const categories = [
         "sectionOrder": 5,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/micronparts.asp",
+        "sectionURL": "partsairbrush/micronparts.asp",
         "sectionDescription": "CM-B<br>CM-SB<br>CM-C<br>CM-C+</br>"
     },
     {
@@ -2516,7 +2516,7 @@ const categories = [
         "sectionOrder": 7,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/hilineparts.asp",
+        "sectionURL": "partsairbrush/hilineparts.asp",
         "sectionDescription": "HP-AH<br>HP-BH<br>HP-CH</br>"
     },
     {
@@ -2528,7 +2528,7 @@ const categories = [
         "sectionOrder": 230,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/vlparts.asp",
+        "sectionURL": "partsairbrush/vlparts.asp",
         "sectionDescription": ""
     },
     {
@@ -2540,7 +2540,7 @@ const categories = [
         "sectionOrder": 231,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/vlstpro.asp",
+        "sectionURL": "partsairbrush/vlstpro.asp",
         "sectionDescription": ""
     },
     {
@@ -2552,7 +2552,7 @@ const categories = [
         "sectionOrder": 232,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/hparts.asp",
+        "sectionURL": "partsairbrush/hparts.asp",
         "sectionDescription": ""
     },
     {
@@ -2564,7 +2564,7 @@ const categories = [
         "sectionOrder": 233,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/milparts.asp",
+        "sectionURL": "partsairbrush/milparts.asp",
         "sectionDescription": ""
     },
     {
@@ -2576,7 +2576,7 @@ const categories = [
         "sectionOrder": 234,
         "rootSection": 1,
         "sectionDisabled": 127,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/aecparts.asp",
+        "sectionURL": "partsairbrush/aecparts.asp",
         "sectionDescription": ""
     },
     {
@@ -2588,14 +2588,14 @@ const categories = [
         "sectionOrder": 237,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=235",
+        "sectionURL": "categories.asp?cat=235",
         "sectionDescription": ""
     },
     {
         "sectionID": 267,
         "sectionName": "Medea Textile Acrylic",
         "sectionWorkingName": "Medea Textile",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomedeapaint.png",
+        "sectionImage": "prodimages/logomedeapaint.png",
         "topSection": 11,
         "sectionOrder": 41,
         "rootSection": 0,
@@ -2667,24 +2667,24 @@ const categories = [
         "sectionID": 273,
         "sectionName": "House Of Kolor Lettering Enamels",
         "sectionWorkingName": "HOK Lettering",
-        "sectionImage": "http://www.coastairbrush.com/images/logohok.png",
+        "sectionImage": "images/logohok.png",
         "topSection": 21,
         "sectionOrder": 12,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=80",
+        "sectionURL": "products.asp?cat=80",
         "sectionDescription": ""
     },
     {
         "sectionID": 274,
         "sectionName": "One Shot Lettering Enamels",
         "sectionWorkingName": "1 Shot Lettering",
-        "sectionImage": "http://www.coastairbrush.com/images/logooneshot.png",
+        "sectionImage": "images/logooneshot.png",
         "topSection": 21,
         "sectionOrder": 13,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=156",
+        "sectionURL": "categories.asp?cat=156",
         "sectionDescription": ""
     },
     {
@@ -2708,7 +2708,7 @@ const categories = [
         "sectionOrder": 249,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/74503parts.asp",
+        "sectionURL": "partsairbrush/74503parts.asp",
         "sectionDescription": ""
     },
     {
@@ -2720,7 +2720,7 @@ const categories = [
         "sectionOrder": 250,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/74510parts.asp",
+        "sectionURL": "partsairbrush/74510parts.asp",
         "sectionDescription": ""
     },
     {
@@ -2732,7 +2732,7 @@ const categories = [
         "sectionOrder": 251,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/badger100lgparts.asp",
+        "sectionURL": "partsairbrush/badger100lgparts.asp",
         "sectionDescription": ""
     },
     {
@@ -2744,7 +2744,7 @@ const categories = [
         "sectionOrder": 252,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/badger175parts.asp",
+        "sectionURL": "partsairbrush/badger175parts.asp",
         "sectionDescription": ""
     },
     {
@@ -2756,7 +2756,7 @@ const categories = [
         "sectionOrder": 253,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/anthem360parts.asp",
+        "sectionURL": "partsairbrush/anthem360parts.asp",
         "sectionDescription": ""
     },
     {
@@ -3044,7 +3044,7 @@ const categories = [
         "sectionOrder": 277,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=249",
+        "sectionURL": "products.asp?cat=249",
         "sectionDescription": ""
     },
     {
@@ -3332,7 +3332,7 @@ const categories = [
         "sectionOrder": 301,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=232",
+        "sectionURL": "products.asp?cat=232",
         "sectionDescription": "Stencil Sets<br>Stencil Tac<br>Airbrow<br>Body Jewels</br>"
     },
     {
@@ -3344,7 +3344,7 @@ const categories = [
         "sectionOrder": 302,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/vegaparts.asp",
+        "sectionURL": "partsairbrush/vegaparts.asp",
         "sectionDescription": ""
     },
     {
@@ -3356,7 +3356,7 @@ const categories = [
         "sectionOrder": 303,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/omniparts.asp",
+        "sectionURL": "partsairbrush/omniparts.asp",
         "sectionDescription": ""
     },
     {
@@ -3495,12 +3495,12 @@ const categories = [
         "sectionID": 828,
         "sectionName": "Tim Gore's Bloodline",
         "sectionWorkingName": "Tim Gore's Bloodline Paint Section",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logobloodline.png",
+        "sectionImage": "prodimages/logobloodline.png",
         "topSection": 11,
         "sectionOrder": 10,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=816",
+        "sectionURL": "categories.asp?cat=816",
         "sectionDescription": ""
     },
     {
@@ -3620,7 +3620,7 @@ const categories = [
         "sectionOrder": 34,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=509",
+        "sectionURL": "products.asp?cat=509",
         "sectionDescription": ""
     },
     {
@@ -3632,7 +3632,7 @@ const categories = [
         "sectionOrder": 11,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=509",
+        "sectionURL": "products.asp?cat=509",
         "sectionDescription": ""
     },
     {
@@ -3753,7 +3753,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil21.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil25.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil21.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil25.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a>"
     },
     {
         "sectionID": 478,
@@ -3908,7 +3908,7 @@ const categories = [
         "sectionOrder": 50,
         "rootSection": 0,
         "sectionDisabled": 127,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=819",
+        "sectionURL": "categories.asp?cat=819",
         "sectionDescription": ""
     },
     {
@@ -3920,7 +3920,7 @@ const categories = [
         "sectionOrder": 1,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=819",
+        "sectionURL": "categories.asp?cat=819",
         "sectionDescription": ""
     },
     {
@@ -4124,7 +4124,7 @@ const categories = [
         "sectionOrder": 8,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=238",
+        "sectionURL": "categories.asp?cat=238",
         "sectionDescription": ""
     },
     {
@@ -4155,7 +4155,7 @@ const categories = [
         "sectionID": 416,
         "sectionName": "Airbrush Tanning",
         "sectionWorkingName": "MDT-(Paint Category)",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomdt.png",
+        "sectionImage": "prodimages/logomdt.png",
         "topSection": 11,
         "sectionOrder": 40,
         "rootSection": 1,
@@ -4184,7 +4184,7 @@ const categories = [
         "sectionOrder": 376,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kustomthparts.asp",
+        "sectionURL": "partsairbrush/kustomthparts.asp",
         "sectionDescription": ""
     },
     {
@@ -4196,7 +4196,7 @@ const categories = [
         "sectionOrder": 377,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kustomtrparts.asp",
+        "sectionURL": "partsairbrush/kustomtrparts.asp",
         "sectionDescription": ""
     },
     {
@@ -4220,7 +4220,7 @@ const categories = [
         "sectionOrder": 379,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kustomchparts.asp",
+        "sectionURL": "partsairbrush/kustomchparts.asp",
         "sectionDescription": ""
     },
     {
@@ -4232,19 +4232,19 @@ const categories = [
         "sectionOrder": 380,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kustomcsparts.asp",
+        "sectionURL": "partsairbrush/kustomcsparts.asp",
         "sectionDescription": ""
     },
     {
         "sectionID": 787,
         "sectionName": "Graftobian GlamAire Makeup",
         "sectionWorkingName": "Graftobian / Makeup Section",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logograftobianWHT.png",
+        "sectionImage": "prodimages/logograftobianWHT.png",
         "topSection": 607,
         "sectionOrder": 7,
         "rootSection": 0,
         "sectionDisabled": 127,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=780",
+        "sectionURL": "categories.asp?cat=780",
         "sectionDescription": ""
     },
     {
@@ -4328,7 +4328,7 @@ const categories = [
         "sectionOrder": 15,
         "rootSection": 1,
         "sectionDisabled": 127,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=H4050",
+        "sectionURL": "proddetail.asp?prod=H4050",
         "sectionDescription": ""
     },
     {
@@ -4340,7 +4340,7 @@ const categories = [
         "sectionOrder": 793,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kromeparts.asp",
+        "sectionURL": "partsairbrush/kromeparts.asp",
         "sectionDescription": ""
     },
     {
@@ -4424,7 +4424,7 @@ const categories = [
         "sectionOrder": 48,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=789",
+        "sectionURL": "products.asp?cat=789",
         "sectionDescription": ""
     },
     {
@@ -4503,19 +4503,19 @@ const categories = [
         "sectionID": 793,
         "sectionName": "European Body Art",
         "sectionWorkingName": "EBA - Makeup Section",
-        "sectionImage": "http://www.coastairbrush.com/images/logoeba.png",
+        "sectionImage": "images/logoeba.png",
         "topSection": 607,
         "sectionOrder": 6,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=706",
+        "sectionURL": "categories.asp?cat=706",
         "sectionDescription": ""
     },
     {
         "sectionID": 794,
         "sectionName": "Badger DVD's",
         "sectionWorkingName": "Badger DVD's",
-        "sectionImage": "http://www.coastairbrush.com/images/logobadgerW.png",
+        "sectionImage": "images/logobadgerW.png",
         "topSection": 14,
         "sectionOrder": 737,
         "rootSection": 1,
@@ -4568,7 +4568,7 @@ const categories = [
         "sectionOrder": 421,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/lph80parts.asp",
+        "sectionURL": "partsspraygun/lph80parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4580,7 +4580,7 @@ const categories = [
         "sectionOrder": 422,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/lph50parts.asp",
+        "sectionURL": "partsspraygun/lph50parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4592,7 +4592,7 @@ const categories = [
         "sectionOrder": 423,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/lph300parts.asp",
+        "sectionURL": "partsspraygun/lph300parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4604,7 +4604,7 @@ const categories = [
         "sectionOrder": 424,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/lph400parts.asp",
+        "sectionURL": "partsspraygun/lph400parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4616,7 +4616,7 @@ const categories = [
         "sectionOrder": 425,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/lph100parts.asp",
+        "sectionURL": "partsspraygun/lph100parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4628,7 +4628,7 @@ const categories = [
         "sectionOrder": 426,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/lph440parts.asp",
+        "sectionURL": "partsspraygun/lph440parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4640,7 +4640,7 @@ const categories = [
         "sectionOrder": 427,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/rg3parts.asp",
+        "sectionURL": "partsspraygun/rg3parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4652,7 +4652,7 @@ const categories = [
         "sectionOrder": 428,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/w101-w100parts.asp",
+        "sectionURL": "partsspraygun/w101-w100parts.asp",
         "sectionDescription": ""
     },
     {
@@ -4664,14 +4664,14 @@ const categories = [
         "sectionOrder": 429,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/w400-400lvparts.asp",
+        "sectionURL": "partsspraygun/w400-400lvparts.asp",
         "sectionDescription": ""
     },
     {
         "sectionID": 475,
         "sectionName": "Air Essentials by Mike Learn",
         "sectionWorkingName": "Mike Laarn Stencils",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomikelearn.png",
+        "sectionImage": "prodimages/logomikelearn.png",
         "topSection": 19,
         "sectionOrder": 11,
         "rootSection": 1,
@@ -4724,7 +4724,7 @@ const categories = [
         "sectionOrder": 3,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=FH-7BLM",
+        "sectionURL": "proddetail.asp?prod=FH-7BLM",
         "sectionDescription": ""
     },
     {
@@ -4772,7 +4772,7 @@ const categories = [
         "sectionOrder": 805,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=866",
+        "sectionURL": "products.asp?cat=866",
         "sectionDescription": ""
     },
     {
@@ -4803,7 +4803,7 @@ const categories = [
         "sectionID": 381,
         "sectionName": "Karajen Corp.",
         "sectionWorkingName": "Karajen",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/42002.gif",
+        "sectionImage": "prodimages/42002.gif",
         "topSection": 448,
         "sectionOrder": 346,
         "rootSection": 1,
@@ -4827,7 +4827,7 @@ const categories = [
         "sectionID": 383,
         "sectionName": "Apparel",
         "sectionWorkingName": "Apparel",
-        "sectionImage": "/images/Tshirts.png",
+        "sectionImage": "static/Tshirts.png",
         "topSection": 0,
         "sectionOrder": 348,
         "rootSection": 0,
@@ -4868,7 +4868,7 @@ const categories = [
         "sectionOrder": 378,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kustomcmparts.asp",
+        "sectionURL": "partsairbrush/kustomcmparts.asp",
         "sectionDescription": ""
     },
     {
@@ -4904,7 +4904,7 @@ const categories = [
         "sectionOrder": 547,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/talonparts.asp",
+        "sectionURL": "partsairbrush/talonparts.asp",
         "sectionDescription": ""
     },
     {
@@ -4923,7 +4923,7 @@ const categories = [
         "sectionID": 477,
         "sectionName": "Other Spray Gun Holders",
         "sectionWorkingName": "Spray Gun Holders",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/gf100.gif",
+        "sectionImage": "prodimages/gf100.gif",
         "topSection": 448,
         "sectionOrder": 432,
         "rootSection": 1,
@@ -4976,7 +4976,7 @@ const categories = [
         "sectionOrder": 804,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=865",
+        "sectionURL": "products.asp?cat=865",
         "sectionDescription": ""
     },
     {
@@ -5031,7 +5031,7 @@ const categories = [
         "sectionID": 493,
         "sectionName": "Saral Transfer Paper",
         "sectionWorkingName": "Saral Transfer Paper",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logosaral.png",
+        "sectionImage": "prodimages/logosaral.png",
         "topSection": 21,
         "sectionOrder": 18,
         "rootSection": 1,
@@ -5103,7 +5103,7 @@ const categories = [
         "sectionID": 499,
         "sectionName": "DeVilbiss",
         "sectionWorkingName": "DeVilbiss Compressors",
-        "sectionImage": "http://www.coastairbrush.com/images/logodevilbissW2.png",
+        "sectionImage": "images/logodevilbissW2.png",
         "topSection": 13,
         "sectionOrder": 454,
         "rootSection": 1,
@@ -5115,7 +5115,7 @@ const categories = [
         "sectionID": 500,
         "sectionName": "Tamiya Modeling Brushes",
         "sectionWorkingName": "Tamiya Modeling Brushes",
-        "sectionImage": "http://www.coastairbrush.com/images/logotamiyaW.png",
+        "sectionImage": "images/logotamiyaW.png",
         "topSection": 21,
         "sectionOrder": 19,
         "rootSection": 1,
@@ -5223,7 +5223,7 @@ const categories = [
         "sectionID": 510,
         "sectionName": "Xtreme Flat Finish Klear",
         "sectionWorkingName": "Xtreme",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoxtreme.png",
+        "sectionImage": "prodimages/logoxtreme.png",
         "topSection": 11,
         "sectionOrder": 43,
         "rootSection": 1,
@@ -5295,7 +5295,7 @@ const categories = [
         "sectionID": 523,
         "sectionName": "Air Opaque by Badger",
         "sectionWorkingName": "Air Opaque",
-        "sectionImage": "http://www.coastairbrush.com/images/logobadgerW.png",
+        "sectionImage": "images/logobadgerW.png",
         "topSection": 11,
         "sectionOrder": 46,
         "rootSection": 1,
@@ -5361,7 +5361,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil19.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil19.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 526,
@@ -5385,7 +5385,7 @@ const categories = [
         "rootSection": 0,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "At the size of a business card, the Artool Nano Series Freehand Airbrush Templates can be used to easily render images on the smallest projects, namely the RC car market, 1/8-1/25 scale models, diecast kustoms & kustom automotive applications.<br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil18.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "At the size of a business card, the Artool Nano Series Freehand Airbrush Templates can be used to easily render images on the smallest projects, namely the RC car market, 1/8-1/25 scale models, diecast kustoms & kustom automotive applications.<br>\n<a href=\"prodimages/ABA_FraserStencil18.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 528,
@@ -5439,7 +5439,7 @@ const categories = [
         "sectionID": 533,
         "sectionName": "Huntington Beach Bodyworks<br> Stencils by Rich Evans<p>",
         "sectionWorkingName": "HBB Stencils",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logohbb.png",
+        "sectionImage": "prodimages/logohbb.png",
         "topSection": 19,
         "sectionOrder": 4,
         "rootSection": 0,
@@ -5703,7 +5703,7 @@ const categories = [
         "sectionID": 555,
         "sectionName": "Huntington Beach Bodyworks DVD's",
         "sectionWorkingName": "Hbb DVD",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logohbb.png",
+        "sectionImage": "prodimages/logohbb.png",
         "topSection": 14,
         "sectionOrder": 10,
         "rootSection": 1,
@@ -5720,14 +5720,14 @@ const categories = [
         "sectionOrder": 510,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=555",
+        "sectionURL": "products.asp?cat=555",
         "sectionDescription": ""
     },
     {
         "sectionID": 558,
         "sectionName": "Mike Learn DVD's",
         "sectionWorkingName": "Mike Learn DVD",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomikelearn.png",
+        "sectionImage": "prodimages/logomikelearn.png",
         "topSection": 14,
         "sectionOrder": 11,
         "rootSection": 1,
@@ -5757,7 +5757,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil22.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil22.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 564,
@@ -5883,7 +5883,7 @@ const categories = [
         "sectionID": 598,
         "sectionName": "Paasche",
         "sectionWorkingName": "Paasche Compressors",
-        "sectionImage": "http://www.coastairbrush.com/images/logopaascheW.png",
+        "sectionImage": "images/logopaascheW.png",
         "topSection": 13,
         "sectionOrder": 549,
         "rootSection": 1,
@@ -5912,7 +5912,7 @@ const categories = [
         "sectionOrder": 552,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/renegadeparts.asp",
+        "sectionURL": "partsairbrush/renegadeparts.asp",
         "sectionDescription": ""
     },
     {
@@ -5925,7 +5925,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/aba_aug08_artool.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/aba_aug08_artool.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 604,
@@ -5967,7 +5967,7 @@ const categories = [
         "sectionID": 607,
         "sectionName": "Makeup and Tanning Favorites",
         "sectionWorkingName": "Makeup and Tanning Favorites",
-        "sectionImage": "/images/Makeup.png",
+        "sectionImage": "static/Makeup.png",
         "topSection": 0,
         "sectionOrder": 557,
         "rootSection": 0,
@@ -6128,7 +6128,7 @@ const categories = [
         "sectionOrder": 568,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/dagrparts.asp",
+        "sectionURL": "partsairbrush/dagrparts.asp",
         "sectionDescription": ""
     },
     {
@@ -6140,7 +6140,7 @@ const categories = [
         "sectionOrder": 569,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/2020parts.asp",
+        "sectionURL": "partsairbrush/2020parts.asp",
         "sectionDescription": ""
     },
     {
@@ -6153,7 +6153,7 @@ const categories = [
         "rootSection": 0,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/wickedhowtos.asp\">Click Here For How to Articles</a>"
+        "sectionDescription": "<a href=\"wickedhowtos.asp\">Click Here For How to Articles</a>"
     },
     {
         "sectionID": 621,
@@ -6237,7 +6237,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/Artool26_Steampubk.pdf\">HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/Artool26_Steampubk.pdf\">HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 633,
@@ -6255,7 +6255,7 @@ const categories = [
         "sectionID": 634,
         "sectionName": "Temptu Compressor",
         "sectionWorkingName": "Temptu Compressor",
-        "sectionImage": "http://www.coastairbrush.com/images/logotemptu.png",
+        "sectionImage": "images/logotemptu.png",
         "topSection": 13,
         "sectionOrder": 581,
         "rootSection": 1,
@@ -6344,7 +6344,7 @@ const categories = [
         "sectionOrder": 4,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=153",
+        "sectionURL": "categories.asp?cat=153",
         "sectionDescription": ""
     },
     {
@@ -6423,7 +6423,7 @@ const categories = [
         "sectionID": 647,
         "sectionName": "Devilbiss Templates",
         "sectionWorkingName": "Devilbiss Templates",
-        "sectionImage": "http://www.coastairbrush.com/images/logodevilbissW2.png",
+        "sectionImage": "images/logodevilbissW2.png",
         "topSection": 19,
         "sectionOrder": 5,
         "rootSection": 0,
@@ -6848,7 +6848,7 @@ const categories = [
         "sectionOrder": 41,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=FHBFX-1",
+        "sectionURL": "proddetail.asp?prod=FHBFX-1",
         "sectionDescription": ""
     },
     {
@@ -6884,7 +6884,7 @@ const categories = [
         "sectionOrder": 642,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/badger105parts.asp",
+        "sectionURL": "partsairbrush/badger105parts.asp",
         "sectionDescription": ""
     },
     {
@@ -6963,7 +6963,7 @@ const categories = [
         "sectionID": 704,
         "sectionName": "Createx Templates",
         "sectionWorkingName": "Createx Templates",
-        "sectionImage": "http://www.coastairbrush.com/images/logocreatex.png",
+        "sectionImage": "images/logocreatex.png",
         "topSection": 19,
         "sectionOrder": 7,
         "rootSection": 1,
@@ -6980,7 +6980,7 @@ const categories = [
         "sectionOrder": 651,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/wickedhowtos.asp",
+        "sectionURL": "wickedhowtos.asp",
         "sectionDescription": ""
     },
     {
@@ -7035,7 +7035,7 @@ const categories = [
         "sectionID": 710,
         "sectionName": "Doug Dorr DVD's",
         "sectionWorkingName": "Doug Dorr DVD's",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logodorr.png",
+        "sectionImage": "prodimages/logodorr.png",
         "topSection": 14,
         "sectionOrder": 12,
         "rootSection": 1,
@@ -7071,7 +7071,7 @@ const categories = [
         "sectionID": 713,
         "sectionName": "Million Dollar Tan",
         "sectionWorkingName": "Million Dollar Tan",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomdt.png",
+        "sectionImage": "prodimages/logomdt.png",
         "topSection": 607,
         "sectionOrder": 8,
         "rootSection": 1,
@@ -7100,7 +7100,7 @@ const categories = [
         "sectionOrder": 663,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/createxhowto.html",
+        "sectionURL": "createxhowto.html",
         "sectionDescription": ""
     },
     {
@@ -7268,7 +7268,7 @@ const categories = [
         "sectionOrder": 45,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=FH%2DWGFX1",
+        "sectionURL": "proddetail.asp?prod=FH%2DWGFX1",
         "sectionDescription": ""
     },
     {
@@ -7280,7 +7280,7 @@ const categories = [
         "sectionOrder": 46,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=FH%2DCFFX1",
+        "sectionURL": "proddetail.asp?prod=FH%2DCFFX1",
         "sectionDescription": ""
     },
     {
@@ -7496,7 +7496,7 @@ const categories = [
         "sectionOrder": 13,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/HOK_S2_digitals.html",
+        "sectionURL": "HOK_S2_digitals.html",
         "sectionDescription": ""
     },
     {
@@ -7508,7 +7508,7 @@ const categories = [
         "sectionOrder": 12,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/neoparts.asp",
+        "sectionURL": "partsairbrush/neoparts.asp",
         "sectionDescription": ""
     },
     {
@@ -7539,7 +7539,7 @@ const categories = [
         "sectionID": 767,
         "sectionName": "California Air Tools Compressors",
         "sectionWorkingName": "California Air Tools Compressors",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logocaair.png",
+        "sectionImage": "prodimages/logocaair.png",
         "topSection": 13,
         "sectionOrder": 711,
         "rootSection": 1,
@@ -7568,14 +7568,14 @@ const categories = [
         "sectionOrder": 6,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/aatech.html",
+        "sectionURL": "aatech.html",
         "sectionDescription": ""
     },
     {
         "sectionID": 777,
         "sectionName": "Temptu",
         "sectionWorkingName": "Temptu DVD",
-        "sectionImage": "http://www.coastairbrush.com/images/logotemptu.png",
+        "sectionImage": "images/logotemptu.png",
         "topSection": 14,
         "sectionOrder": 720,
         "rootSection": 1,
@@ -7676,7 +7676,7 @@ const categories = [
         "sectionOrder": 752,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=842",
+        "sectionURL": "categories.asp?cat=842",
         "sectionDescription": ""
     },
     {
@@ -7851,7 +7851,7 @@ const categories = [
         "sectionID": 172,
         "sectionName": "Silentaire Technology",
         "sectionWorkingName": "Silentaire",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoSIL.png",
+        "sectionImage": "prodimages/logoSIL.png",
         "topSection": 13,
         "sectionOrder": 150,
         "rootSection": 1,
@@ -7911,7 +7911,7 @@ const categories = [
         "sectionID": 178,
         "sectionName": "Artool",
         "sectionWorkingName": "Artool",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoartool.png",
+        "sectionImage": "prodimages/logoartool.png",
         "topSection": 19,
         "sectionOrder": 0,
         "rootSection": 0,
@@ -7941,7 +7941,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil01a.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1 part 1</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil01b.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1 part 2</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil02.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil15.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil20.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 4</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil01a.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1 part 1</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil01b.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1 part 2</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil02.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil15.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil20.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 4</a>"
     },
     {
         "sectionID": 183,
@@ -7965,7 +7965,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil03.pdf\">AIRBRUSH ACTION HOW TO ARTICLE </a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil03.pdf\">AIRBRUSH ACTION HOW TO ARTICLE </a>"
     },
     {
         "sectionID": 185,
@@ -7989,7 +7989,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil05.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil06.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil15.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil05.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil06.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil15.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a>"
     },
     {
         "sectionID": 187,
@@ -8001,7 +8001,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil11.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br><a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil10.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil11.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br><a href=\"prodimages/ABA_FraserStencil10.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a>"
     },
     {
         "sectionID": 188,
@@ -8025,7 +8025,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil04.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil04.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 190,
@@ -8061,7 +8061,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil13.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil13.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 193,
@@ -8085,13 +8085,13 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil07.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil08.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil09.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil07.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil08.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil09.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a>"
     },
     {
         "sectionID": 195,
         "sectionName": "Mack Brushes",
         "sectionWorkingName": "Mack Brushes",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logomack.png",
+        "sectionImage": "prodimages/logomack.png",
         "topSection": 21,
         "sectionOrder": 0,
         "rootSection": 0,
@@ -8211,7 +8211,7 @@ const categories = [
         "sectionID": 205,
         "sectionName": "Xcaliber",
         "sectionWorkingName": "Xcaliber",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoxcal.png",
+        "sectionImage": "prodimages/logoxcal.png",
         "topSection": 21,
         "sectionOrder": 2,
         "rootSection": 0,
@@ -8265,7 +8265,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil16.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil16.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 452,
@@ -8277,7 +8277,7 @@ const categories = [
         "rootSection": 1,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil17.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil17.pdf\">AIRBRUSH ACTION HOW TO ARTICLE</a>"
     },
     {
         "sectionID": 453,
@@ -8463,7 +8463,7 @@ const categories = [
         "sectionID": 568,
         "sectionName": "Luco Kazan & French Masters Brushes",
         "sectionWorkingName": "Luco Kazan & French Masters",
-        "sectionImage": "/prodimages/lucofmsm.gif",
+        "sectionImage": "prodimages/lucofmsm.gif",
         "topSection": 21,
         "sectionOrder": 20,
         "rootSection": 1,
@@ -8552,14 +8552,14 @@ const categories = [
         "sectionOrder": 10,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/g6parts.asp",
+        "sectionURL": "partsspraygun/g6parts.asp",
         "sectionDescription": "Eclipse G6 Parts and Accessories"
     },
     {
         "sectionID": 394,
         "sectionName": "Lumilor Kits & Bundles",
         "sectionWorkingName": "Lumilor Applicator Kits/Bundles",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 386,
         "sectionOrder": 856,
         "rootSection": 1,
@@ -8576,7 +8576,7 @@ const categories = [
         "sectionOrder": 525,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/g6parts.asp",
+        "sectionURL": "partsspraygun/g6parts.asp",
         "sectionDescription": ""
     },
     {
@@ -8588,7 +8588,7 @@ const categories = [
         "sectionOrder": 11,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/trparts.asp",
+        "sectionURL": "partsairbrush/trparts.asp",
         "sectionDescription": "HP-TR1<br>\nHP-TR2</br>"
     },
     {
@@ -8708,7 +8708,7 @@ const categories = [
         "sectionOrder": 815,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsspraygun/supernovaparts.asp",
+        "sectionURL": "partsspraygun/supernovaparts.asp",
         "sectionDescription": ""
     },
     {
@@ -8804,7 +8804,7 @@ const categories = [
         "sectionOrder": 33,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=829",
+        "sectionURL": "products.asp?cat=829",
         "sectionDescription": ""
     },
     {
@@ -8823,7 +8823,7 @@ const categories = [
         "sectionID": 348,
         "sectionName": "Accessories",
         "sectionWorkingName": "Tamiya Accessories",
-        "sectionImage": "/prodimages/74513.gif",
+        "sectionImage": "prodimages/74513.gif",
         "topSection": 27,
         "sectionOrder": 315,
         "rootSection": 1,
@@ -8852,7 +8852,7 @@ const categories = [
         "sectionOrder": 317,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/74514parts.asp",
+        "sectionURL": "partsairbrush/74514parts.asp",
         "sectionDescription": ""
     },
     {
@@ -8864,7 +8864,7 @@ const categories = [
         "sectionOrder": 318,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/74510parts.asp",
+        "sectionURL": "partsairbrush/74510parts.asp",
         "sectionDescription": ""
     },
     {
@@ -8876,7 +8876,7 @@ const categories = [
         "sectionOrder": 319,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/74503parts.asp",
+        "sectionURL": "partsairbrush/74503parts.asp",
         "sectionDescription": "For Original HG-HGIII"
     },
     {
@@ -8889,7 +8889,7 @@ const categories = [
         "rootSection": 0,
         "sectionDisabled": 0,
         "sectionURL": "",
-        "sectionDescription": "<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil18.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil23.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"http://www.coastairbrush.com/prodimages/ABA_FraserStencil25.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a>"
+        "sectionDescription": "<a href=\"prodimages/ABA_FraserStencil18.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 1</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil23.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 2</a><br><br>\n<a href=\"prodimages/ABA_FraserStencil25.pdf\">AIRBRUSH ACTION HOW TO ARTICLE 3</a>"
     },
     {
         "sectionID": 354,
@@ -9092,7 +9092,7 @@ const categories = [
         "sectionOrder": 42,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=FHSFX%2D1",
+        "sectionURL": "proddetail.asp?prod=FHSFX%2D1",
         "sectionDescription": ""
     },
     {
@@ -9128,7 +9128,7 @@ const categories = [
         "sectionOrder": 640,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=692",
+        "sectionURL": "products.asp?cat=692",
         "sectionDescription": ""
     },
     {
@@ -9212,7 +9212,7 @@ const categories = [
         "sectionOrder": 822,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=815",
+        "sectionURL": "products.asp?cat=815",
         "sectionDescription": ""
     },
     {
@@ -9255,7 +9255,7 @@ const categories = [
         "sectionID": 47,
         "sectionName": "Vintage Flatz",
         "sectionWorkingName": "Vintage Flatz",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logovintage.png",
+        "sectionImage": "prodimages/logovintage.png",
         "topSection": 11,
         "sectionOrder": 26,
         "rootSection": 1,
@@ -9363,7 +9363,7 @@ const categories = [
         "sectionID": 104,
         "sectionName": "Black Flys Sunglasses",
         "sectionWorkingName": "Black Flys Sunglasses",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoblackflys.png",
+        "sectionImage": "prodimages/logoblackflys.png",
         "topSection": 383,
         "sectionOrder": 830,
         "rootSection": 1,
@@ -9392,7 +9392,7 @@ const categories = [
         "sectionOrder": 5,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=883",
+        "sectionURL": "categories.asp?cat=883",
         "sectionDescription": ""
     },
     {
@@ -9416,7 +9416,7 @@ const categories = [
         "sectionOrder": 833,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/talontsparts.asp",
+        "sectionURL": "partsairbrush/talontsparts.asp",
         "sectionDescription": ""
     },
     {
@@ -9428,7 +9428,7 @@ const categories = [
         "sectionOrder": 834,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/talontgxparts.asp",
+        "sectionURL": "partsairbrush/talontgxparts.asp",
         "sectionDescription": ""
     },
     {
@@ -9440,7 +9440,7 @@ const categories = [
         "sectionOrder": 0,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=745",
+        "sectionURL": "categories.asp?cat=745",
         "sectionDescription": ""
     },
     {
@@ -9452,7 +9452,7 @@ const categories = [
         "sectionOrder": 1,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=870",
+        "sectionURL": "products.asp?cat=870",
         "sectionDescription": ""
     },
     {
@@ -9476,19 +9476,19 @@ const categories = [
         "sectionOrder": 844,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/aatech.html",
+        "sectionURL": "aatech.html",
         "sectionDescription": ""
     },
     {
         "sectionID": 311,
         "sectionName": "Technical Data",
         "sectionWorkingName": "Technical Data (candy2o)",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/aatechdata.png",
+        "sectionImage": "prodimages/aatechdata.png",
         "topSection": 238,
         "sectionOrder": 845,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/aatech.html",
+        "sectionURL": "aatech.html",
         "sectionDescription": ""
     },
     {
@@ -9524,7 +9524,7 @@ const categories = [
         "sectionOrder": 847,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/prodimages/AutoBorne-Sealer-TDS.pdf",
+        "sectionURL": "prodimages/AutoBorne-Sealer-TDS.pdf",
         "sectionDescription": ""
     },
     {
@@ -9560,7 +9560,7 @@ const categories = [
         "sectionOrder": 8,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=819",
+        "sectionURL": "categories.asp?cat=819",
         "sectionDescription": ""
     },
     {
@@ -9579,7 +9579,7 @@ const categories = [
         "sectionID": 386,
         "sectionName": "Lumilor",
         "sectionWorkingName": "Lumilor",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilor.png",
+        "sectionImage": "prodimages/logolumilor.png",
         "topSection": 11,
         "sectionOrder": 21,
         "rootSection": 0,
@@ -9651,7 +9651,7 @@ const categories = [
         "sectionID": 393,
         "sectionName": "Lumilor Approved Applicator",
         "sectionWorkingName": "Lumilor Applicator",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 11,
         "sectionOrder": 20,
         "rootSection": 0,
@@ -9663,7 +9663,7 @@ const categories = [
         "sectionID": 395,
         "sectionName": "Lumilor Individual Components",
         "sectionWorkingName": "Lumilor Applicator Individual Components",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 386,
         "sectionOrder": 857,
         "rootSection": 1,
@@ -9675,7 +9675,7 @@ const categories = [
         "sectionID": 396,
         "sectionName": "Lumilor Medium Components",
         "sectionWorkingName": "Lumilor Applicator Medium Components",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 393,
         "sectionOrder": 858,
         "rootSection": 1,
@@ -9687,7 +9687,7 @@ const categories = [
         "sectionID": 397,
         "sectionName": "Lumilor Large Components",
         "sectionWorkingName": "Lumilor Applicator Large Components",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 393,
         "sectionOrder": 859,
         "rootSection": 1,
@@ -9699,7 +9699,7 @@ const categories = [
         "sectionID": 398,
         "sectionName": "Lumilor Connectors & Accessories",
         "sectionWorkingName": "Lumilor Applicator Connectors & Accessories",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 386,
         "sectionOrder": 860,
         "rootSection": 1,
@@ -9711,7 +9711,7 @@ const categories = [
         "sectionID": 399,
         "sectionName": "Lumilor Training Portal",
         "sectionWorkingName": "Lumilor Applicator Training",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logolumilorapplicator.png",
+        "sectionImage": "prodimages/logolumilorapplicator.png",
         "topSection": 386,
         "sectionOrder": 861,
         "rootSection": 1,
@@ -9932,7 +9932,7 @@ const categories = [
         "sectionOrder": 0,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=128",
+        "sectionURL": "products.asp?cat=128",
         "sectionDescription": ""
     },
     {
@@ -9944,7 +9944,7 @@ const categories = [
         "sectionOrder": 1,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=53",
+        "sectionURL": "categories.asp?cat=53",
         "sectionDescription": ""
     },
     {
@@ -9956,7 +9956,7 @@ const categories = [
         "sectionOrder": 2,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=620",
+        "sectionURL": "categories.asp?cat=620",
         "sectionDescription": ""
     },
     {
@@ -9968,7 +9968,7 @@ const categories = [
         "sectionOrder": 3,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=61",
+        "sectionURL": "categories.asp?cat=61",
         "sectionDescription": ""
     },
     {
@@ -9980,7 +9980,7 @@ const categories = [
         "sectionOrder": 4,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=238",
+        "sectionURL": "categories.asp?cat=238",
         "sectionDescription": ""
     },
     {
@@ -9992,7 +9992,7 @@ const categories = [
         "sectionOrder": 5,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=797",
+        "sectionURL": "categories.asp?cat=797",
         "sectionDescription": ""
     },
     {
@@ -10004,7 +10004,7 @@ const categories = [
         "sectionOrder": 6,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=816",
+        "sectionURL": "categories.asp?cat=816",
         "sectionDescription": ""
     },
     {
@@ -10016,7 +10016,7 @@ const categories = [
         "sectionOrder": 7,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=313",
+        "sectionURL": "categories.asp?cat=313",
         "sectionDescription": ""
     },
     {
@@ -10028,7 +10028,7 @@ const categories = [
         "sectionOrder": 13,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/aatech.html",
+        "sectionURL": "aatech.html",
         "sectionDescription": ""
     },
     {
@@ -10064,7 +10064,7 @@ const categories = [
         "sectionOrder": 8,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=441",
+        "sectionURL": "products.asp?cat=441",
         "sectionDescription": ""
     },
     {
@@ -10148,7 +10148,7 @@ const categories = [
         "sectionOrder": 11,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=461",
+        "sectionURL": "products.asp?cat=461",
         "sectionDescription": ""
     },
     {
@@ -10244,7 +10244,7 @@ const categories = [
         "sectionOrder": 882,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=411",
+        "sectionURL": "categories.asp?cat=411",
         "sectionDescription": ""
     },
     {
@@ -10256,7 +10256,7 @@ const categories = [
         "sectionOrder": 883,
         "rootSection": 0,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=491",
+        "sectionURL": "categories.asp?cat=491",
         "sectionDescription": ""
     },
     {
@@ -10328,7 +10328,7 @@ const categories = [
         "sectionOrder": 9,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/categories.asp?cat=589",
+        "sectionURL": "categories.asp?cat=589",
         "sectionDescription": ""
     },
     {
@@ -10496,7 +10496,7 @@ const categories = [
         "sectionOrder": 896,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=511",
+        "sectionURL": "products.asp?cat=511",
         "sectionDescription": ""
     },
     {
@@ -10508,7 +10508,7 @@ const categories = [
         "sectionOrder": 53,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/proddetail.asp?prod=Dorr%27s_Hand_Cleaner",
+        "sectionURL": "proddetail.asp?prod=Dorr%27s_Hand_Cleaner",
         "sectionDescription": ""
     },
     {
@@ -10532,7 +10532,7 @@ const categories = [
         "sectionOrder": 898,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=716",
+        "sectionURL": "products.asp?cat=716",
         "sectionDescription": "Brico Industries - Mr. B Signature Brush"
     },
     {
@@ -10712,7 +10712,7 @@ const categories = [
         "sectionOrder": 10,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=891",
+        "sectionURL": "products.asp?cat=891",
         "sectionDescription": ""
     },
     {
@@ -10724,7 +10724,7 @@ const categories = [
         "sectionOrder": 913,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/products.asp?cat=891",
+        "sectionURL": "products.asp?cat=891",
         "sectionDescription": ""
     },
     {
@@ -10760,7 +10760,7 @@ const categories = [
         "sectionOrder": 8,
         "rootSection": 1,
         "sectionDisabled": 0,
-        "sectionURL": "http://www.coastairbrush.com/partsairbrush/kustomthparts.asp",
+        "sectionURL": "partsairbrush/kustomthparts.asp",
         "sectionDescription": "HP-TH<br>\nK-TH"
     },
     {
@@ -10791,7 +10791,7 @@ const categories = [
         "sectionID": 900,
         "sectionName": "The Vault Parts",
         "sectionWorkingName": "Iwata TH2 Parts",
-        "sectionImage": "//prodimages/logoIWvaultV2.png",
+        "sectionImage": "prodimages/logoIWvaultV2.png",
         "topSection": 263,
         "sectionOrder": 919,
         "rootSection": 1,
@@ -10815,7 +10815,7 @@ const categories = [
         "sectionID": 902,
         "sectionName": "HammAirArt",
         "sectionWorkingName": "HammAirArt",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logohammair.png",
+        "sectionImage": "prodimages/logohammair.png",
         "topSection": 19,
         "sectionOrder": 8,
         "rootSection": 1,
@@ -10875,7 +10875,7 @@ const categories = [
         "sectionID": 907,
         "sectionName": "Hyper FX",
         "sectionWorkingName": "Hyper FX",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logohyperfx1.png",
+        "sectionImage": "prodimages/logohyperfx1.png",
         "topSection": 11,
         "sectionOrder": 15,
         "rootSection": 1,
@@ -10923,7 +10923,7 @@ const categories = [
         "sectionID": 911,
         "sectionName": "Air Oil & Lead",
         "sectionWorkingName": "Air Oil & Lead",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoairoillead.png",
+        "sectionImage": "prodimages/logoairoillead.png",
         "topSection": 19,
         "sectionOrder": 3,
         "rootSection": 1,
@@ -10995,7 +10995,7 @@ const categories = [
         "sectionID": 917,
         "sectionName": "Air Oil & Lead",
         "sectionWorkingName": "AOLN",
-        "sectionImage": "/prodimages/AOLN-GroupSM.png",
+        "sectionImage": "prodimages/AOLN-GroupSM.png",
         "topSection": 11,
         "sectionOrder": 54,
         "rootSection": 1,
@@ -11007,7 +11007,7 @@ const categories = [
         "sectionID": 918,
         "sectionName": "Air Oil & Lead",
         "sectionWorkingName": "AOLN",
-        "sectionImage": "/prodimages/AOLN-GroupSM.png",
+        "sectionImage": "prodimages/AOLN-GroupSM.png",
         "topSection": 745,
         "sectionOrder": 934,
         "rootSection": 1,
@@ -11019,7 +11019,7 @@ const categories = [
         "sectionID": 919,
         "sectionName": "XTREME-SHIFT Paints",
         "sectionWorkingName": "XTREME-SHIFT Paints",
-        "sectionImage": "http://www.coastairbrush.com/prodimages/logoxtremeSHIFT.PNG",
+        "sectionImage": "prodimages/logoxtremeSHIFT.PNG",
         "topSection": 11,
         "sectionOrder": 3,
         "rootSection": 1,
@@ -11031,7 +11031,7 @@ const categories = [
         "sectionID": 920,
         "sectionName": "Coarse Metallics",
         "sectionWorkingName": "HOK Coarse Metallics",
-        "sectionImage": "/prodimages/HOK0104SM.png",
+        "sectionImage": "prodimages/HOK0104SM.png",
         "topSection": 745,
         "sectionOrder": 935,
         "rootSection": 1,
@@ -11043,7 +11043,7 @@ const categories = [
         "sectionID": 921,
         "sectionName": "Midnight Series",
         "sectionWorkingName": "HOK Midnight Series",
-        "sectionImage": "/prodimages/ms20025sm.png",
+        "sectionImage": "prodimages/ms20025sm.png",
         "topSection": 745,
         "sectionOrder": 936,
         "rootSection": 1,
@@ -11127,7 +11127,7 @@ const categories = [
         "sectionID": 928,
         "sectionName": "RUPES",
         "sectionWorkingName": "RUPES",
-        "sectionImage": "/prodimages/rupes_logo.jpg",
+        "sectionImage": "prodimages/rupes_logo.jpg",
         "topSection": 245,
         "sectionOrder": 942,
         "rootSection": 0,

@@ -6,12 +6,16 @@ import {
     newDiscount,
     updateDiscount,
     deleteDiscount,
+    applyDiscount,
 } from '../controllers/discountController.js'
 
 // @route /api/discounts/
 const router = express.Router()
 router.route('/')
     .get(protect, staff, getDiscounts)
+
+router.route('/apply/:id')
+    .post(applyDiscount)
 
 router.route('/edit/:id')
     .get(protect, staff, getDiscount)

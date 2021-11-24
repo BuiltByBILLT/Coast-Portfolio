@@ -4,14 +4,14 @@ const discounts = [
         discountDescription: "5% off Test",
         discountType: "PERCENT",
         discountAmount: 5,
-        discountLive: true
+        discountLive: false
     },
     {
         discountCode: "5DOLLARTEST",
         discountDescription: "$5 off Test",
         discountType: "FLAT",
         discountAmount: 500,
-        discountLive: true
+        discountLive: false
     },
 
 ]

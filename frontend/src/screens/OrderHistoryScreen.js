@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listMyOrders } from '../actions/orderActions'
 import { UserNavBar } from '../components/UserNavBar'
+import { envImage } from '../common'
 
 const OrderHistoryScreen = ({ history }) => {
 
@@ -36,7 +37,7 @@ const OrderHistoryScreen = ({ history }) => {
                                     <Row className="justify-content-center">
                                         <Col lg={4} className="text-center">
                                             {order.orderImage &&
-                                                <Image src={"https://www.coastairbrush.com/" + order.orderImage}
+                                                <Image src={envImage(order.orderImage)}
                                                     alt={order.lineItems.elements[0].name} fluid rounded
                                                     style={{ height: "200px" }}
                                                 />}

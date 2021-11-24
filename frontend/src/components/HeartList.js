@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from 'react-router-dom'
 import { addWishListItem, removeWishListItem } from '../actions/userActions'
 
@@ -31,10 +32,10 @@ export const HeartList = ({ pID, size }) => {
                         onClick={addHandler}
                         style={{ cursor: "pointer" }}>
                     </i>
-                : <Link to="/login">
+                : <LinkContainer to="/login" style={{ cursor: "pointer" }} >
                     <i className={`far fa-heart fa-${size} text-danger`}></i>
-                </Link>
+                </LinkContainer>
             }
-        </div>
+        </div >
     )
 }

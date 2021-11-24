@@ -3,12 +3,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useMutation, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { UserContext } from '../contexts/UserContext'
 
-const DiscountNewScreen = ({ history }) => {
+const DiscountNewScreen = ({ popup }) => {
 
+    const history = useHistory()
     // States and Contexts
     const user = useContext(UserContext)
 
@@ -17,6 +19,7 @@ const DiscountNewScreen = ({ history }) => {
     const [discountType, setDiscountType] = useState("FLAT")
     const [discountAmount, setDiscountAmount] = useState("")
     const [discountLive, setDiscountLive] = useState(true)
+    const [discountExclude, setDiscountExclude] = useState("")
 
     const [available, setAvailable] = useState(true)
     const [edit, setEdit] = useState(true)
@@ -67,17 +70,22 @@ const DiscountNewScreen = ({ history }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive })
+        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive, discountExclude })
     }
     const cancelHandler = (e) => {
         e.preventDefault()
         history.push('/admin/discountlist')
     }
 
+    const excludeHandler = (e) => {
+        setDiscountExclude(e.target.value)
+    }
+
+
     return (
-        <Container className="my-5 pb-5">
+        <Container className={popup ? "" : "my-5 pb-5"}>
             <Row>
-                <Col xs={8}>
+                <Col xs={popup ? 12 : 8}>
                     <Row>
                         <Col>
                             <Link to="/admin/discountlist">{"<-- Discount List"}</Link>
@@ -101,7 +109,7 @@ const DiscountNewScreen = ({ history }) => {
                                 </Form.Group>
                                 <Form.Group controlId='Name'>
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control type='text' placeholder='Name' value={discountDescription} disabled={!edit}
+                                    <Form.Control type='text' placeholder='Name' value={discountDescription} required disabled={!edit}
                                         onChange={(e) => setDiscountDescription(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
@@ -114,10 +122,22 @@ const DiscountNewScreen = ({ history }) => {
                                     </Form.Control>
                                 </Form.Group>
                                 <Form.Group controlId='Amount Off'>
-                                    <Form.Label>{discountType == 'FLAT' ? 'Amount Off In Cents' : "Percent Off"}</Form.Label>
+                                    <Form.Label>{discountType == 'FLAT' ? 'Amount Off (Cents)' : "Percent Off"}</Form.Label>
                                     <Form.Control type='number' placeholder={discountType == 'FLAT' ? 'Amount Off In Cents' : "Percent Off"}
                                         value={discountAmount} required disabled={!edit}
                                         onChange={(e) => setDiscountAmount(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Exclude'>
+                                    <Form.Label>{discountType == 'FLAT' ? "Minimun Order (Cents)" : "Excluded Products"}</Form.Label>
+                                    <Form.Control
+                                        as={discountType == 'FLAT' ? "input" : 'textarea'}
+                                        type={discountType == 'FLAT' ? "number" : 'textarea'}
+                                        placeholder={discountType == 'FLAT' ? "Minimun Order Value (Cents)"
+                                            : `Product SKU's Seperated by Commas, No Spaces
+                                        ex: T6131,126823,50-0231`}
+                                        value={discountExclude} disabled={!edit}
+                                        onChange={excludeHandler}>
                                     </Form.Control>
                                 </Form.Group>
                                 <Form.Check label="Discount Live" disabled={!edit}
@@ -131,7 +151,7 @@ const DiscountNewScreen = ({ history }) => {
                                             Save
                                         </Button>
                                         <Button variant='secondary' className="p-0 ml-5" type="button"
-                                            onClick={cancelHandler}>
+                                            onClick={popup ? () => { } : cancelHandler}>
                                             Cancel
                                         </Button>
                                     </>

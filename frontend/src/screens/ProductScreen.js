@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form, Breadcrumb, Container } from 'react-bootstrap'
-import Rating from '../components/Rating'
+import React, { useState, useEffect, useContext } from 'react'
+import { Row, Col, Button, Form, Container } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Meta from '../components/Meta'
 import Suggested from '../components/Suggested'
 import ProductCrumbs from '../components/ProductCrumbs'
 import ImageDisplay from '../components/ImageDisplay'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { listProductDetails, resetProductDetails, createProductReview } from '../actions/productActions'
-import { getCategoryDetails } from '../actions/categoryActions'
-import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import { listProductDetails, resetProductDetails, } from '../actions/productActions'
 
 import "../styles/ProductPage.css"
-import { addToCart } from '../actions/cartActions'
+// import { addToCart } from '../actions/cartActions'
 import { HeartList } from '../components/HeartList'
+import { CartContext, CartContextUpdate } from '../contexts/CartContext'
 
-const ProductScreen = ({ history, match }) => {
+const ProductScreen = ({ match }) => {
+
+    const pID = match.params.id
+    const cartUpdate = useContext(CartContextUpdate)
+
     const { loading, error, product } = useSelector(state => state.productDetails)
     const { category } = useSelector(state => state.categoryDetails)
     const { userInfo } = useSelector(state => state.userLogin)
@@ -29,7 +29,8 @@ const ProductScreen = ({ history, match }) => {
     const [option, setOption] = useState(0)
     const [price, setPrice] = useState(0)
     const [cloverID, setCloverID] = useState("")
-    const [name, setName] = useState(product.pName)
+    const [name, setName] = useState("")
+    const [image, setImage] = useState("")
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -42,17 +43,17 @@ const ProductScreen = ({ history, match }) => {
 
 
     useEffect(() => {
-        setName(product.pName)
+        setImage(product.images && product.images[0] && product.images[0].imageSrc)
         if (product.options && product.options.length == 1) {
+            setName(product.pName)
+            setCloverID(product.options[0].cloverID)
             setPrice(product.options[0].iPrice)
             setStock(product.options[0].iStock)
-            setCloverID(product.options[0].cloverID)
-            // setName(`${product.pName} (${product.options[0].iSelectionName})`)
         }
         else if (product.options && product.options.length > 1 && option != 0) {
-            setPrice(product.options[option - 1].iPrice)
-            setCloverID(product.options[option - 1].cloverID)
             setName(`${product.pName} (${product.options[option - 1].iSelectionName})`)
+            setCloverID(product.options[option - 1].cloverID)
+            setPrice(product.options[option - 1].iPrice)
             setStock(product.options[option - 1].iStock)
         } else {
 
@@ -61,7 +62,12 @@ const ProductScreen = ({ history, match }) => {
 
     const addToCartHandler = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-        dispatch(addToCart(product, name, qty, stock, price, cloverID))
+        // dispatch(addToCart(product, name, qty, stock, price, cloverID))
+        cartUpdate({
+            type: "ADD_ITEM",
+            cartItem: { pID, cloverID, name, image, price, qty, stock }
+        })
+
     }
 
 

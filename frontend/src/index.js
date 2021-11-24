@@ -4,14 +4,12 @@ import { Provider } from 'react-redux'
 import store from './store'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { UserContextProvider } from './contexts/UserContext.js';
+import { CartContextProvider } from './contexts/CartContext';
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import './bootstrap.css';
 import './index.css';
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
 import App from './App';
 
 const queryClient = new QueryClient({
@@ -26,9 +24,11 @@ ReactDOM.render(
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
       <UserContextProvider>
-        <Router>
-          <App />
-        </Router >
+        <CartContextProvider>
+          <Router>
+            <App />
+          </Router >
+        </CartContextProvider>
       </UserContextProvider>
     </Provider>
   </QueryClientProvider>,

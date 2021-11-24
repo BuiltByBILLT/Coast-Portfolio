@@ -7,7 +7,7 @@ import Label from '../models/labelModel.js'
 // @route POST /api/shipping/ups/AV
 // @access Staff
 const addressVerification = asyncHandler(async (req, res) => {
-    const { address, address2, city, country, region, postalCode } = req.body
+    const { address1, address2, city, country, region, postalCode } = req.body
     let body = {
         "UPSSecurity": {
             "UsernameToken": {
@@ -30,7 +30,7 @@ const addressVerification = asyncHandler(async (req, res) => {
                 // "PoliticalDivision2": "Carrollton",
                 // "PoliticalDivision1": "TX",
                 // "PostcodePrimaryLow": "75007",
-                "AddressLine": [address, address2],
+                "AddressLine": [address1, address2],
                 "PoliticalDivision2": city,
                 "PoliticalDivision1": region,
                 "PostcodePrimaryLow": postalCode,
@@ -71,7 +71,7 @@ const createUPS = asyncHandler(async (req, res) => {
     let tracking = ""
     let raw = ""
     let resp = ""
-    const { email, firstName, lastName, company, address, address2, city, country, region, postalCode, phone } = req.body
+    const { email, firstName, lastName, company, address1, address2, city, country, region, postalCode, phone } = req.body
     // console.log(company)
     console.log(region)
     // console.log(lastName)
@@ -102,7 +102,7 @@ const createUPS = asyncHandler(async (req, res) => {
                     //     "Number": phone ? phone ""
                     // },
                     "Address": {
-                        "AddressLine": [address, address2],
+                        "AddressLine": [address1, address2],
                         "City": city,
                         "StateProvinceCode": region,
                         "PostalCode": postalCode,

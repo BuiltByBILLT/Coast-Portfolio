@@ -1,50 +1,50 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
 import { Row, Col, Image, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { getSuggestedProducts } from '../actions/productActions'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
-import ProductSimpleCard from './ProductSimpleCard'
+import { envImage, firstImage } from '../common'
+import { useQuery } from 'react-query'
+import axios from 'axios'
 
 const TopThree = () => {
 
-    const { loading, error, suggested } = useSelector(state => state.productSuggested)
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(getSuggestedProducts())
-    }, [dispatch])
+    // Query: Product Details  
+    const { data, error } = useQuery(["suggested"], () => {
+        return axios.get(`/api/products/suggested`)
+    })
+    const suggested = data && data.data && data.data.slice(1)
 
     return (
         <>
-            {error ? (<Message variant='danger'>{error}</Message>)
-                : suggested && (
-                    <Row>
-                        {suggested.slice(1).map(product => (
-                            <Col key={product.pID} xs='6' lg='4' className='px-5'>
-                                <Link to={`/product/${product.pID}`} className="linkBox">
-                                    <div className="mb-5">
-                                        <Image className="" style={{ width: "100%", height: "250px", objectFit: "contain" }}
-                                            src={product.images && product.images[0] ? "https://www.coastairbrush.com/" + product.images[0].imageSrc
-                                                : "/images/sample.jpg"}
-                                        />
-                                        <h5 className="text-center mt-4 px-4">
-                                            {product.pName}
-                                        </h5>
-                                        <h5 className="text-center text-danger px-4">
-                                            {product.pPrice
-                                                ? Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
-                                                : "See Options"
-                                            }
-                                        </h5>
-                                        <div className="overlay">
-                                            <Button className="middle">See More</Button>
-                                        </div>
+            {error
+                ? (<Message variant='danger'>{error.response && error.response.data.message
+                    ? error.response.data.message : error.message}
+                </Message>)
+                : suggested &&
+                (<Row>
+                    {suggested.map(product => (
+                        <Col key={product.pID} xs='6' lg='4' className='px-5'>
+                            <Link to={`/product/${product.pID}`} className="linkBox">
+                                <div className="mb-5">
+                                    <Image className="" style={{ width: "100%", height: "250px", objectFit: "contain" }}
+                                        src={envImage(firstImage(product))} />
+                                    <h5 className="text-center mt-4 px-4">
+                                        {product.pName}
+                                    </h5>
+                                    <h5 className="text-center text-danger px-4">
+                                        {product.pPrice
+                                            ? Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
+                                            : "See Options"
+                                        }
+                                    </h5>
+                                    <div className="overlay">
+                                        <Button className="middle">See More</Button>
                                     </div>
-                                </Link>
-                            </Col>
-                        ))}
-                    </Row>
+                                </div>
+                            </Link>
+                        </Col>
+                    ))}
+                </Row>
                 )
             }
         </>

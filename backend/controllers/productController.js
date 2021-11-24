@@ -55,6 +55,7 @@ const getProductDetails = asyncHandler(async (req, res) => {
         product.options = []
         const invArr = await Inventory.find({ iParent: product.pID })
         invArr.forEach(inv => {
+            if (!inv.iSell) inv.iStock = 0
             product.options.push(inv)
         })
         res.json(product)
@@ -141,8 +142,8 @@ const getSuggestedProducts = asyncHandler(async (req, res) => {
 
         // Load Price
         const inv = await Inventory.findOne({ iParent: product.pID })
-        if (inv) { product.pPrice = inv.iPrice }
-        array.push(product)
+        const loaded = { ...product._doc, pPrice: inv && inv.iPrice }
+        array.push(loaded)
     }
     res.json(array)
 })

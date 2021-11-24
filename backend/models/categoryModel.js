@@ -16,7 +16,7 @@ const categorySchema = mongoose.Schema({
     },
     sectionImage: {
         type: String,
-        default: '/images/sample.jpg'
+        default: '/static/sample.jpg'
     },
     topSection: {
         type: Number,

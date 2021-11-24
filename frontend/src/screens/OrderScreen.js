@@ -10,6 +10,7 @@ import Loader from '../components/Loader'
 import { getOrderDetails, deliverOrder } from '../actions/orderActions'
 // import { createUPS } from '../actions/shippingActions'
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
+import { envImage } from '../common'
 
 const OrderScreen = ({ match, history }) => {
     const orderID = match.params.id
@@ -105,7 +106,7 @@ const OrderScreen = ({ match, history }) => {
                                                         <Row>
                                                             <Col xs={12} lg={3} className="mb-3 mb-lg-0">
                                                                 {item.image &&
-                                                                    <Image src={"https://www.coastairbrush.com/" + item.image} alt={item.name}
+                                                                    <Image src={envImage(item.image)} alt={item.name}
                                                                         fluid rounded />}
                                                             </Col>
                                                             <Col xs={12} lg={4} className="mb-2 my-lg-auto text-center text-lg-left">

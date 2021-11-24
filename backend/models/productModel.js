@@ -9,7 +9,7 @@ const imageSchema = mongoose.Schema({
     imageSrc: {
         type: String,
         required: true,
-        default: "/images/sample.jpg"
+        default: "/static/sample.jpg"
     },
     imageType: {
         type: Number,

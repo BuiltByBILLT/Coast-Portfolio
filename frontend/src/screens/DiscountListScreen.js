@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-boot
 import { useMutation, useQuery } from 'react-query'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from 'react-router-dom'
+import { toUSD } from '../common'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { UserContext } from '../contexts/UserContext'
@@ -69,7 +70,7 @@ const DiscountListScreen = ({ history }) => {
 
 
     return (
-        <Container className="my-5 py-3">
+        <Container className="my-5 pt-3 pb-5">
             <Row className='align-items-center'>
                 <Col className="my-auto">
                     <h2 className="my-0">Discounts</h2>
@@ -115,7 +116,9 @@ const DiscountListScreen = ({ history }) => {
                                 <td>{discount.discountCode}</td>
                                 <td>{discount.discountDescription}</td>
                                 <td>{discount.discountType}</td>
-                                <td>{discount.discountAmount}</td>
+                                <td>{discount.discountType === "FLAT"
+                                    ? toUSD(discount.discountAmount)
+                                    : discount.discountAmount + "%"}</td>
                                 <td>
                                     {discount.discountLive
                                         ? <i className='fas fa-check text-success'></i>

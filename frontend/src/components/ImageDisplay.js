@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Image, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { envImage } from '../common'
 
 
 const ImageDisplay = ({ product }) => {
@@ -36,12 +37,12 @@ const ImageDisplay = ({ product }) => {
 
     if (product.images.length === 0) {
         return (
-            <Image src={"/images/sample.jpg"} alt={product.pName} style={{ width: "100%", objectFit: "contain" }} />
+            <Image src={"/static/sample.jpg"} alt={product.pName} style={{ width: "100%", objectFit: "contain" }} />
         )
     }
     return (
         <>
-            <Image src={"https://www.coastairbrush.com/" + bigs[selected].imageSrc} alt={product.pName}
+            <Image src={envImage(bigs[selected].imageSrc)} alt={product.pName}
                 style={{ width: "100%", objectFit: "contain" }}
             />
             {(images.length > 1) && <Row className="my-5 justify-content-center" >
@@ -49,7 +50,7 @@ const ImageDisplay = ({ product }) => {
                     <Col key={index} xs="auto"
                     // className={selected == index && "border border-danger"}
                     >
-                        <Image src={"https://www.coastairbrush.com/" + thumb.imageSrc} alt={product.pName}
+                        <Image src={envImage(thumb.imageSrc)} alt={product.pName}
                             style={{ height: "75px", textAlign: "center" }}
                             onClick={() => setSelected(index)}
                         />

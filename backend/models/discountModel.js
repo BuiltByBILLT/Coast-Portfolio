@@ -8,6 +8,7 @@ const discountSchema = mongoose.Schema({
     },
     discountDescription: {
         type: String,
+        required: true
     },
     discountType: {
         type: String,
@@ -23,7 +24,7 @@ const discountSchema = mongoose.Schema({
         default: false
     },
     discountExclude: {
-        type: [String],
+        type: String,
     },
 
 }, { timestamps: true })

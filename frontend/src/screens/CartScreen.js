@@ -1,63 +1,94 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, cartToClover, cartToDB, loadCartFromDB, getClover, modifyCart, removeFromCart } from '../actions/cartActions'
+import React, { useContext, useEffect, useState } from 'react'
 import Message from '../components/Message'
 import { Container, Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { CART_LOAD_FROM_DB } from '../constants/cartConstants'
+import { CartContext, CartContextUpdate } from '../contexts/CartContext'
+import { UserContext } from '../contexts/UserContext'
+import { useMutation, useQuery } from 'react-query'
+import axios from 'axios'
+import { envImage } from '../common'
 
-const CartScreen = ({ match, location, history }) => {
-    const cartId = match.params.id
-    const qty = location.search ? Number(location.search.split('=')[1]) : 1
+const CartScreen = ({ match, history }) => {
 
-    const dispatch = useDispatch()
+    const cartID = match.params.id
 
-    const { cartItems } = useSelector(state => state.cart)
-    const { userInfo } = useSelector(state => state.userLogin)
-    const { cartFromDB } = useSelector(state => state.cart)
+    const user = useContext(UserContext)
+    const { cartItems } = useContext(CartContext)
+    const updateCart = useContext(CartContextUpdate)
+    const [error, setError] = useState("")
+    const [overRide, setOverRide] = useState(false)
+
 
     useEffect(() => {
-        if (cartFromDB == "reset") {
-            history.push(`/cart`)
+        if (cartID) {
+            if (user.isStaff || window.confirm(`You are about to load cart: ${cartID}
+                Clicking OK will override your cart with a new one
+                Clicking Cancel will return you to your existing cart`)) {
+                setOverRide(true)
+            } else { history.push('/cart') }
         }
-        else if (cartFromDB) {
-            history.push(`/cart/${cartFromDB}`)
-        } else {
-            if (cartId) {
-                if (window.confirm(`Clicking OK will override your cart with a new one\nCancel to return to your existing cart`)) {
-                    dispatch(loadCartFromDB(cartId))
-                } else {
-                    history.push(`/cart`)
-                }
-            }
+    }, [cartID])
+
+    // Query: Get Details
+    const { refetch } = useQuery([`cart`, cartID], () => {
+        return axios.get(`/api/cart/${cartID}`)
+    }, {
+        enabled: overRide,
+        onSuccess: (data) => {
+            console.log(data.data)
+            updateCart({ type: "LOAD_URL_CART", urlCartItems: data.data.cartItems })
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
         }
-    }, [cartFromDB])
+    })
 
+    // Mutation: Update Brand 
+    const { mutate, isSuccess, reset } = useMutation(data => {
+        return axios.post(`/api/cart`, data, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onSuccess: (data) => {
+            console.log(data.data)
+            setError("")
+            history.push(`/cart/${data.data.cartID}`)
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
+        }
+    })
 
-    const removeFromCartHandler = (id) => {
-        dispatch(removeFromCart(id))
+    // Handlers
+    const removeHandler = (cloverID) => {
+        updateCart({ type: "REMOVE_ITEM", cloverID })
+        history.push("/cart")
+    }
+    const qtyHandler = (cartItem, qty) => {
+        updateCart({ type: "QTY_ITEM", cartItem: { ...cartItem, qty } })
+        history.push("/cart")
     }
     const checkoutHandler = () => {
-        // dispatch(getClover())
-        // dispatch(cartToClover())
-        // history.push('/login?redirect=shipping')
         history.push('/shipping')
     }
     const sendCartHandler = () => {
-        dispatch(cartToDB())
+        mutate(cartItems)
     }
 
 
     return (
         <Container className="my-5 py-3">
-            <Row className="mt-5 mb-5">
+            <Row className=" mb-5">
                 <Col lg="auto">
                     <h3 className="text-danger text-break m-0">Shopping Cart</h3>
                 </Col>
                 <Col className="mt-3 mt-lg-auto">
-                    <p className="my-0">{cartId}</p>
+                    <p className="my-0">{cartID}</p>
                 </Col>
             </Row>
+            {error && <Message variant="danger">{error}</Message>}
 
             {
                 cartItems.length === 0 ? (
@@ -98,7 +129,7 @@ const CartScreen = ({ match, location, history }) => {
                                             <Col xs={12} lg={"auto"} className="text-center mb-3 mb-lg-0"
                                                 style={{ width: "100px" }}
                                             >
-                                                <Image src={"https://www.coastairbrush.com/" + item.image}
+                                                <Image src={envImage(item.image)}
                                                     alt={item.name} fluid rounded
                                                 // style={{ height: "100px" }} 
                                                 />
@@ -116,17 +147,17 @@ const CartScreen = ({ match, location, history }) => {
                                             >
                                                 <Form.Control className='form-select mx-auto p-1'
                                                     as='select' value={item.qty}
-                                                    onChange={(e) => dispatch(modifyCart(item.pID, e.target.value))}
+                                                    onChange={(e) => qtyHandler(item, e.target.value)}
                                                     style={{ width: "60px" }}
                                                 >
-                                                    {[...Array(item.countInStock).keys()].map(x => (
+                                                    {[...Array(item.stock).keys()].map(x => (
                                                         <option key={x + 1} value={x + 1}>{x + 1}</option>
                                                     ))}
                                                 </Form.Control>
                                                 <Button className="p-2 m-0"
                                                     style={{ width: "30px" }}
                                                     type='button' variant='light' onClick={
-                                                        () => removeFromCartHandler(item.pID)}
+                                                        () => removeHandler(item.cloverID)}
                                                 ><i className='fas fa-trash' />
                                                 </Button>
                                             </Col>
@@ -159,8 +190,8 @@ const CartScreen = ({ match, location, history }) => {
                                         <Button type='button' block disabled={cartItems.length === 0} onClick={checkoutHandler}>
                                             Proceed to Checkout
                                         </Button>
-                                        {userInfo && userInfo.isStaff && (<Button type='button' block variant="danger"
-                                            disabled={cartItems.length === 0 || cartId}
+                                        {user.isStaff && (<Button type='button' block variant="danger"
+                                            disabled={cartItems.length === 0 || cartID}
                                             onClick={sendCartHandler}>
                                             Save and Send Cart
                                         </Button>)}

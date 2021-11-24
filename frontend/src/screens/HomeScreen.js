@@ -26,7 +26,7 @@ const HomeScreen = ({ match }) => {
             <Meta />
             <div className="homePage">
                 <Row className="" style={{
-                    backgroundImage: "url('/images/hero_image_only.png')",
+                    backgroundImage: "url('/static/hero_image_only.png')",
                     // backgroundSize: "100% 100%",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
@@ -35,7 +35,7 @@ const HomeScreen = ({ match }) => {
                 }}>
                     <Container className=""
                         style={{
-                            backgroundImage: "url('/images/Hero_Headline.png')",
+                            backgroundImage: "url('/static/Hero_Headline.png')",
                             backgroundRepeat: "no-repeat",
                             backgroundSize: "contain",
                             height: "320px",
@@ -50,16 +50,16 @@ const HomeScreen = ({ match }) => {
                     </Container>
                 </Row>
                 <div style={{ position: "absolute", width: "100vw" }}>
-                    <Image src="/images/texture1_only.png"
+                    <Image src="/static/texture1_only.png"
                         style={{ height: "80px", position: "absolute", top: "-35px", left: "-50px", zIndex: 5 }}></Image>
                 </div>
 
-                <Row className="featured" style={{ backgroundImage: "url('/images/BG_Featured_section.png')" }} >
+                <Row className="featured" style={{ backgroundImage: "url('/static/BG_Featured_section.png')" }} >
                     <Container>
                         <Row className="pb-5">
 
                             <Col lg={6}>
-                                <Image src="/images/airbrush_withframe.png"
+                                <Image src="/static/airbrush_withframe.png"
                                     style={{ width: "100%" }}
                                     className="px-5" />
                             </Col>
@@ -81,10 +81,10 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { name: "Makeup/Beauty", url: "607", image: "/images/Makeup.png" },
-                                    { name: "Automobile", url: "20", image: "/images/Automobile.png" },
-                                    { name: "Fine Arts", url: "22", image: "/images/FineArts.png" },
-                                    { name: "T-Shirts", url: "383", image: "/images/Tshirts.png" }
+                                    { name: "Makeup/Beauty", url: "607", image: "/static/Makeup.png" },
+                                    { name: "Automobile", url: "20", image: "/static/Automobile.png" },
+                                    { name: "Fine Arts", url: "22", image: "/static/FineArts.png" },
+                                    { name: "T-Shirts", url: "383", image: "/static/Tshirts.png" }
                                 ].map(card => (
                                     <Col key={card.name} xs='6' lg='3' className='p-4'>
                                         <Link to={`/category/${card.url}`} className="linkBox" >
@@ -103,10 +103,10 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { name: "Leafing/Pinstripe", url: "21", image: "/images/Pinstripe.png" },
-                                    { name: "Hobby", url: "0", image: "/images/Hobby.png" },
-                                    { name: "Mural", url: "589", image: "/images/Mural.png" },
-                                    { name: "Model", url: "404", image: "/images/Model.png" }
+                                    { name: "Leafing/Pinstripe", url: "21", image: "/static/Pinstripe.png" },
+                                    { name: "Hobby", url: "0", image: "/static/Hobby.png" },
+                                    { name: "Mural", url: "589", image: "/static/Mural.png" },
+                                    { name: "Model", url: "404", image: "/static/Model.png" }
                                 ].map(card => (
                                     <Col key={card.name} xs='6' lg='3' className='p-4'>
                                         <Link to={`/category/${card.url}`} className="linkBox" >
@@ -128,10 +128,10 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { image: "/images/kolor.png" },
-                                    { image: "/images/Iwata.png" },
-                                    { image: "/images/3m.png" },
-                                    { image: "/images/CreateXColors.png" }
+                                    { image: "/static/kolor.png" },
+                                    { image: "/static/Iwata.png" },
+                                    { image: "/static/3m.png" },
+                                    { image: "/static/CreateXColors.png" }
                                 ].map(card => (
                                     <Col key={card.image} xs='6' lg='3' className='p-4 text-center'>
                                         <Link to={`/brands`} className="linkBox" >
@@ -149,10 +149,10 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { image: "/images/Lumilor.png" },
-                                    { image: "/images/Paasche.png" },
-                                    { image: "/images/1shot.png" },
-                                    { image: "/images/MissionModels.png" }
+                                    { image: "/static/Lumilor.png" },
+                                    { image: "/static/Paasche.png" },
+                                    { image: "/static/1shot.png" },
+                                    { image: "/static/MissionModels.png" }
                                 ].map(card => (
                                     <Col key={card.image} xs='6' lg='3' className='p-4 text-center'>
                                         <Link to={`/brands`} className="linkBox" >
@@ -174,7 +174,7 @@ const HomeScreen = ({ match }) => {
                     <Row className="my-5">
                         <Col lg={4}>
                             <Link to={`https://www.youtube.com`} className="linkBox" >
-                                <Image src="/images/Video_mixing.png"
+                                <Image src="/static/Video_mixing.png"
                                     style={{ width: "100%" }} >
                                 </Image>
                                 <h5 className="mt-3 mb-0 text-center text-danger">Mixing the House of Kolor Urethanes </h5>
@@ -187,7 +187,7 @@ const HomeScreen = ({ match }) => {
                         </Col>
                         <Col lg={4}>
                             <Link to={`https://www.youtube.com`} className="linkBox" >
-                                <Image src="/images/Vide_airbrush.png"
+                                <Image src="/static/Vide_airbrush.png"
                                     style={{ width: "100%" }} />
                                 <h5 className="mt-3 mb-0 text-center text-danger">Airbrush Overview </h5>
                                 <p className="text-center">with Dave Monning</p>
@@ -198,7 +198,7 @@ const HomeScreen = ({ match }) => {
                         </Col>
                         <Col lg={4}>
                             <Link to={`https:www.youtube.com`} className="linkBox" >
-                                <Image src="/images/Video_FlamingSkull.png"
+                                <Image src="/static/Video_FlamingSkull.png"
                                     style={{ width: "100%" }} />
                                 <h5 className="mt-3 mb-0 text-center text-danger">The "Flaming" Skull</h5>
                                 <p className="text-center">Creating Skulls & Realistic Blue Fire w/ Craig Fraser</p>
@@ -209,21 +209,21 @@ const HomeScreen = ({ match }) => {
                         </Col>
                     </Row>
                 </Container>
-                <Row className="seeDave" style={{ backgroundImage: "url('/images/David_Section_BG.png')", height: "600px" }}>
+                <Row className="seeDave" style={{ backgroundImage: "url('/static/David_Section_BG.png')", height: "600px" }}>
                     {/* <Container > */}
                     {/* <Row className="my-0" style={{ height: "500px" }}> */}
                     <Col lg={8}
                         style={{
-                            backgroundImage: "url('/images/David.png')",
+                            backgroundImage: "url('/static/David.png')",
                             backgroundSize: "cover"
                         }}>
                     </Col>
                     <Col lg={4} className="pr-4">
                         <h3 className="" style={{ letterSpacing: "0px" }}>Look Familiar?</h3>
                         <h2 className="mt-5 mt-lg-0 mb-4 text-danger">See David On</h2>
-                        <Image src="/images/Asset32.png" style={{ width: "120px" }} />
-                        <Image src="/images/Asset33.png" style={{ width: "120px" }} className="mx-2" />
-                        <Image src="/images/Asset34.png" style={{ width: "120px" }} />
+                        <Image src="/static/Asset32.png" style={{ width: "120px" }} />
+                        <Image src="/static/Asset33.png" style={{ width: "120px" }} className="mx-2" />
+                        <Image src="/static/Asset34.png" style={{ width: "120px" }} />
                         <p className="text-dark my-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
                         <div className="ml-auto">
                             <Button>Shop Now</Button>
@@ -231,11 +231,11 @@ const HomeScreen = ({ match }) => {
                     </Col>
                     {/* </Row> */}
                     <div style={{ position: "absolute", width: "100vw" }}>
-                        <Image src="/images/texture1_only.png"
+                        <Image src="/static/texture1_only.png"
                             style={{ height: "80px", position: "absolute", top: "420px", left: "-50px", zIndex: 5 }}></Image>
                     </div>
                     <div style={{ position: "absolute", width: "100vw" }}>
-                        <Image src="/images/David_favorite.png"
+                        <Image src="/static/David_favorite.png"
                             style={{ height: "120px", position: "absolute", top: "450px", left: "50px", zIndex: 5 }}></Image>
                     </div>
                     {/* </Container> */}
@@ -254,7 +254,7 @@ const HomeScreen = ({ match }) => {
                     <Container >
                         <Row>
                             <Col lg={6} className="my-5 mt-lg-0">
-                                <Image src="/images/Map.png"
+                                <Image src="/static/Map.png"
                                     style={{ width: "100%", paddingRight: "60px" }} />
                             </Col>
                             <Col lg={4} className="my-5 mt-lg-0 text-center text-lg-left">

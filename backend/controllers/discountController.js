@@ -48,9 +48,38 @@ const deleteDiscount = asyncHandler(async (req, res) => {
 })
 
 
+// @desc Apply single discount for Cart
+// @route POST /api/discounts/apply/:id
+// @access Public
+const applyDiscount = asyncHandler(async (req, res) => {
+    const cartItems = req.body
+    console.log(cartItems)
+    const discount = await Discount.findOne({ discountCode: req.params.id })
+    if (discount) {
+        // If Flat
+        if (discount.discountType === "FLAT") {
+            const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
+            if (subtotal >= discount.discountExclude) {
+                res.json({ ...discount._doc, discountTotal: discount.discountAmount })
+            }
+            else throw new Error(
+                `Order does not meet ${(Number(discount.discountExclude) / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })} requirement`
+            )
+        } // If Percent
+        else if (discount.discountType === "PERCENT") {
+            let discountTotal = 0
+
+            res.json(discount)
+        }
+        else throw new Error('Discount Type Error')
+    } else throw new Error('Discount not found')
+
+
+})
 
 export {
     getDiscounts,
+    applyDiscount,
     getDiscount,
     newDiscount,
     updateDiscount,

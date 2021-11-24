@@ -47,7 +47,7 @@ const Footer = () => {
                     </Col>
                     <Col lg="auto" className="text-center text-lg-left">
                         {/* <h6 className="brand mr-lg-3">COAST AIRBRUSH</h6> */}
-                        <Image src="/images/CA_Logo2.png"
+                        <Image src="/static/CA_Logo2.png"
                             style={{ height: "24px", marginBottom: "8px" }}
                         />
                         <Nav>

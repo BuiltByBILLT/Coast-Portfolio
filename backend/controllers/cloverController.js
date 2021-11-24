@@ -99,17 +99,17 @@ const orderClover = asyncHandler(async (req, res) => {
         // Add Discount
         //If userLogin = isStaff
         // if (userInfo && userInfo.isStaff == true) {
-        if (cart.discount && cart.discount.discountType === "%") {
+        if (cart.discount && cart.discount.discountType === "PRECENT") {
             await axios.post(
                 process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
-                { percentage: Number(cart.discount.discountAmount), name: cart.discount.discountName },
+                { percentage: Number(cart.discount.discountAmount), name: cart.discount.discountCode },
                 { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
         }
-        if (cart.discount && cart.discount.discountType === "$") {
+        if (cart.discount && cart.discount.discountType === "FLAT") {
             await axios.post(
                 process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
-                { amount: Number(cart.discount.discountAmount * -100), name: cart.discount.discountName },
+                { amount: Number(cart.discount.discountAmount * -100), name: cart.discount.discountCode },
                 { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
         }

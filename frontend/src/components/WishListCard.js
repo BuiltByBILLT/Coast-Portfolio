@@ -5,6 +5,7 @@ import "../styles/Cards.css"
 import { useQuery } from 'react-query'
 import axios from 'axios'
 import { HeartList } from './HeartList'
+import { envImage, firstImage } from '../common'
 
 
 const WishListCard = ({ pID }) => {
@@ -24,8 +25,7 @@ const WishListCard = ({ pID }) => {
                             {"Product ID " + product.pID}
                         </p>
                         <Image className="px-2" style={{ width: "100%", height: "200px", objectFit: "contain" }}
-                            src={product.images && product.images[0] ? "https://www.coastairbrush.com/" + product.images[0].imageSrc
-                                : "/images/sample.jpg"}
+                            src={envImage(firstImage(product))}
                         />
                         <p className="text-center mt-4">
                             {product.pName}

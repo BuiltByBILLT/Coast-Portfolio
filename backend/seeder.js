@@ -19,6 +19,8 @@ import Order from './models/orderModel.js'
 import Category from './models/categoryModel.js'
 import Brands from './models/brandModel.js'
 import Discounts from './models/discountModel.js'
+import Carts from './models/cartModel.js'
+
 import connectDB from './config/db.js'
 
 dotenv.config()
@@ -33,6 +35,7 @@ const importData = async () => {
         await Category.deleteMany()
         await Brands.deleteMany()
         await Discounts.deleteMany()
+        await Carts.deleteMany()
 
         await User.insertMany(users)
         await Brands.insertMany(brands)

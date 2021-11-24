@@ -6,7 +6,7 @@ const AboutStatic = () => {
     return (
         <>
             <Row className="" style={{
-                backgroundImage: "url('/images/Photo_together2.png')",
+                backgroundImage: "url('/static/Photo_together2.png')",
                 // backgroundSize: "100% 100%",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -15,7 +15,7 @@ const AboutStatic = () => {
             }}>
                 <Container className=""
                     style={{
-                        backgroundImage: "url('/images/Hero_Headline.png')",
+                        backgroundImage: "url('/static/Hero_Headline.png')",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "contain",
                         height: "320px",
@@ -34,9 +34,9 @@ const AboutStatic = () => {
                 <Col className="mr-5  pr-0 pl-5 pt-5"
                     style={{ backgroundImage: "linear-gradient(135deg,rgba(0, 0, 0, 0.1),rgba(0, 0, 0, 0.4)" }}
                 >
-                    <Image src="/images/Photo_top.png" style={{ width: "100%", paddingBottom: "20px" }} />
-                    <Image src="/images/Photo_middle.png" style={{ width: "100%", paddingBottom: "20px" }} />
-                    <Image src="/images/Photo_Bottom.png" style={{ width: "100%", paddingBottom: "20px" }} />
+                    <Image src="/static/Photo_top.png" style={{ width: "100%", paddingBottom: "20px" }} />
+                    <Image src="/static/Photo_middle.png" style={{ width: "100%", paddingBottom: "20px" }} />
+                    <Image src="/static/Photo_Bottom.png" style={{ width: "100%", paddingBottom: "20px" }} />
                 </Col>
                 <Col className="pt-5 pr-5 mr-5">
                     <h1 className="text-danger mb-5">Our Story</h1>

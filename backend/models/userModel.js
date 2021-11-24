@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
+import Cart from './cartModel.js'
 
 const cartItemsSchema = mongoose.Schema({
     pID: {
@@ -20,6 +21,10 @@ const cartItemsSchema = mongoose.Schema({
         required: true
     },
     qty: {
+        type: Number,
+        required: true
+    },
+    stock: {
         type: Number,
         required: true
     },
@@ -61,14 +66,6 @@ const addressSchema = mongoose.Schema({
 }, {
     timestamps: true,
 })
-// const wishListItemSchema = mongoose.Schema({
-//     pID: {
-//         type: String,
-//         required: true
-//     },
-// }, {
-//     timestamps: true,
-// })
 
 const userSchema = mongoose.Schema({
     firstName: {
@@ -111,11 +108,9 @@ const userSchema = mongoose.Schema({
         unique: true,
         sparse: true,
     },
-    cart: [cartItemsSchema],
-    // cart: [String],
+    cartItems: [cartItemsSchema],
     wishList: [String],
     address: { type: addressSchema },
-    // wishList: [wishListItemSchema],
 }, {
     timestamps: true
 })

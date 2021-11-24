@@ -4,6 +4,7 @@ import { Row, Col, Image, Breadcrumb } from 'react-bootstrap'
 import Rating from './Rating'
 import "../styles/Cards.css"
 import { HeartList } from './HeartList'
+import { envImage, firstImage } from '../common'
 
 const ProductDetailsCard = ({ product }) => {
     return (
@@ -13,8 +14,7 @@ const ProductDetailsCard = ({ product }) => {
                     {"Product ID " + product.pID}
                 </p>
                 <Image className="px-2" style={{ width: "100%", height: "200px", objectFit: "contain" }}
-                    src={product.images && product.images[0] ? "https://www.coastairbrush.com/" + product.images[0].imageSrc
-                        : "/images/sample.jpg"}
+                    src={envImage(firstImage(product))}
                 />
                 <p className="text-center mt-4">
                     {product.pName}

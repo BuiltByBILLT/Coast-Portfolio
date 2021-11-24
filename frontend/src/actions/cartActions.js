@@ -124,8 +124,8 @@ export const cartToDB = () => async (dispatch, getState) => {
 
 }
 
-export const loadCartFromDB = (cartId) => async (dispatch, getState) => {
-    const { data } = await axios.get(`/api/cart/${cartId}`)
+export const loadCartFromDB = (cartID) => async (dispatch, getState) => {
+    const { data } = await axios.get(`/api/cart/${cartID}`)
     dispatch({
         type: CART_LOAD_FROM_DB,
         payload: data

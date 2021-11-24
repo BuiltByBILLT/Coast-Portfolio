@@ -6,7 +6,7 @@ const ContactStatic = () => {
     return (
         <>
             <Row className="" style={{
-                backgroundImage: "url('/images/Hero_Photo3.png')",
+                backgroundImage: "url('/static/Hero_Photo3.png')",
                 // backgroundSize: "100% 100%",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -15,7 +15,7 @@ const ContactStatic = () => {
             }}>
                 <Container className=""
                     style={{
-                        backgroundImage: "url('/images/Hero_Headline3.png')",
+                        backgroundImage: "url('/static/Hero_Headline3.png')",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "contain",
                         height: "320px",
@@ -30,14 +30,14 @@ const ContactStatic = () => {
                 </Container>
             </Row>
             <div style={{ position: "absolute", width: "100vw" }}>
-                <Image src="/images/texture1_only.png"
+                <Image src="/static/texture1_only.png"
                     style={{ height: "80px", position: "absolute", top: "-25px", left: "-0px", zIndex: 5 }}></Image>
             </div>
             <Row className="my-5 pt-5">
                 <Container >
                     <Row>
                         <Col lg={6} className="my-5 mt-lg-0">
-                            <Image src="/images/Map.png"
+                            <Image src="/static/Map.png"
                                 style={{ width: "100%", paddingRight: "60px" }} />
                         </Col>
                         <Col lg={4} className="my-5 mt-lg-0 text-center text-lg-left">

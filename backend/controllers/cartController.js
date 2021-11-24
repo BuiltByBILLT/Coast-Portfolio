@@ -17,12 +17,11 @@ const getCart = asyncHandler(async (req, res) => {
 
 // @desc Save Cart to DB
 // @route POST /api/cart
-// @access Private
+// @access Staff
 const saveCart = asyncHandler(async (req, res) => {
-    const cart = req.body
-    // console.log(cart.cartItems)
+    const cartItems = req.body
     const savedCart = await Cart.create({
-        cartItems: cart.cartItems
+        cartItems: cartItems
     })
     if (savedCart) {
         res.json({

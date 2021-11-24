@@ -56,6 +56,14 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
         })
     }
+    if (req.body.cartItems) {
+        user.cartItems = req.body.cartItems
+        const updatedUser = await user.save()
+        res.json({
+            message: "CartItems Updated",
+            userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
+        })
+    }
 })
 
 

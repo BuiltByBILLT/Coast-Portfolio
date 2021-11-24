@@ -1,21 +1,31 @@
 import React, { useContext } from 'react'
 import { Nav, NavDropdown } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
+import { CartContext, CartContextUpdate } from '../contexts/CartContext'
 import { UserContext, UserContextUpdate } from '../contexts/UserContext'
 
 const MainNav = () => {
 
     const history = useHistory()
+    const { pathname } = useLocation()
     const user = useContext(UserContext)
     const updateUser = useContext(UserContextUpdate)
-
-    const { cartItems } = useSelector(state => state.cart)
+    const { cartItems, shippingInfo, shippingMethod } = useContext(CartContext)
+    const updateCart = useContext(CartContextUpdate)
 
     const logoutHandler = () => {
         updateUser({ type: "LOGOUT" })
+        updateCart({ type: "RESET_CART" })
         history.push('/')
+    }
+
+    const cartLink = (cartItems, shippingInfo, shippingMethod) => {
+        if (pathname == '/payment' || pathname == '/shippingmethod' || pathname == '/shipping') return '/cart'
+        if (cartItems.length == 0) return '/cart'
+        if (Object.keys(shippingInfo).length == 0) return '/shipping'
+        if (Object.keys(shippingMethod).length == 0) return '/shippingmethod'
+        return '/payment'
     }
 
     return (
@@ -26,7 +36,7 @@ const MainNav = () => {
             <LinkContainer to='/about'>
                 <Nav.Link active={false} className='mx-2 mx-xl-4'>About</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/cart' style={{ minWidth: "100px" }}>
+            <LinkContainer to={cartLink(cartItems, shippingInfo, shippingMethod)} style={{ minWidth: "100px" }}>
                 <Nav.Link active={false} className='mx-2 mx-xl-4 text-center' >
                     <i className='fas fa-shopping-cart mx-1'></i>
                     Cart
