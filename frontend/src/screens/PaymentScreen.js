@@ -59,14 +59,6 @@ const PaymentScreen = ({ history }) => {
         return () => { if (cloverFooter) cloverFooter.style.display = "none" }
     }, []);
 
-    // Clean Up Shipping and Discount if Cart Edit
-    // useEffect(() => {
-    //     return () => {
-    //         updateCart({ type: "CLEAR_SHIPPING_METHOD" })
-    //         updateCart({ type: "ADD_DISCOUNT", discount: {} })
-    //         console.log("exit Payment")
-    //     }
-    // }, [])
 
     const { data: order, error, isLoading: loading, mutate } = useMutation(data => {
         return axios.post(`/api/clover`, data)

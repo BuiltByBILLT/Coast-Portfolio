@@ -4,7 +4,16 @@ export const toUSD = (cents) => {
 
 export const envImage = (url) => {
     if (url && url.substr(0, 6) === "static") return "/" + url
-    if (url) return process.env.NODE_ENV == "development" ? "https://www.coastairbrush.com/" + url : "/" + url
+    if (url) {
+        if (process.env.NODE_ENV == "development") {
+            console.log("Dev")
+            return "https://www.coastairbrush.com/" + url
+        }
+        else {
+            console.log("Prod")
+            return "/" + url
+        }
+    }
     else return "/" + "static/sample.jpg"
 }
 

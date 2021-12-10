@@ -19,6 +19,11 @@ const ShippingScreen = ({ history, location }) => {
         if (cartItems.length == 0) { history.push('/cart') }
     }, [cartItems])
 
+    useEffect(() => {
+        updateCart({ type: "CLEAR_SHIPPING_METHOD" })
+        updateCart({ type: "ADD_DISCOUNT", discount: {} })
+    }, [])
+
     const emptyShipping = {
         email: "", news: false, firstName: "", lastName: "", company: "", address1: "", address2: "",
         city: "", region: "", country: "", postalCode: "", phone: ""
@@ -28,6 +33,19 @@ const ShippingScreen = ({ history, location }) => {
     const [verified, setVerified] = useState(false)
 
     const submitHandler = async () => {
+        // const taxData = await axios.post(`/api/tax/fetch`, {
+        //     line1: Array.isArray(data.data.XAVResponse.Candidate.AddressKeyFormat.AddressLine)
+        //         ? data.data.XAVResponse.Candidate.AddressKeyFormat.AddressLine[0]
+        //         : data.data.XAVResponse.Candidate.AddressKeyFormat.AddressLine,
+        //     line2: Array.isArray(data.data.XAVResponse.Candidate.AddressKeyFormat.AddressLine)
+        //         ? data.data.XAVResponse.Candidate.AddressKeyFormat.AddressLine[1]
+        //         : "",
+        //     city: data.data.XAVResponse.Candidate.AddressKeyFormat.PoliticalDivision2,
+        //     region: data.data.XAVResponse.Candidate.AddressKeyFormat.PoliticalDivision1,
+        //     country: data.data.XAVResponse.Candidate.AddressKeyFormat.CountryCode,
+        //     postalCode: data.data.XAVResponse.Candidate.AddressKeyFormat.PostcodePrimaryLow,
+        // })
+        // console.log(taxData.data)
         updateCart({
             type: "ADD_SHIPPING", shippingInfo: {
                 ...shipping,
@@ -41,7 +59,9 @@ const ShippingScreen = ({ history, location }) => {
                 region: data.data.XAVResponse.Candidate.AddressKeyFormat.PoliticalDivision1,
                 country: data.data.XAVResponse.Candidate.AddressKeyFormat.CountryCode,
                 postalCode: data.data.XAVResponse.Candidate.AddressKeyFormat.PostcodePrimaryLow,
-
+                // taxRate: taxData.data
+                taxRate: data.data.XAVResponse.Candidate.AddressKeyFormat.PoliticalDivision1 === "CA"
+                    ? 0.0775 : 0
             }
         })
         history.push('/shippingmethod')
@@ -51,6 +71,7 @@ const ShippingScreen = ({ history, location }) => {
     const { data, error, isLoading, mutate } = useMutation(data => {
         return axios.post(`/api/shipping/ups/AV`, data)
     })
+
 
     const verifyHandler = async (e) => {
         e.preventDefault()

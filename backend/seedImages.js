@@ -1,5 +1,5 @@
-import images from './backend/data/images.js'
-import categories from './backend/data/categories.js'
+import images from './data/images.js'
+import categories from './data/categories.js'
 
 import fs from 'fs'
 import path from 'path'
@@ -79,3 +79,16 @@ async function downloadCategoryImage(cat) {
     console.log(success)
     console.log(error)
 })()
+
+
+// console.log(images.length)
+// const regex = new RegExp('prodimages/\w*/', 'g');
+// const folders = images.filter((image) => image.imageSrc.substr(11).includes("/"));
+// let obj = {}
+// folders.forEach(folder => {
+//     let next = folder.imageSrc.indexOf("/",11)
+//     let sub = folder.imageSrc.slice(11,next)
+//     obj[sub]= true
+// })
+// console.log(folders.length);
+// console.log(obj);

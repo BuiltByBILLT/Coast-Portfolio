@@ -6,6 +6,7 @@ import axios from 'axios'
 // @access Public
 const orderClover = asyncHandler(async (req, res) => {
     const { cart, userInfo, token } = req.body
+    console.log(userInfo.employeeID)
     // await new Promise((res) => setTimeout(res, 3000))
     try {
         //Create Order
@@ -22,7 +23,9 @@ const orderClover = asyncHandler(async (req, res) => {
             }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
         const orderID = newOrder.data.id
+        console.log("order created")
 
+        console.log("taxRate", cart.shippingInfo.taxRate)
         // Add Bulk Line Items
         let bulkLineItems = { "items": [] }
         for (let cartItem of cart.cartItems) {
@@ -38,7 +41,7 @@ const orderClover = asyncHandler(async (req, res) => {
                         {
                             "id": "HSKPV1YMDB9CA", //Has to match existing ID
                             "name": "", // doesnt matter
-                            "rate": cart.shippingInfo.taxRate, // Manual Entry
+                            "rate": (cart.shippingInfo.taxRate * 10000000) || 0, // Manual Entry
                             "isDefault": false
                         }
                     ],
@@ -46,6 +49,7 @@ const orderClover = asyncHandler(async (req, res) => {
                 bulkLineItems.items.push(lineItem)
             }
         }
+
         // Add Shipping
         const { email, firstName, lastName, company, address, address2, city, country, region, postalCode, phone } = cart.shippingInfo
         const shippingLabel = { email, firstName, lastName, company, address, address2, city, country, region, postalCode, phone }
@@ -69,6 +73,7 @@ const orderClover = asyncHandler(async (req, res) => {
             process.env.CLOVER_URL + `/orders/${orderID}/bulk_line_items`, bulkLineItems,
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
+        console.log("items added to order")
 
         // Attach Customer
         var customerID = userInfo && userInfo.customerID
@@ -99,17 +104,18 @@ const orderClover = asyncHandler(async (req, res) => {
         // Add Discount
         //If userLogin = isStaff
         // if (userInfo && userInfo.isStaff == true) {
-        if (cart.discount && cart.discount.discountType === "PRECENT") {
+        // if (cart.discount && cart.discount.discountType === "PRECENT") {
+        //     await axios.post(
+        //         process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
+        //         { percentage: Number(cart.discount.discountAmount), name: cart.discount.discountCode },
+        //         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        //     )
+        // }
+        // if (cart.discount && cart.discount.discountType === "FLAT") {
+        if (cart.discount && cart.discount.discountTotal) {
             await axios.post(
                 process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
-                { percentage: Number(cart.discount.discountAmount), name: cart.discount.discountCode },
-                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
-            )
-        }
-        if (cart.discount && cart.discount.discountType === "FLAT") {
-            await axios.post(
-                process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
-                { amount: Number(cart.discount.discountAmount * -100), name: cart.discount.discountCode },
+                { amount: Number(cart.discount.discountTotal * -1), name: cart.discount.discountCode },
                 { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
         }
@@ -154,15 +160,15 @@ const orderClover = asyncHandler(async (req, res) => {
 // @route POST /api/clover/tax
 // @access Public
 const fetchTax = asyncHandler(async (req, res) => {
-    const shippingInfo = req.body
-    var taxRate
-    // Logic
-    if (shippingInfo.region == "CA" || shippingInfo.region == "California") {
-        taxRate = 775000
-    } else {
-        taxRate = 0
-    }
-    res.json(taxRate)
+    // const shippingInfo = req.body
+    // var taxRate
+    // // Logic
+    // if (shippingInfo.region == "CA" || shippingInfo.region == "California") {
+    //     taxRate = 775000
+    // } else {
+    //     taxRate = 0
+    // }
+    // res.json(taxRate)
 })
 
 

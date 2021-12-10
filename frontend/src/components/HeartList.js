@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from 'react-router-dom'
 import { addWishListItem, removeWishListItem } from '../actions/userActions'
-
+import { useLocation } from 'react-router'
 
 export const HeartList = ({ pID, size }) => {
     const { userInfo } = useSelector(state => state.userLogin)
+    const { pathname } = useLocation()
 
     const dispatch = useDispatch()
 
@@ -32,7 +33,7 @@ export const HeartList = ({ pID, size }) => {
                         onClick={addHandler}
                         style={{ cursor: "pointer" }}>
                     </i>
-                : <LinkContainer to="/login" style={{ cursor: "pointer" }} >
+                : <LinkContainer to={"/login?redirect=" + pathname} style={{ cursor: "pointer" }} >
                     <i className={`far fa-heart fa-${size} text-danger`}></i>
                 </LinkContainer>
             }

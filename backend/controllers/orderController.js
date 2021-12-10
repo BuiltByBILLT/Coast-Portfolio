@@ -14,7 +14,7 @@ const getOrderByID = asyncHandler(async (req, res) => {
         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
     )
     if (data.paymentState === "OPEN") {
-        console.log(data)
+        console.log(JSON.stringify(data))
     }
 
 
@@ -26,12 +26,33 @@ const getOrderByID = asyncHandler(async (req, res) => {
         for (var inside = lineItems.length - 1; inside >= 0; inside--) {
             var insideItem = lineItems[inside];
             if (outsideItem.name === insideItem.name) {
+                if (insideItem.refunded === true) outsideItem.refunded = true
                 if (outside == inside) { break; }
                 outsideItem.qty++
                 lineItems.splice(inside, 1)
             }
         }
     }
+
+    // const ungrouped = data.lineItems.elements
+    // lineItems = []
+    // for (const item of ungrouped) {
+    //     console.log(item.name)
+    //     for (let i = 0; i < lineItems.length; i++) {
+    //         const line = lineItems[i];
+    //         if (item.name === line.name) {
+    //             console.log("Add Qty")
+    //             item.qty += 1
+    //         }
+    //         else {
+    //             console.log("New Item")
+    //             item.qty = 1
+    //             lineItems.push(item)
+    //         }
+    //     }
+    // }
+
+
     // Add Images
     for (var index = 0; index < lineItems.length; index++) {
         const cloverID = lineItems[index].item && lineItems[index].item.id;
@@ -73,6 +94,7 @@ const getOrderByID = asyncHandler(async (req, res) => {
     var refunds
     if (data.refunds) {
         refunds = data.refunds.elements
+
     } else {
         refunds = null
     }
@@ -81,7 +103,7 @@ const getOrderByID = asyncHandler(async (req, res) => {
     var employee
     if (data.employee.id && data.employee.id != process.env.WEBSITE) { // Default is Website
         const user = await User.findOne({ employeeID: data.employee.id })
-        employee = user && user.name
+        employee = user && (user.firstName + " " + user.lastName)
     } else {
         employee = null
     }

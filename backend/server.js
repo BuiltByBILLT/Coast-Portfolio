@@ -17,6 +17,7 @@ import fileRoutes from './routes/fileRoutes.js'
 import shippingRoutes from './routes/shippingRoutes.js'
 import brandRoutes from './routes/brandRoutes.js'
 import discountRoutes from './routes/discountRoutes.js'
+import avaTaxRoutes from './routes/avaTaxRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -46,6 +47,7 @@ app.use('/api/cart', cartRoutes)
 app.use('/api/reports', reportRoutes)
 app.use('/api/files', fileRoutes)
 app.use('/api/shipping', shippingRoutes)
+app.use('/api/tax', avaTaxRoutes)
 
 // app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 

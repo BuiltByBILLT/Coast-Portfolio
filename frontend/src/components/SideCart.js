@@ -13,12 +13,12 @@ export const SideCart = () => {
 
 
     const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
-    // const taxRate = shippingInfo.taxRate / 10000000
-    const taxRate = 0
+    const taxRate = shippingInfo.taxRate
+    // const taxRate = 0
     const shippingTotal = shippingMethod.price
 
 
-    var totalTax = (subtotal + shippingTotal) * taxRate
+    var totalTax = subtotal * taxRate
     var totalTotal = subtotal + totalTax + shippingTotal - (discountTotal ? discountTotal : 0)
 
     const percentDiscount = (cents) => {
@@ -95,7 +95,7 @@ export const SideCart = () => {
                     <ListGroup.Item className="border-0">
                         <Row className="m-0">
                             <Col xs className="pl-0">
-                                Tax:
+                                Tax: ({taxRate * 100}%)
                             </Col>
                             <Col xs="auto" className="pr-0">
                                 {toUSD(totalTax)}

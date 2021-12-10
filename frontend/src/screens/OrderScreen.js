@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { useMutation, useQuery } from 'react-query'
 import { PayPalButton } from 'react-paypal-button-v2'
@@ -11,9 +11,11 @@ import { getOrderDetails, deliverOrder } from '../actions/orderActions'
 // import { createUPS } from '../actions/shippingActions'
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 import { envImage } from '../common'
+import { UserContext } from '../contexts/UserContext'
 
 const OrderScreen = ({ match, history }) => {
     const orderID = match.params.id
+    const userInfo = useContext(UserContext)
 
 
     const [size, setSize] = useState("")
@@ -21,7 +23,7 @@ const OrderScreen = ({ match, history }) => {
     const [lineID, setLineID] = useState("")
 
     const { order, loading, error } = useSelector(state => state.orderDetails)
-    const { userInfo } = useSelector(state => state.userLogin)
+    // const { userInfo } = useSelector(state => state.userLogin)
 
 
     const dispatch = useDispatch()
@@ -65,7 +67,8 @@ const OrderScreen = ({ match, history }) => {
     return (
         <Container className="my-5">
             {loading ? <Loader />
-                : error ? <Message variant='danger'>{error}</Message>
+                : error ? <Message variant='danger'>{error.response && error.response.data.message
+                    ? error.response.data.message : error.message}</Message>
                     : (
                         <>
                             <Row className="mt-5 mb-3">
@@ -125,6 +128,7 @@ const OrderScreen = ({ match, history }) => {
                                                             </Col>
                                                             <Col xs={5} lg={2} className="text-center my-auto">
                                                                 {Number(item.qty * item.price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                                                {item.refunded && <p className="text-danger">(refunded)</p>}
                                                             </Col>
                                                         </Row>
                                                     </ListGroup.Item>
@@ -152,24 +156,29 @@ const OrderScreen = ({ match, history }) => {
                                                     <a>{order.employee}</a>
                                                 </p>
                                             )}
+                                            {order.refunds && order.refunds.map(refund => (
+                                                <p>
+                                                    <strong>Refund: </strong>
+                                                    {Number(refund.amount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                                    {" "}({new Date(refund.createdTime).toLocaleString()})
+                                                </p>
+                                            ))
+                                            }
 
 
                                         </ListGroup.Item>
                                     </ListGroup>)}
 
-                                    {(<ListGroup>
+                                    {userInfo.isStaff && (<ListGroup>
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col >
                                                     <h4 className="mb-3">Refunds</h4>
                                                     {order.refunds && order.refunds.map(refund => (
-                                                        <>
-                                                            <p>
-                                                                <strong>{new Date(refund.createdTime).toLocaleString()}: </strong>
-                                                                {Number(refund.amount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
-                                                            </p>
-                                                            <p>{ }</p>
-                                                        </>
+                                                        <p>
+                                                            <strong>{new Date(refund.createdTime).toLocaleString()}: </strong>
+                                                            {Number(refund.amount / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                                                        </p>
                                                     ))
                                                     }
                                                 </Col>

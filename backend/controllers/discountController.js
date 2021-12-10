@@ -53,23 +53,38 @@ const deleteDiscount = asyncHandler(async (req, res) => {
 // @access Public
 const applyDiscount = asyncHandler(async (req, res) => {
     const cartItems = req.body
-    console.log(cartItems)
     const discount = await Discount.findOne({ discountCode: req.params.id })
-    if (discount) {
-        // If Flat
-        if (discount.discountType === "FLAT") {
-            const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
-            if (subtotal >= discount.discountExclude) {
-                res.json({ ...discount._doc, discountTotal: discount.discountAmount })
-            }
-            else throw new Error(
-                `Order does not meet ${(Number(discount.discountExclude) / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })} requirement`
-            )
-        } // If Percent
-        else if (discount.discountType === "PERCENT") {
-            let discountTotal = 0
+    let subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
+    // console.log(cartItems)
 
-            res.json(discount)
+    if (discount) {
+        const { discountExclude, discountAmount, discountType } = discount
+        // If Flat
+        if (discountType === "FLAT") {
+            // If Min Order
+            if (discountExclude) {
+                if (subtotal >= discountExclude) {
+                    res.json({ ...discount._doc, discountTotal: discountAmount })
+                }
+                else {
+                    let dollar = (Number(discountExclude) / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
+                    throw new Error(`Order does not meet ${dollar} requirement`)
+                }
+            } // If No Min, check exceed 
+            else {
+                res.json({ ...discount._doc, discountTotal: subtotal > discountAmount ? discountAmount : subtotal })
+            }
+        }
+        // If Percent
+        else if (discountType === "PERCENT") {
+            let excludeArr = discountExclude.split(",")
+            for (const cartItem of cartItems) {
+                if (excludeArr.includes(cartItem.pID)) {
+                    subtotal -= (cartItem.price * cartItem.qty)
+                }
+            }
+            let discountTotal = Math.round(subtotal * discountAmount / 100)
+            res.json({ ...discount._doc, discountTotal })
         }
         else throw new Error('Discount Type Error')
     } else throw new Error('Discount not found')

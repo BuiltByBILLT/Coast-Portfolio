@@ -32,10 +32,10 @@ const ShippingMethodScreen = ({ history, location }) => {
 
     const radioHandler = (e) => {
         setSelected(methods[e.target.value])
+        updateCart({ type: "ADD_SHIPPING_METHOD", shippingMethod: fixedMethods[0] })
     }
     const submitHandler = (e) => {
         e.preventDefault()
-        updateCart({ type: "ADD_SHIPPING_METHOD", shippingMethod: fixedMethods[0] })
         history.push('/payment')
     }
 

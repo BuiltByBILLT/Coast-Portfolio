@@ -41,7 +41,7 @@ const addressVerification = asyncHandler(async (req, res) => {
 
     try {
         const { data } = await axios.post(`https://onlinetools.ups.com/rest/XAV`, body)
-        console.log(JSON.stringify(data))
+        // console.log(JSON.stringify(data))
         if (data.Fault) throw new Error(data.Fault.detail.Errors.ErrorDetail.PrimaryErrorCode.Description)
         if ("NoCandidatesIndicator" in data.XAVResponse) throw new Error("No Valid Address Matches")
 
