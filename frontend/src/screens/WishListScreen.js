@@ -1,22 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { UserNavBar } from '../components/UserNavBar'
 import WishListCard from '../components/WishListCard'
+import { UserContext } from '../contexts/UserContext'
 
 export const WishListScreen = () => {
 
-    const { userInfo } = useSelector(state => state.userLogin)
+    // const { userInfo } = useSelector(state => state.userLogin)
 
+    const user = useContext(UserContext)
 
     return (
         <Container className="my-5 py-3">
             <UserNavBar></UserNavBar>
             <h2 className="mb-4">Wish List</h2>
             <Row>
-                {userInfo && userInfo.wishList
-                    ? userInfo.wishList.map(item => (
-                        <Col xs={12} lg={4}  >
+                {user && user.wishList
+                    ? user.wishList.map(item => (
+                        <Col xs={12} lg={4} key={item} >
                             <WishListCard pID={item} />
                         </Col>
                         // <p>{item}</p>

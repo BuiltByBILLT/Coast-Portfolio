@@ -39,6 +39,17 @@
     </script>
     <!-- End Google Tag Manager -->
 
+    <!-- <script>
+      var my_awesome_script = document.createElement('script');
+      my_awesome_script.setAttribute(
+        'src',
+        '%NODE_ENV%' === 'production'
+          ? 'https://checkout.clover.com/sdk.js'
+          : 'https://checkout.sandbox.dev.clover.com/sdk.js'
+      );
+      document.head.appendChild(my_awesome_script);
+      window.clover = new Clover('631ee26a5ffe5e916b8235b898fae8cf');
+    </script> -->
     <script src="https://checkout.sandbox.dev.clover.com/sdk.js"></script>
     <!-- <script src="https://checkout.clover.com/sdk.js"></script> -->
 
@@ -59,7 +70,10 @@
     <script>
       // window.clover = new Clover('220b6a7a22aea9759ff4d5e66982bf1b'); //prod
       window.clover = new Clover('631ee26a5ffe5e916b8235b898fae8cf'); //sand
-      // window.clover = new Clover('631ee26a5ffe5e916b8235b898fae'); //sand
+      // if ('%NODE_ENV%' === development)
+      // window.clover = new Clover('631ee26a5ffe5e916b8235b898fae8cf');
+      // if ('%NODE_ENV%' === production)
+      //   new Clover('220b6a7a22aea9759ff4d5e66982bf1b');
     </script>
     <div id="root"></div>
   </body>

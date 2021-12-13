@@ -17,7 +17,7 @@ const orderClover = asyncHandler(async (req, res) => {
                 "state": "Open",
                 "orderType": { "id": process.env.ORDER_TYPE },
                 "employee": {
-                    "id": userInfo.employeeID ? userInfo.employeeID : process.env.WEBSITE
+                    "id": userInfo.employeeID ? userInfo.employeeID : process.env.WEBSITE_ID
                 }
 
             }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
@@ -39,7 +39,7 @@ const orderClover = asyncHandler(async (req, res) => {
                     "price": cartItem.price,
                     "taxRates": [
                         {
-                            "id": "HSKPV1YMDB9CA", //Has to match existing ID
+                            "id": process.env.TAX_ID, //Has to match existing ID
                             "name": "", // doesnt matter
                             "rate": (cart.shippingInfo.taxRate * 10000000) || 0, // Manual Entry
                             "isDefault": false
@@ -55,14 +55,14 @@ const orderClover = asyncHandler(async (req, res) => {
         const shippingLabel = { email, firstName, lastName, company, address, address2, city, country, region, postalCode, phone }
         bulkLineItems.items.push(
             {
-                "item": { "id": process.env.SHIPPINGID },
+                "item": { "id": process.env.SHIPPING_ID },
                 "name": "Website Shipping",
                 "alternateName": `Shipping (${cart.shippingMethod.method})`,
                 "price": cart.shippingMethod.price,
                 "note": JSON.stringify(shippingLabel),
                 "taxRates": [
                     {
-                        "id": "FNC2N54SC3QXG", //Has to match existing ID
+                        "id": process.env.TAX_ID, //Has to match existing ID
                         "name": "", // doesnt matter
                         "rate": 0, // Manual Entry
                         "isDefault": false
@@ -78,21 +78,6 @@ const orderClover = asyncHandler(async (req, res) => {
         // Attach Customer
         var customerID = userInfo && userInfo.customerID
         if (customerID) {
-            // if (!userInfo || userInfo.employeeID || !userInfo.customerID) {
-            //     //Create Customer
-            //     const newCustomer = await axios.post(process.env.CLOVER_URL + `/customers`,
-            //         {
-            //             "emailAddresses": [
-            //                 {
-            //                     "emailAddress": cart.shippingInfo.email
-            //                 }
-            //             ],
-            //             "firstName": cart.shippingInfo.firstName,
-            //             "lastName": cart.shippingInfo.lastName
-            //         }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
-            //     )
-            //     customerID = newCustomer.data.id
-            // }
             await axios.post(
                 process.env.CLOVER_URL + `/orders/${orderID}`,
                 { "customers": [{ "id": customerID }] },
@@ -102,16 +87,6 @@ const orderClover = asyncHandler(async (req, res) => {
 
 
         // Add Discount
-        //If userLogin = isStaff
-        // if (userInfo && userInfo.isStaff == true) {
-        // if (cart.discount && cart.discount.discountType === "PRECENT") {
-        //     await axios.post(
-        //         process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
-        //         { percentage: Number(cart.discount.discountAmount), name: cart.discount.discountCode },
-        //         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
-        //     )
-        // }
-        // if (cart.discount && cart.discount.discountType === "FLAT") {
         if (cart.discount && cart.discount.discountTotal) {
             await axios.post(
                 process.env.CLOVER_URL + `/orders/${orderID}/discounts`,
@@ -119,9 +94,6 @@ const orderClover = asyncHandler(async (req, res) => {
                 { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
         }
-        // } else {
-        //     throw new Error("Discount not Authorized")
-        // }
 
         //
         // Modifcation Later

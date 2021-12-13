@@ -11,7 +11,7 @@ const CategoryCard = ({ category }) => {
                 <Image
                     className="mx-auto px-2"
                     style={{ width: "100%", height: "200px", objectFit: "contain" }}
-                    src={"/" + envImage(category.sectionImage)}
+                    src={envImage(category.sectionImage)}
                 />
                 <h5 className="text-center text-danger py-2 px-1">
                     {category.sectionName}

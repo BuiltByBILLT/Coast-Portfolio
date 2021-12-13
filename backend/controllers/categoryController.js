@@ -52,9 +52,6 @@ const deleteCategory = asyncHandler(async (req, res) => {
 })
 
 
-
-
-
 // @desc Fetch products in category
 // @route GET /api/categories/products/:id
 // @access Public
@@ -65,7 +62,7 @@ const getCategoryProducts = asyncHandler(async (req, res) => {
             const product = products[i];
             if (!product.optionGroup) {
                 const inv = await Inventory.findOne({ iParent: product.pID })
-                if (inv) { product.pPrice = inv.iPrice }
+                if (inv) { product._doc.pPrice = inv.iPrice }
             }
         }
         res.json(products)
@@ -74,6 +71,7 @@ const getCategoryProducts = asyncHandler(async (req, res) => {
         throw new Error('Category not found')
     }
 })
+
 
 // @desc Fetch single category Breadcrumbs and Children
 // @route GET /api/categories/details/:id

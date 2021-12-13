@@ -49,6 +49,7 @@ import CategoryStatic from './screens/static/CategoryStatic'
 import EmployeeHistoryScreen from './screens/EmployeeHistoryScreen'
 import ProtectedRoute from './components/ProtectedRoute'
 import StaffRoute from './components/StaffRoute'
+import BrandsScreen from './screens/BrandsScreen'
 
 
 const App = () => {
@@ -64,6 +65,7 @@ const App = () => {
         <Route path='/contact' component={ContactStatic} />
         <Route exact path='/categories' component={CategoryStatic} />
 
+        <Route path='/brands' component={BrandsScreen} />
         <Route path='/category/:id' component={CategoryScreen} />
         <Route path='/order/:id' component={OrderScreen} />
         <Route path='/payment' component={PaymentScreen} />
@@ -78,6 +80,7 @@ const App = () => {
         <Route exact path='/search/' component={SearchScreen} />
         <Route exact path='/search/:keyword' component={SearchScreen} />
         <Route exact path='/search/:keyword/page/:pageNumber' component={SearchScreen} />
+        <Route exact path='/search/:keyword/page/:pageNumber/brands/:brands' component={SearchScreen} />
 
         <ProtectedRoute path='/orderhistory' component={OrderHistoryScreen} />
         <ProtectedRoute path='/wishlist' component={WishListScreen} />

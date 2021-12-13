@@ -6,15 +6,13 @@ export const envImage = (url) => {
     if (url && url.substr(0, 6) === "static") return "/" + url
     if (url) {
         if (process.env.NODE_ENV == "development") {
-            console.log("Dev")
             return "https://www.coastairbrush.com/" + url
         }
         else {
-            console.log("Prod")
-            return "/" + url
+            return url
         }
     }
-    else return "/" + "static/sample.jpg"
+    else return "/static/sample.jpg"
 }
 
 export const firstImage = (product) => {

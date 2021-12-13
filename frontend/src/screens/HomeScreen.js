@@ -25,7 +25,7 @@ const HomeScreen = ({ match }) => {
         <>
             <Meta />
             <div className="homePage">
-                <Row className="" style={{
+                <Row className="mx-0" style={{
                     backgroundImage: "url('/static/hero_image_only.png')",
                     // backgroundSize: "100% 100%",
                     backgroundSize: "cover",
@@ -54,7 +54,7 @@ const HomeScreen = ({ match }) => {
                         style={{ height: "80px", position: "absolute", top: "-35px", left: "-50px", zIndex: 5 }}></Image>
                 </div>
 
-                <Row className="featured" style={{ backgroundImage: "url('/static/BG_Featured_section.png')" }} >
+                <Row className="featured mx-0" style={{ backgroundImage: "url('/static/BG_Featured_section.png')" }} >
                     <Container>
                         <Row className="pb-5">
 
@@ -123,7 +123,7 @@ const HomeScreen = ({ match }) => {
                         }
                     </Container>
                 </Row>
-                <Row className="topBrands" >
+                <Row className="topBrands mx-0" >
                     <Container>
                         {
                             <Row className="my-5">
@@ -209,48 +209,45 @@ const HomeScreen = ({ match }) => {
                         </Col>
                     </Row>
                 </Container>
-                <Row className="seeDave" style={{ backgroundImage: "url('/static/David_Section_BG.png')", height: "600px" }}>
-                    {/* <Container > */}
-                    {/* <Row className="my-0" style={{ height: "500px" }}> */}
-                    <Col lg={8}
+                <Row className="seeDave mx-0" style={{ backgroundImage: "url('/static/David_Section_BG.png')", height: "600px" }}>
+                    <Col lg={8} className="d-none d-lg-block"
                         style={{
                             backgroundImage: "url('/static/David.png')",
                             backgroundSize: "cover"
                         }}>
                     </Col>
-                    <Col lg={4} className="pr-4">
+                    <Col lg={4} className="px-4 my-5">
                         <h3 className="" style={{ letterSpacing: "0px" }}>Look Familiar?</h3>
                         <h2 className="mt-5 mt-lg-0 mb-4 text-danger">See David On</h2>
-                        <Image src="/static/Asset32.png" style={{ width: "120px" }} />
-                        <Image src="/static/Asset33.png" style={{ width: "120px" }} className="mx-2" />
-                        <Image src="/static/Asset34.png" style={{ width: "120px" }} />
+                        <Image src="/static/Asset32.png" style={{ width: "30%" }} />
+                        <Image src="/static/Asset33.png" style={{ width: "30%" }} className="mx-2" />
+                        <Image src="/static/Asset34.png" style={{ width: "30%" }} />
                         <p className="text-dark my-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
                         <div className="ml-auto">
                             <Button>Shop Now</Button>
                         </div>
                     </Col>
-                    {/* </Row> */}
-                    <div style={{ position: "absolute", width: "100vw" }}>
-                        <Image src="/static/texture1_only.png"
-                            style={{ height: "80px", position: "absolute", top: "420px", left: "-50px", zIndex: 5 }}></Image>
-                    </div>
-                    <div style={{ position: "absolute", width: "100vw" }}>
-                        <Image src="/static/David_Favorite.png"
-                            style={{ height: "120px", position: "absolute", top: "450px", left: "50px", zIndex: 5 }}></Image>
-                    </div>
-                    {/* </Container> */}
                 </Row>
-                <Row className="favorites mt-5 pt-5">
+                <Row className="favorites mb-5 pt-5 mx-0"
+                    style={{ position: "relative" }}>
+                    <Image src="/static/texture1_only.png"
+                        style={{ height: "80px", position: "absolute", top: "-20px", left: "-50px", zIndex: 5 }}>
+
+                    </Image>
+                    <Image src="/static/David_Favorite.png"
+                        style={{ height: "120px", position: "absolute", top: "10px", left: "50px", zIndex: 5 }}>
+
+                    </Image>
                     <Container className="mt-5 pt-5">
                         <TopThree />
                     </Container>
                 </Row>
-                <Row className="instagram">
+                <Row className="instagram mx-0">
                     <Container >
                         <h3 className="text-white mt-3">Instagram</h3>
                     </Container>
                 </Row>
-                <Row className="location">
+                <Row className="location mx-0">
                     <Container >
                         <Row>
                             <Col lg={6} className="my-5 mt-lg-0">

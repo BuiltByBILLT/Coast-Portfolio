@@ -2,6 +2,7 @@ import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import '../styles/Header.css'
+import { Link } from 'react-router-dom'
 
 const SubNav = () => {
 
@@ -18,9 +19,10 @@ const SubNav = () => {
             <LinkContainer to='/brands'>
                 <Nav.Link active={false} className='mx-4'>Brands</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/youtube'>
-                <Nav.Link active={false} className='mx-4'>Coast TV</Nav.Link>
-            </LinkContainer>
+            <a href="https://www.youtube.com/user/coastairbrushTV"
+                className='nav-link mx-4'
+                target='_blank'
+            > Coast TV </a>
         </ >
     )
 }

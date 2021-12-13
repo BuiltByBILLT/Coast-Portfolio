@@ -4,7 +4,7 @@ import Brand from '../models/brandModel.js'
 
 // @desc Fetch all brands
 // @route GET /api/brands/
-// @access Public w/ Check
+// @access Public
 const getBrands = asyncHandler(async (req, res) => {
     const brands = await Brand.find({}).sort({ brandID: 1 })
     res.json(brands)

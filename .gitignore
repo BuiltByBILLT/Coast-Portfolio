@@ -9,6 +9,7 @@ node_modules/
 #images
 /frontend/public/prodimages/
 /frontend/public/images/
+/frontend/public/index.html
 
 
 # testing

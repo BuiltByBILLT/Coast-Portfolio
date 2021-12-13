@@ -32,7 +32,7 @@ router.route('/cart')
     .post(protect, addCartToUser)
 
 router.route('/wish/:pID')
-    .post(protect, addWishToUser)
+    .put(protect, addWishToUser)
     .delete(protect, removeWishFromUser)
 
 router.route('/:id')

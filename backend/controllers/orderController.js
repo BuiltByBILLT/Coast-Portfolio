@@ -34,25 +34,6 @@ const getOrderByID = asyncHandler(async (req, res) => {
         }
     }
 
-    // const ungrouped = data.lineItems.elements
-    // lineItems = []
-    // for (const item of ungrouped) {
-    //     console.log(item.name)
-    //     for (let i = 0; i < lineItems.length; i++) {
-    //         const line = lineItems[i];
-    //         if (item.name === line.name) {
-    //             console.log("Add Qty")
-    //             item.qty += 1
-    //         }
-    //         else {
-    //             console.log("New Item")
-    //             item.qty = 1
-    //             lineItems.push(item)
-    //         }
-    //     }
-    // }
-
-
     // Add Images
     for (var index = 0; index < lineItems.length; index++) {
         const cloverID = lineItems[index].item && lineItems[index].item.id;
@@ -101,7 +82,7 @@ const getOrderByID = asyncHandler(async (req, res) => {
 
     // Employee
     var employee
-    if (data.employee.id && data.employee.id != process.env.WEBSITE) { // Default is Website
+    if (data.employee.id && data.employee.id != process.env.WEBSITE_ID) { // Default is Website
         const user = await User.findOne({ employeeID: data.employee.id })
         employee = user && (user.firstName + " " + user.lastName)
     } else {

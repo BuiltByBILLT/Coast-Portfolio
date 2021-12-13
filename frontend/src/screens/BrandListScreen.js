@@ -18,7 +18,7 @@ const BrandListScreen = ({ history }) => {
     const [error, setError] = useState("")
 
     // List Query
-    const { isLoading: qLoading, data, refetch } = useQuery("brandListAdmin", () => {
+    const { isLoading: qLoading, data, refetch } = useQuery("brandList", () => {
         return axios.get(`/api/brands`, {
             headers: { Authorization: `Bearer ${user.token}` }
         })

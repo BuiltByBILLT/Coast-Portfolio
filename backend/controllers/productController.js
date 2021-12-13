@@ -10,25 +10,39 @@ import axios from 'axios'
 const getProducts = asyncHandler(async (req, res) => {
     const pageSize = Number(req.query.limit) || 24
     const page = Number(req.query.pageNumber) || 1
+    const brandsRaw = req.query.brands
+    console.log(brandsRaw)
+    const brands = brandsRaw && brandsRaw.split('_')
+    console.log(brands)
 
     // If Keyword
-    const keyword = req.query.keyword ? {
+    var keyword = req.query.keyword ? {
         $or: [
             { pName: { $regex: req.query.keyword, $options: 'i' } },
             { pID: { $regex: req.query.keyword, $options: 'i' } }
         ]
     } : {}
+    if (req.query.keyword === "ALL") keyword = {}
 
-    const count = await Product.countDocuments({
-        ...keyword, pDisplay: req.user && req.user.isStaff ? { $ne: null } : true
-    })
-    const products = await Product.find({
-        ...keyword, pDisplay: req.user && req.user.isStaff ? { $ne: null } : true
-    })
+    // If Filter
+    var filter
+    if (brands) filter = { pManufacturer: { $in: [...brands] } }
+    else filter = {}
+
+    // Final Query
+    let query = {
+        ...keyword,
+        ...filter,
+        optionGroup: { $exists: false }, // Remove Later
+        pDisplay: req.user && req.user.isStaff ? { $ne: null } : true
+    }
+
+    const count = await Product.countDocuments(query)
+    const products = await Product.find(query)
         .sort({ updatedAt: -1 })
         .limit(pageSize).skip(pageSize * (page - 1))
 
-    if (!req.user) { // Load Prices 
+    if (!req.user) { // Load Prices (Search Page)
         for (const product of products) {
             if (!product.optionGroup) { // Only for Singles
                 const inv = await Inventory.findOne({ iParent: product.pID })
@@ -54,6 +68,7 @@ const getProductDetails = asyncHandler(async (req, res) => {
         // Add Options
         product.options = []
         const invArr = await Inventory.find({ iParent: product.pID })
+        if (invArr.length === 1) { product.pPrice = invArr[0].iPrice }
         invArr.forEach(inv => {
             if (!inv.iSell) inv.iStock = 0
             product.options.push(inv)

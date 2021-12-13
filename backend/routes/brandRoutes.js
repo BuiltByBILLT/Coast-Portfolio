@@ -11,7 +11,7 @@ import {
 // @route /api/brands/
 const router = express.Router()
 router.route('/')
-    .get(protect, staff, getBrands)
+    .get(getBrands)
 
 router.route('/edit/:id')
     .get(protect, staff, getBrand)

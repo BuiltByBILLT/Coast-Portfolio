@@ -29,7 +29,7 @@ const CategoryScreen = ({ match }) => {
 
     return (
         <Container className="my-5">
-            {loading ? <Loader /> : error ? (<Message variant='danger'>{error}</Message>)
+            {loading || loadingProducts ? <Loader /> : error ? (<Message variant='danger'>{error}</Message>)
                 : (<>
                     <BreadCrumbs category={category} />
 

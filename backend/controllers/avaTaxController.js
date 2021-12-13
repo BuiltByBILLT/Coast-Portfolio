@@ -5,19 +5,19 @@ dotenv.config()
 
 
 // resolve configuration and credentials
-const config = {
-    appName: 'CoastAirbrush',
-    appVersion: '1.0',
-    environment: 'production',
-    machineName: 'linode_server'
-};
+// const config = {
+//     appName: 'CoastAirbrush',
+//     appVersion: '1.0',
+//     environment: 'production',
+//     machineName: 'linode_server'
+// };
 
-const creds = {
-    username: process.env.AVATAX_USERNAME_PROD,
-    password: process.env.AVATAX_PASSWORD_PROD
-};
+// const creds = {
+//     username: process.env.AVATAX_USERNAME_PROD,
+//     password: process.env.AVATAX_PASSWORD_PROD
+// };
 // console.log(process.env.AVATAX_USERNAME_PROD, process.env.AVATAX_PASSWORD_PROD)
-var client = new Avatax(config).withSecurity(creds);
+// var client = new Avatax(config).withSecurity(creds);
 
 // @desc Get Tax Rate from Address
 // @route POST /api/tax/fetch

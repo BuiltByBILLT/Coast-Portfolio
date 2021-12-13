@@ -9,118 +9,37 @@ import { listProducts, deleteProduct, createProduct } from '../actions/productAc
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import ProductDetailsCard from '../components/ProductDetailsCard'
 import Suggested from '../components/Suggested'
+import BrandFilter from '../components/BrandFilter'
+import { useQuery } from 'react-query'
+import axios from 'axios'
 
 const SearchScreen = ({ history, match }) => {
     const pageNumber = match.params.pageNumber || 1
-    const keyword = match.params.keyword || ""
+    const keyword = match.params.keyword || "ALL"
+    const brands = match.params.brands || ""
 
-    const dispatch = useDispatch()
-
-    const productList = useSelector(state => state.productList)
-    const { loading, error, products, page, pages } = productList
-
-    const [filter, setFilter] = useState([])
-
-    useEffect(() => {
-        dispatch(listProducts(keyword, pageNumber, 20, "updatedAt", -1, 0))
-    }, [keyword])
-
-    const addBrand = (e) => {
-        // alert("Added " + e)
-        setFilter(arr => [...arr, e])
-    }
-    const removeBrand = (e) => {
-        // alert("Removed " + e)
-    }
+    // List Query
+    const { isFetching: loading, data, error, refetch } = useQuery(`productListAdmin`, () => {
+        return axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}&brands=${brands}`)
+    })
+    const products = data && data.data && data.data.products
+    const page = data && data.data && data.data.page
+    const pages = data && data.data && data.data.pages
 
     useEffect(() => {
-        console.log(filter)
-    }, [filter])
+        window.scrollTo({ top: 0, behavior: "smooth" })
+        refetch()
+    }, [keyword, pageNumber, brands])
+
 
     return (
         <Container className="my-5 pt-5">
-            {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message>
+            {loading ? <Loader /> : error ? <Message variant='danger'>{error.response && error.response.data.message
+                ? error.response.data.message : error.message}</Message>
                 : (<>
                     <Row>
                         <Col xs={12} lg={3}>
-                            <Card>
-                                <Card.Header as="h5">Filter by Brand</Card.Header>
-                                <ListGroup variant="flush" className="my-2 border-0">
-                                    {[
-                                        "Advantage Refinish Products",
-                                        "Air Gunsa",
-                                        "Airbrush Action",
-                                        "Alpha 6",
-                                        "Aqua Flow",
-                                        "Artograph",
-                                        "Artool",
-                                        "Auto Air",
-                                        "Auto Air candy2O",
-                                        "Auto Borne",
-                                        "Aztek",
-                                        "Badger",
-                                        "California Air Tools",
-                                        "Coast Airbrush",
-                                        "Comart",
-                                        "Createx",
-                                        "Createx Colors Illustration Colors",
-                                        "DeVilbiss",
-                                        "DH Woodworks",
-                                        "Dry Air Systems",
-                                        "Dura-Block",
-                                        "EBA",
-                                        "Excel",
-                                        "FBS Tapes & Sprayers",
-                                        "Flake King",
-                                        "Freak Flex",
-                                        "Graftobian",
-                                        "Grex",
-                                        "HB Bodyworks",
-                                        "Holbein Aeroflash",
-                                        "House of Kolor",
-                                        "House of Kolor Aerosols",
-                                        "House of Kolor Shimrin 2",
-                                        "Iwata Medea",
-                                        "JAtech",
-                                        "KopyKake",
-                                        "La D'ore",
-                                        "Lil Daddy Roth Flake",
-                                        "LumaIII",
-                                        "Lumilor",
-                                        "Mack",
-                                        "Mad Fabricators",
-                                        "Medea Textile acrylic",
-                                        "Meguiar's",
-                                        "Old School Flake",
-                                        "One Shot",
-                                        "Paasche",
-                                        "Preval",
-                                        "Pro Aiir Body Paints",
-                                        "Sata",
-                                        "Sharpen Air",
-                                        "Silentaire",
-                                        "Spray Max",
-                                        "System 51",
-                                        "Tamiya",
-                                        "Temptu",
-                                        "Trulers",
-                                        "Vintage Flatz",
-                                        "Virtus",
-                                        "VsionAir",
-                                        "Wicked",
-                                        "Xtreme",
-                                    ].map((brand) => (
-                                        <ListGroup.Item key={brand} className="py-1 border-0">
-                                            <Form.Check type="checkbox" value={brand} label={brand}
-                                                onChange={(e) => e.target.checked ? addBrand(e.target.value) : removeBrand(e.target.value)}
-                                            ></Form.Check>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                                <Button variant="danger">
-                                    Filter
-                                </Button>
-                            </Card>
+                            <BrandFilter keyword={keyword} brands={brands} pageNumber={pageNumber} />
                         </Col>
                         <Col xs={12} lg={9}>
                             <Row>
@@ -132,13 +51,13 @@ const SearchScreen = ({ history, match }) => {
                             </Row>
                         </Col>
                     </Row>
-                    <h4 className="text-danger mb-4 my-5">You May Also Like</h4>
-                    <Suggested />
-                    <Row>
-                        <Col xs={6} style={{ wordWrap: "break-word" }}>
-                            <Paginate pages={pages} page={page} isAdmin={true} />
+                    <Row className="justify-content-center">
+                        <Col xs="auto">
+                            <Paginate pages={pages} page={page} location={"/search"} keyword={keyword} brands={brands} />
                         </Col>
                     </Row>
+                    <h4 className="text-danger mb-4 my-5">You May Also Like</h4>
+                    <Suggested />
                 </>
                 )}
         </Container>

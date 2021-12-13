@@ -64,6 +64,14 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
         })
     }
+    if (req.body.wishList) {
+        user.wishList = req.body.wishList
+        const updatedUser = await user.save()
+        res.json({
+            message: "WishList Updated",
+            userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
+        })
+    }
 })
 
 
@@ -137,7 +145,7 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 
-
+//================================================================================================//
 
 // @desc Admin Updates User 
 // @route PUT /api/users/:id
@@ -262,9 +270,10 @@ const getCartFromUser = asyncHandler(async (req, res) => {
     }
 })
 
+//===================================================================
 
 // @desc Add WishList Item to User
-// @route POST /api/users/wish/:pID
+// @route PUT /api/users/wish/:pID
 // @access Private
 const addWishToUser = asyncHandler(async (req, res) => {
     // console.log(req.body)
@@ -272,7 +281,7 @@ const addWishToUser = asyncHandler(async (req, res) => {
     if (user) {
         if (user.wishList.includes(req.params.pID)) {
             res.status(201).json({
-                wishList: user.wishList
+                userData: { ...user._doc, token: generateToken(user._id), password: undefined }
             })
         }
         else {
@@ -280,7 +289,8 @@ const addWishToUser = asyncHandler(async (req, res) => {
             const updatedUser = await user.save()
             if (updatedUser) {
                 res.status(201).json({
-                    wishList: updatedUser.wishList
+                    // wishList: updatedUser.wishList
+                    userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
                 })
             } else {
                 res.status(400)
@@ -309,7 +319,7 @@ const removeWishFromUser = asyncHandler(async (req, res) => {
             const updatedUser = await user.save()
             if (updatedUser) {
                 res.status(201).json({
-                    wishList: updatedUser.wishList
+                    userData: { ...updatedUser._doc, token: generateToken(user._id), password: undefined }
                 })
             } else {
                 res.status(400)
@@ -318,7 +328,8 @@ const removeWishFromUser = asyncHandler(async (req, res) => {
         }
         else {
             res.status(201).json({
-                wishList: user.wishList
+                // wishList: user.wishList
+                userData: { ...user._doc, token: generateToken(user._id), password: undefined }
             })
         }
     }

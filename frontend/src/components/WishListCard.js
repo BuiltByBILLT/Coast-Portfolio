@@ -11,7 +11,7 @@ import { envImage, firstImage } from '../common'
 const WishListCard = ({ pID }) => {
 
     const { isLoading, isError, data, error } = useQuery(pID, () =>
-        axios.get(`/api/products/${pID}`))
+        axios.get(`/api/products/details/${pID}`))
     const product = data && data.data
 
 
