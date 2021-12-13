@@ -242,9 +242,10 @@ const HomeScreen = ({ match }) => {
                         <TopThree />
                     </Container>
                 </Row>
-                <Row className="instagram mx-0">
+                <Row className="instagram mx-0" style={{ height: "600px" }}>
                     <Container >
-                        <h3 className="text-white mt-3">Instagram</h3>
+                        <h3 className="text-white my-3">Instagram</h3>
+                        <div class="elfsight-app-d248b7bd-2728-4b1a-ba26-babd662f3e41"></div>
                     </Container>
                 </Row>
                 <Row className="location mx-0">
