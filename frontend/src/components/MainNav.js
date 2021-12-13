@@ -44,7 +44,7 @@ const MainNav = () => {
                 </Nav.Link>
             </LinkContainer>
             {user._id ? (
-                <NavDropdown title={user.firstName} id='username'
+                <NavDropdown alignRight title={user.firstName} id='username'
                     className='mx-2 mx-xl-4 my-3 my-lg-0'>
                     <LinkContainer to='/profile'>
                         <NavDropdown.Item active={false}>Profile</NavDropdown.Item>
