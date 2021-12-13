@@ -20,13 +20,13 @@ const users = [
         employeeID: 'A728RB8VMANMY'
     },
     {
-        firstName: 'Employee Jane',
-        lastName: 'Doe',
-        email: 'jane@example.com',
+        firstName: 'Tom',
+        lastName: 'Mcweeney',
+        email: 'tjmcweeney@yahoo.com',
         password: bcrypt.hashSync('123456', 10),
         isStaff: true,
         isAdmin: false,
-        employeeID: '3G8S0E0WXACJW'
+        employeeID: 'SAJFPMNEPVFSW'
     },
     // {
     //     name: 'John Doe',

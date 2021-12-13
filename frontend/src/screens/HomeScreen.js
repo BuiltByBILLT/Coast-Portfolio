@@ -67,7 +67,8 @@ const HomeScreen = ({ match }) => {
                                 <h2 className="mt-5 text-danger">Featured Product</h2>
                                 <h3 className="mt-3" style={{ letterSpacing: "0px" }}>IWATA Airbrush</h3>
                                 <p className="pr-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
-                                <Link to={`/product/DKTX81PVDX2C6`}  >
+                                {/* <Link to={`/product/DKTX81PVDX2C6`}  > */}
+                                <Link to={`/products`}  >
                                     <Button>Shop Now</Button>
                                 </Link>
                             </Col>
@@ -243,21 +244,24 @@ const HomeScreen = ({ match }) => {
                     </Container>
                 </Row>
                 <Row className="instagram mx-0" style={{ height: "600px" }}>
+                    {/* <Row className="instagram mx-0"> */}
                     <Container >
                         <h3 className="text-white my-3">Instagram</h3>
-                        <div class="elfsight-app-d248b7bd-2728-4b1a-ba26-babd662f3e41"></div>
+                        <div className="elfsight-app-d248b7bd-2728-4b1a-ba26-babd662f3e41 mx-auto"></div>
                     </Container>
                 </Row>
                 <Row className="location mx-0">
                     <Container >
                         <Row>
                             <Col lg={6} className="my-5 mt-lg-0">
-                                <Image src="/static/Map.png"
-                                    style={{ width: "100%", paddingRight: "60px" }} />
+                                <a href="https://goo.gl/maps/AS8oMq7AFMnaX67R6" target='_blank'>
+                                    <Image src="/static/Map.png"
+                                        style={{ width: "100%", paddingRight: "60px", cursor: "pointer" }}
+                                    />
+                                </a>
                             </Col>
                             <Col lg={4} className="my-5 mt-lg-0 text-center text-lg-left">
-                                <h3 className="text-danger">Contact Us</h3>
-                                <p>lorem ipsum dolor sit amet, consecte adipiscing elit, sed diam laoreet</p>
+                                <h3 className="text-danger mb-4">Contact Us</h3>
                                 <i className="fas fa-map-marker-alt"></i>
                                 <span className="ml-3 mb-0 font-weight-bold">312 N Anaheim Blvd.</span>
                                 <p className="font-weight-bold" style={{ marginLeft: "28px" }}>Anahiem CA 92805</p>
@@ -269,7 +273,7 @@ const HomeScreen = ({ match }) => {
                                 <span className="ml-3 font-weight-bold">kustom@coastairbrush.com</span>
                             </Col>
                             <Col lg={2} className="my-5 mt-lg-0 text-center text-lg-left">
-                                <h3 className="text-danger">Hours</h3>
+                                <h3 className="text-danger mb-3">Hours</h3>
                                 <p className="font-weight-bold mb-0">Mon, Fri, Sat:</p>
                                 <p>9:30am - 5:00pm</p>
                                 <p className="font-weight-bold mb-0">Tues, Wed, Thur:</p>

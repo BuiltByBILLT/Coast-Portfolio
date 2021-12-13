@@ -134,18 +134,23 @@ const getEmployeeOrders = asyncHandler(async (req, res) => {
         process.env.CLOVER_URL + `/orders?filter=employee.id=${req.user.employeeID}&expand=lineItems`,
         { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
     )
+    console.log(data)
     var orderList = data.elements
     for (let i = 0; i < orderList.length; i++) {
         const order = orderList[i];
-        const firstItem = order.lineItems.elements[0]
-        const cloverID = firstItem.item && firstItem.item.id
-        if (cloverID) {
-            const product = await Product.findOne({ cloverID: cloverID })
-            if (product) {
-                order.orderImage = product.images.length && product.images[0].imageSrc
+        // console.log(order.lineItems.elements[0])
+        // console.log("line", order)
+        if (order.lineItems) {
+            const firstItem = order.lineItems.elements[0]
+            const cloverID = firstItem.item && firstItem.item.id
+            if (cloverID) {
+                const product = await Product.findOne({ cloverID: cloverID })
+                if (product) {
+                    order.orderImage = product.images.length && product.images[0].imageSrc
+                }
+            } else { //Remove in Prod
+                order.orderImage = firstItem.alternateName
             }
-        } else { //Remove in Prod
-            order.orderImage = firstItem.alternateName
         }
     }
     // console.log(orderList)

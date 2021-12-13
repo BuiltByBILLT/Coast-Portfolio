@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col, Container, Form, InputGroup } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
+import { UserContext } from '../contexts/UserContext'
 
 const OrderListScreen = ({ history, match }) => {
 
@@ -18,12 +19,14 @@ const OrderListScreen = ({ history, match }) => {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    const user = useContext(UserContext)
+
     useEffect(() => {
-        if (userInfo && userInfo.isStaff) {
-            dispatch(listOrders())
-        } else {
-            history.push('/login')
-        }
+        // if (userInfo && userInfo.isStaff) {
+        dispatch(listOrders(user.token))
+        // } else {
+        //     history.push('/login')
+        // }
 
         return () => { }
     }, [dispatch, history, userInfo])

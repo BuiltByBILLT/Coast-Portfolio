@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Table, Form, Button, Row, Col, Image, ListGroup, Container, Navbar, Nav, useAccordionToggle } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -9,28 +9,31 @@ import { UserNavBar } from '../components/UserNavBar'
 import { useQuery } from 'react-query'
 import axios from 'axios'
 import { envImage } from '../common'
+import { UserContext } from '../contexts/UserContext'
 
 const EmployeeHistoryScreen = ({ history }) => {
 
     const { userInfo } = useSelector(state => state.userLogin)
     // const { loading, error, orders } = useSelector(state => state.orderListMy)
+    const user = useContext(UserContext)
+
 
     const { isLoading, isError, data, error } = useQuery('employeeHistory', () =>
         axios.get(`/api/orders/employee`,
-            { headers: { Authorization: `Bearer ${userInfo.token}` } }))
+            { headers: { Authorization: `Bearer ${user.token}` } }))
     const orders = data && data.data
 
     // const dispatch = useDispatch()
-    useEffect(() => {
-        if (userInfo) {
-            // dispatch(listMyOrders())
-            if (!userInfo.isStaff) history.push('/')
+    // useEffect(() => {
+    //     if (userInfo) {
+    //         // dispatch(listMyOrders())
+    //         if (!userInfo.isStaff) history.push('/')
 
-        } else {
-            history.push('/login')
-        }
-        return () => { }
-    }, [history, userInfo])
+    //     } else {
+    //         history.push('/login')
+    //     }
+    //     return () => { }
+    // }, [history, userInfo])
 
 
 
@@ -40,7 +43,8 @@ const EmployeeHistoryScreen = ({ history }) => {
             {/* <p>{JSON.stringify(orders)}</p> */}
             <UserNavBar></UserNavBar>
             {isLoading ? <Loader />
-                : isError ? <Message variant='danger'>{error}</Message>
+                : isError ? <Message variant='danger'>{error.response && error.response.data.message
+                    ? error.response.data.message : error.message}</Message>
                     : orders && orders.length ? (
                         <ListGroup >
                             {orders.map(order => (

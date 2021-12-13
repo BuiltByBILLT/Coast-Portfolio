@@ -43,7 +43,7 @@ const ImageDisplay = ({ product }) => {
     return (
         <>
             <Image src={envImage(bigs[selected].imageSrc)} alt={product.pName}
-                style={{ width: "100%", objectFit: "contain" }}
+                style={{ width: "100%", objectFit: "contain", maxHeight: "500px" }}
             />
             {(images.length > 1) && <Row className="my-5 justify-content-center" >
                 {thumbs.map((thumb, index) => (

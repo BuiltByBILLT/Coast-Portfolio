@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Table, Button, Row, Col, Container, Form, InputGroup } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../contexts/UserContext'
 
 
 const OrderListScreen = ({ history, match }) => {
@@ -19,13 +20,16 @@ const OrderListScreen = ({ history, match }) => {
 
     const { userInfo } = useSelector(state => state.userLogin)
 
+    const user = useContext(UserContext)
+
+
     useEffect(() => {
-        if (userInfo && userInfo.isStaff) {
-            remove()
-            refetch()
-        } else {
-            history.push('/login')
-        }
+        // if (userInfo && userInfo.isStaff) {
+        remove()
+        refetch()
+        // } else {
+        //     history.push('/login')
+        // }
 
     }, [history, userInfo])
 
