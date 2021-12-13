@@ -83,6 +83,7 @@ const orderClover = asyncHandler(async (req, res) => {
                 { "customers": [{ "id": customerID }] },
                 { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
+            console.log("customer added")
         }
 
 
@@ -93,6 +94,7 @@ const orderClover = asyncHandler(async (req, res) => {
                 { amount: Number(cart.discount.discountTotal * -1), name: cart.discount.discountCode },
                 { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             )
+            console.log("discount added")
         }
 
         //
@@ -108,6 +110,7 @@ const orderClover = asyncHandler(async (req, res) => {
             },
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
+        console.log("payment posted")
 
 
         //Final Call for All Info
@@ -116,9 +119,11 @@ const orderClover = asyncHandler(async (req, res) => {
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
         res.json(data)
+        console.log("order success")
+
     } catch (error) {
         if (error.response) {
-            throw new Error(JSON.stringify(error.response.data))
+            throw new Error(JSON.stringify(error.response))
         } else if (error.request) {
             throw new Error("Request Error")
         } else {
