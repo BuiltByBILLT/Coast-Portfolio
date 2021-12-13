@@ -46,7 +46,7 @@ export const HeartList = ({ pID, size }) => {
 
     return (
         <div>
-            {user
+            {user._id
                 ? user.wishList.includes(pID)
                     ? <i className={`fas fa-heart fa-${size} text-danger`}
                         onClick={removeHandler}
