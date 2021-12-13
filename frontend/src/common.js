@@ -17,6 +17,6 @@ export const envImage = (url) => {
 }
 
 export const firstImage = (product) => {
-    if (product && product.images && product.images[0]) return "/" + product.images[0].imageSrc
+    if (product && product.images && product.images[0]) return product.images[0].imageSrc
     else return "static/sample.jpg"
 }

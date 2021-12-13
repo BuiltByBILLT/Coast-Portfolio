@@ -123,7 +123,8 @@ const orderClover = asyncHandler(async (req, res) => {
 
     } catch (error) {
         if (error.response) {
-            throw new Error(JSON.stringify(error.response))
+            console.log(error.response)
+            throw new Error(JSON.stringify(error.response.data))
         } else if (error.request) {
             throw new Error("Request Error")
         } else {
