@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,9 +9,11 @@ import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateImages } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import { set } from 'mongoose'
+import { useMutation } from 'react-query'
+import { UserContext } from '../contexts/UserContext'
 
 
-const ImageEditer = ({ product }) => {
+const ImageEditer = ({ images, pID }) => {
 
     const [thumb1, setThumb1] = useState("")
     const [full1, setFull1] = useState("")
@@ -34,10 +36,37 @@ const ImageEditer = ({ product }) => {
     const [thumb10, setThumb10] = useState("")
     const [full10, setFull10] = useState("")
 
-    const { loading, error, images } = useSelector(state => state.productUpdateImages)
-    const dispatch = useDispatch()
+    const [success, setSuccess] = useState("")
+    const [error, setError] = useState("")
+    const user = useContext(UserContext)
+
+    // const { loading, error, } = useSelector(state => state.productUpdateImages)
+    // const dispatch = useDispatch()
+
+    // Mutation: Update Product
+    const { mutate, isLoading, reset } = useMutation(data => {
+        return axios.put(`/api/products/images/${pID}`, data, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onSuccess: (data) => {
+            console.log(data.data)
+            setSuccess("Product Update Success!")
+            setError("")
+            reset()
+            // refetch()
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
+        }
+    })
+
+
+
     useEffect(() => {
-        product.images.forEach((image) => {
+        console.log("images:", images)
+        images && images.forEach((image) => {
             if (image.imageType === 0) {
                 if (image.imageNumber === 0) setThumb1(image.imageSrc)
                 if (image.imageNumber === 1) setThumb2(image.imageSrc)
@@ -66,14 +95,14 @@ const ImageEditer = ({ product }) => {
         return () => {
 
         }
-    }, [product])
+    }, [images])
 
 
     function saveHandler() {
         var arr = [];
         [thumb1, thumb2, thumb3, thumb4, thumb5, thumb6, thumb7, thumb8, thumb9, thumb10].forEach((thumb, index) => {
             if (thumb != "") arr.push({
-                "imageProduct": product.pID,
+                "imageProduct": pID,
                 "imageSrc": thumb,
                 "imageType": 0,
                 "imageNumber": index + 1
@@ -81,7 +110,7 @@ const ImageEditer = ({ product }) => {
         });
         [full1, full2, full3, full4, full5, full6, full7, full8, full9, full10].forEach((full, index) => {
             if (full != "") arr.push({
-                "imageProduct": product.pID,
+                "imageProduct": pID,
                 "imageSrc": full,
                 "imageType": 1,
                 "imageNumber": index + 1
@@ -89,7 +118,8 @@ const ImageEditer = ({ product }) => {
         })
 
         console.log(arr)
-        dispatch(updateImages(arr, product.cloverID))
+        // dispatch(updateImages(arr, pID))
+        mutate(arr)
     }
 
     return (
@@ -105,7 +135,7 @@ const ImageEditer = ({ product }) => {
                     Full Size
                 </Col>
             </Row>
-            {product && product.images &&
+            {images &&
                 [{ thumb: thumb1, full: full1, setThumb: setThumb1, setFull: setFull1 },
                 { thumb: thumb2, full: full2, setThumb: setThumb2, setFull: setFull2 },
                 { thumb: thumb3, full: full3, setThumb: setThumb3, setFull: setFull3 },
@@ -141,8 +171,9 @@ const ImageEditer = ({ product }) => {
                 )
             }
             <Row className="justify-content-end mr-4 pr-3">
-                {images && <h6 className="text-success mr-3 my-auto">Update Successful!</h6>}
-                <Button disabled={loading}
+                {success && <h6 className="text-success mr-3 my-auto">{success}</h6>}
+                {error && <h6 className="text-danger mr-3 my-auto">{error}</h6>}
+                <Button disabled={isLoading || success}
                     onClick={saveHandler}>
                     Save
                 </Button>

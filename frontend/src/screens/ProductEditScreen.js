@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 import { useMutation, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
+import ImageEditer from '../components/ImageEditer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { UserContext } from '../contexts/UserContext'
@@ -21,6 +22,9 @@ const ProductEditScreen = ({ match }) => {
     const [hasOptions, setHasOptions] = useState(false)
     const [optionGroup, setOptionGroup] = useState("")
     const [pDisplay, setPDisplay] = useState(false)
+
+    const [images, setImages] = useState([])
+    const [imageEdit, setImageEdit] = useState(false)
 
     const [edit, setEdit] = useState(false)
     const [success, setSuccess] = useState("")
@@ -42,6 +46,9 @@ const ProductEditScreen = ({ match }) => {
             setHasOptions(!!data.data.optionGroup)
             setOptionGroup(data.data.optionGroup)
             setPDisplay(data.data.pDisplay)
+            setImages(data.data.images)
+            console.log(data.data.images)
+            console.log(images)
         },
         onError: (error) => {
             setError(error.response && error.response.data.message
@@ -163,18 +170,18 @@ const ProductEditScreen = ({ match }) => {
                                             onClick={editHandler}>
                                             Edit
                                         </Button>
-                                        {/* <Button variant='secondary'
-                                                onClick={() => setImageEdit(true)}>
-                                                Edit Images
-                                            </Button>
-                                            <Modal show={imageEdit} onHide={() => setImageEdit(false)}
-                                                backdrop="static" keyboard={false} size="xl"
-                                            >
-                                                <Modal.Header closeButton>
-                                                    <Modal.Title>Edit Product Images</Modal.Title>
-                                                </Modal.Header>
-                                                <Modal.Body> <ImageEditer product={product} /> </Modal.Body>
-                                            </Modal> */}
+                                        <Button variant='secondary'
+                                            onClick={() => setImageEdit(true)}>
+                                            Edit Images
+                                        </Button>
+                                        <Modal show={imageEdit} onHide={() => setImageEdit(false)}
+                                            backdrop="static" keyboard={false} size="xl"
+                                        >
+                                            <Modal.Header closeButton>
+                                                <Modal.Title>Edit Product Images</Modal.Title>
+                                            </Modal.Header>
+                                            <Modal.Body> <ImageEditer images={images} pID={ID} /> </Modal.Body>
+                                        </Modal>
                                     </>
                                 )}
                             </Form>
@@ -188,4 +195,4 @@ const ProductEditScreen = ({ match }) => {
 export default ProductEditScreen
 
 
-// const [imageEdit, setImageEdit] = useState(false)
+

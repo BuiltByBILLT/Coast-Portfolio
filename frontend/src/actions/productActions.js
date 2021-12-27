@@ -163,7 +163,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     }
 }
 
-export const updateImages = (images, cloverID) => async (dispatch, getState) => {
+export const updateImages = (images, pID) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRODUCT_UPDATE_IMAGES_REQUEST
@@ -176,7 +176,7 @@ export const updateImages = (images, cloverID) => async (dispatch, getState) => 
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
-        const { data } = await axios.put(`/api/products/images/${cloverID}`, images, config)
+        const { data } = await axios.put(`/api/products/images/${pID}`, images, config)
 
         dispatch({
             type: PRODUCT_UPDATE_IMAGES_SUCCESS,
