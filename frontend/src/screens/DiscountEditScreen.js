@@ -19,6 +19,7 @@ const DiscountEditScreen = ({ match }) => {
     const [discountAmount, setDiscountAmount] = useState("")
     const [discountLive, setDiscountLive] = useState(true)
     const [discountExclude, setDiscountExclude] = useState("")
+    const [categoryExclude, setCategoryExclude] = useState("")
 
     const [edit, setEdit] = useState(false)
     const [success, setSuccess] = useState("")
@@ -38,6 +39,7 @@ const DiscountEditScreen = ({ match }) => {
             setDiscountCode(data.data.discountCode)
             setDiscountLive(data.data.discountLive)
             setDiscountExclude(data.data.discountExclude)
+            setCategoryExclude(data.data.categoryExclude)
         },
         onError: (error) => {
             setError(error.response && error.response.data.message
@@ -68,7 +70,10 @@ const DiscountEditScreen = ({ match }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive, discountExclude })
+        mutate({
+            discountDescription, discountCode, discountAmount, discountType, discountLive,
+            discountExclude, categoryExclude
+        })
     }
     const editHandler = (e) => {
         e.preventDefault()
@@ -82,6 +87,9 @@ const DiscountEditScreen = ({ match }) => {
     }
     const excludeHandler = (e) => {
         setDiscountExclude(e.target.value)
+    }
+    const categoryHandler = (e) => {
+        setCategoryExclude(e.target.value)
     }
 
 
@@ -141,6 +149,19 @@ const DiscountEditScreen = ({ match }) => {
                                         onChange={excludeHandler}>
                                     </Form.Control>
                                 </Form.Group>
+                                {discountType == 'PERCENT' &&
+                                    <Form.Group controlId='CategoryExclude'>
+                                        <Form.Label>Excluded Categories</Form.Label>
+                                        <Form.Control
+                                            as='textarea'
+                                            type='textarea'
+                                            placeholder={`Category ID's Seperated by Commas, No Spaces
+                                        ex: 3,56,217`}
+                                            value={categoryExclude} disabled={!edit}
+                                            onChange={categoryHandler}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                }
                                 <Form.Check label="Discount Live" disabled={!edit}
                                     type="checkbox" id="disabledCheck" className="mb-3" custom
                                     checked={discountLive}

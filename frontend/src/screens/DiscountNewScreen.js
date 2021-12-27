@@ -20,6 +20,7 @@ const DiscountNewScreen = ({ popup }) => {
     const [discountAmount, setDiscountAmount] = useState("")
     const [discountLive, setDiscountLive] = useState(true)
     const [discountExclude, setDiscountExclude] = useState("")
+    const [categoryExclude, setCategoryExclude] = useState("")
 
     const [available, setAvailable] = useState(true)
     const [edit, setEdit] = useState(true)
@@ -70,7 +71,7 @@ const DiscountNewScreen = ({ popup }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive, discountExclude })
+        mutate({ discountDescription, discountCode, discountAmount, discountType, discountLive, discountExclude, categoryExclude })
     }
     const cancelHandler = (e) => {
         e.preventDefault()
@@ -79,6 +80,9 @@ const DiscountNewScreen = ({ popup }) => {
 
     const excludeHandler = (e) => {
         setDiscountExclude(e.target.value)
+    }
+    const categoryHandler = (e) => {
+        setCategoryExclude(e.target.value)
     }
 
 
@@ -140,6 +144,19 @@ const DiscountNewScreen = ({ popup }) => {
                                         onChange={excludeHandler}>
                                     </Form.Control>
                                 </Form.Group>
+                                {discountType == 'PERCENT' &&
+                                    <Form.Group controlId='CategoryExclude'>
+                                        <Form.Label>Excluded Categories</Form.Label>
+                                        <Form.Control
+                                            as='textarea'
+                                            type='textarea'
+                                            placeholder={`Category ID's Seperated by Commas, No Spaces
+                                        ex: 3,56,217`}
+                                            value={categoryExclude} disabled={!edit}
+                                            onChange={categoryHandler}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                }
                                 <Form.Check label="Discount Live" disabled={!edit}
                                     type="checkbox" id="disabledCheck" className="mb-3" custom
                                     checked={discountLive}

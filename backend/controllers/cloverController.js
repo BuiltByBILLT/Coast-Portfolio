@@ -23,9 +23,9 @@ const orderClover = asyncHandler(async (req, res) => {
             }, { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
         const orderID = newOrder.data.id
-        console.log("order created")
+        console.log("order created:", orderID)
 
-        console.log("taxRate", cart.shippingInfo.taxRate)
+        // console.log("taxRate", cart.shippingInfo.taxRate)
         // Add Bulk Line Items
         let bulkLineItems = { "items": [] }
         for (let cartItem of cart.cartItems) {
@@ -62,7 +62,7 @@ const orderClover = asyncHandler(async (req, res) => {
                 "note": JSON.stringify(shippingLabel),
                 "taxRates": [
                     {
-                        "id": process.env.TAX_ID, //Has to match existing ID
+                        "id": process.env.TAX_NONE_ID, //Has to match existing ID
                         "name": "", // doesnt matter
                         "rate": 0, // Manual Entry
                         "isDefault": false
@@ -114,12 +114,17 @@ const orderClover = asyncHandler(async (req, res) => {
 
 
         //Final Call for All Info
+        await new Promise(r => setTimeout(r, 2000));
         const { data } = await axios.get(
             process.env.CLOVER_URL + `/orders/${orderID}?expand=lineItems&expand=customers&expand=payments`,
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
         res.json(data)
         console.log("order success")
+        sendToQB(data)
+        console.log("sent to QB")
+        // updateInv(data)
+        // console.log("sent to InvUpdate")
 
     } catch (error) {
         if (error.response) {
@@ -134,19 +139,39 @@ const orderClover = asyncHandler(async (req, res) => {
 })
 
 
+async function sendToQB(order) {
+    console.log("QB start")
+    const { id, total, lineItems, payments } = order
+    const shipping = lineItems.elements.find(lineItem => lineItem.item && lineItem.item.id == process.env.SHIPPING_ID)
+    const tax = payments.elements && payments.elements[0] && payments.elements[0].taxAmount
+    if (shipping.price && tax) {
+        const subtotal = total - shipping.price - tax
+
+        const { data } = await axios.post(
+            process.env.ZAPIER_URL,
+            {
+                id,
+                subtotal: subtotal / 100,
+                shipping: shipping.price / 100,
+                tax: tax / 100,
+
+            }
+        )
+        if (data.status == "success") console.log("Zapier Success!")
+        else console.log("Zapier Post Failed")
+    } else {
+        console.log("Zapier Fail: shipping or tax not found")
+    }
+}
+
+
+
+
 // @desc Get Tax Rate from Address
 // @route POST /api/clover/tax
 // @access Public
 const fetchTax = asyncHandler(async (req, res) => {
-    // const shippingInfo = req.body
-    // var taxRate
-    // // Logic
-    // if (shippingInfo.region == "CA" || shippingInfo.region == "California") {
-    //     taxRate = 775000
-    // } else {
-    //     taxRate = 0
-    // }
-    // res.json(taxRate)
+
 })
 
 

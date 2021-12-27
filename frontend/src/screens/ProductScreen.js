@@ -65,7 +65,7 @@ const ProductScreen = ({ match }) => {
         // dispatch(addToCart(product, name, qty, stock, price, cloverID))
         cartUpdate({
             type: "ADD_ITEM",
-            cartItem: { pID, cloverID, name, image, price, qty, stock }
+            cartItem: { pID, cloverID, name, image, price, qty, stock, category: product.pSection }
         })
 
     }

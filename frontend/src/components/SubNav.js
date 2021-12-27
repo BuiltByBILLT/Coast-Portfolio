@@ -19,7 +19,7 @@ const SubNav = () => {
             <LinkContainer to='/brands'>
                 <Nav.Link active={false} className='mx-4'>Brands</Nav.Link>
             </LinkContainer>
-            <a href="https://www.youtube.com/user/coastairbrushTV"
+            <a href="http://www.coastairbrushtv.com/"
                 className='nav-link mx-4'
                 target='_blank'
             > Coast TV </a>

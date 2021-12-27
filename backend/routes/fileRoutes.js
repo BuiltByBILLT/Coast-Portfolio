@@ -6,7 +6,7 @@ import { staff, protect } from '../middleware/authMiddleware.js'
 const router = express.Router()
 
 const getImages = (req, res) => {
-    const IMAGES_DIRECTORY = path.join(process.cwd(), "frontend", "public", 'images');
+    const IMAGES_DIRECTORY = path.join(process.cwd(), "frontend", "public", 'prodimages');
     // const replaced = IMAGES_DIRECTORY.replace('\\', ' / ')
     var files = fs.readdirSync(IMAGES_DIRECTORY)
     // files = fs.statSync(IMAGES_DIRECTORY, files[0]).mtime.getTime()
@@ -16,7 +16,6 @@ const getImages = (req, res) => {
     });
     res.send(files)
 }
-
 
 
 

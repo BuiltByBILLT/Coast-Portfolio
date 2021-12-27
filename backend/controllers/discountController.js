@@ -58,7 +58,7 @@ const applyDiscount = asyncHandler(async (req, res) => {
     // console.log(cartItems)
 
     if (discount) {
-        const { discountExclude, discountAmount, discountType } = discount
+        const { discountExclude, discountAmount, discountType, categoryExclude } = discount
         // If Flat
         if (discountType === "FLAT") {
             // If Min Order
@@ -77,9 +77,15 @@ const applyDiscount = asyncHandler(async (req, res) => {
         }
         // If Percent
         else if (discountType === "PERCENT") {
-            let excludeArr = discountExclude.split(",")
+            let excludeArr = discountExclude.split(",").map(item => item.trim())
+            let categoryArr = categoryExclude.split(",").map(item => item.trim())
+            console.log(categoryArr)
             for (const cartItem of cartItems) {
+                console.log(cartItem.category)
                 if (excludeArr.includes(cartItem.pID)) {
+                    subtotal -= (cartItem.price * cartItem.qty)
+                } else if (categoryArr.includes(String(cartItem.category))) {
+                    console.log("cat match")
                     subtotal -= (cartItem.price * cartItem.qty)
                 }
             }

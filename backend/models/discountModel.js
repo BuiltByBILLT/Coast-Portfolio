@@ -26,6 +26,9 @@ const discountSchema = mongoose.Schema({
     discountExclude: {
         type: String,
     },
+    categoryExclude: {
+        type: String,
+    },
 
 }, { timestamps: true })
 

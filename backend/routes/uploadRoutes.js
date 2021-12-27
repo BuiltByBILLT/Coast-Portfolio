@@ -1,7 +1,7 @@
 import path from 'path'
 import express from 'express'
 import multer from 'multer'
-import { admin, protect } from '../middleware/authMiddleware.js'
+import { staff, protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -43,7 +43,7 @@ const errorHandler = (err, req, res, next) => {
 }
 
 
-router.post('/', protect, admin, upload.single('image'), errorHandler, (req, res) => {
+router.post('/', protect, staff, upload.single('image'), errorHandler, (req, res) => {
     if (!req.file) {
         res.status(400)
         throw new Error('Please select file') //catch by custom error handler

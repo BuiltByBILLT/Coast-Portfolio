@@ -9,7 +9,7 @@ import { envImage, toUSD } from '../common'
 export const SideCart = () => {
 
     const { cartItems, shippingInfo, shippingMethod, discount } = useContext(CartContext)
-    const { discountAmount, discountType, discountDescription, discountExclude, discountTotal } = discount
+    const { discountAmount, discountType, discountDescription, discountExclude, categoryExclude, discountTotal } = discount
 
 
     const subtotal = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
@@ -18,7 +18,7 @@ export const SideCart = () => {
     const shippingTotal = shippingMethod.price
 
 
-    var totalTax = subtotal * taxRate
+    var totalTax = (discountTotal ? subtotal - discountTotal : subtotal) * taxRate
     var totalTotal = subtotal + totalTax + shippingTotal - (discountTotal ? discountTotal : 0)
 
     const percentDiscount = (cents) => {
@@ -49,20 +49,26 @@ export const SideCart = () => {
                             </Col>
                         </Row>
                         {discountType == "PERCENT" &&
-                            (discountExclude.split(',').includes(item.pID)
+                            (discountExclude.split(',').map(item => item.trim()).includes(item.pID)
                                 ? <Row className="m-0">
                                     <Col xs="auto" className="pl-0 my-auto text-danger">
                                         Discounts cannot be applied on this item
                                     </Col>
                                 </Row>
-                                : <Row className="m-0">
-                                    <Col xs="auto" className="pl-0 my-auto text-success">
-                                        {discountDescription}
-                                    </Col>
-                                    <Col xs="auto" className="ml-auto pr-0 my-auto text-success">
-                                        -{toUSD(percentDiscount(item.qty * item.price))}
-                                    </Col>
-                                </Row>)
+                                : categoryExclude.split(',').map(item => item.trim()).includes(String(item.category))
+                                    ? <Row className="m-0">
+                                        <Col xs="auto" className="pl-0 my-auto text-danger">
+                                            Discounts cannot be applied on this item
+                                        </Col>
+                                    </Row>
+                                    : <Row className="m-0">
+                                        <Col xs="auto" className="pl-0 my-auto text-success">
+                                            {discountDescription}
+                                        </Col>
+                                        <Col xs="auto" className="ml-auto pr-0 my-auto text-success">
+                                            -{toUSD(percentDiscount(item.qty * item.price))}
+                                        </Col>
+                                    </Row>)
                         }
                     </ListGroup.Item>
                 ))}
@@ -91,6 +97,19 @@ export const SideCart = () => {
                         </Col>
                     </Row>
                 </ListGroup.Item>
+                {Object.keys(discount).length != 0 &&
+                    <ListGroup.Item className="border-0">
+                        <Row className="m-0">
+                            <Col xs className="pl-0">
+                                Discount Total:
+                            </Col>
+                            {/* <Col>{discountDescription}</Col> */}
+                            <Col xs="auto" className="pr-0">
+                                {"(" + toUSD(discountTotal) + ")"}
+                            </Col>
+                        </Row>
+                    </ListGroup.Item>
+                }
                 {Object.keys(shippingInfo).length != 0 &&
                     <ListGroup.Item className="border-0">
                         <Row className="m-0">
@@ -115,19 +134,7 @@ export const SideCart = () => {
                         </Row>
                     </ListGroup.Item>
                 }
-                {Object.keys(discount).length != 0 &&
-                    <ListGroup.Item className="border-0">
-                        <Row className="m-0">
-                            <Col xs className="pl-0">
-                                Discount Total:
-                            </Col>
-                            {/* <Col>{discountDescription}</Col> */}
-                            <Col xs="auto" className="pr-0">
-                                {"(" + toUSD(discountTotal) + ")"}
-                            </Col>
-                        </Row>
-                    </ListGroup.Item>
-                }
+
 
                 <div style={{ height: "2px" }} />
 

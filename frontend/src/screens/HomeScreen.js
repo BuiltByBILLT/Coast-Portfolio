@@ -260,7 +260,7 @@ const HomeScreen = ({ match }) => {
                                     />
                                 </a>
                             </Col>
-                            <Col lg={4} className="my-5 mt-lg-0 text-center text-lg-left">
+                            <Col lg={4} className="my-5 mt-lg-0 text-center text-lg-left pl-0">
                                 <h3 className="text-danger mb-4">Contact Us</h3>
                                 <i className="fas fa-map-marker-alt"></i>
                                 <span className="ml-3 mb-0 font-weight-bold">312 N Anaheim Blvd.</span>
@@ -270,9 +270,11 @@ const HomeScreen = ({ match }) => {
                                 <br />
                                 <br />
                                 <i className="fas fa-envelope"></i>
-                                <span className="ml-3 font-weight-bold">kustom@coastairbrush.com</span>
+                                <a href="kustom@coastairbrush.com" className="ml-3 font-weight-bold"
+                                    style={{ color: "#55595c" }}
+                                >kustom@coastairbrush.com</a>
                             </Col>
-                            <Col lg={2} className="my-5 mt-lg-0 text-center text-lg-left">
+                            <Col lg={2} className="my-5 mt-lg-0 text-center text-lg-left px-0">
                                 <h3 className="text-danger mb-3">Hours</h3>
                                 <p className="font-weight-bold mb-0">Mon, Fri, Sat:</p>
                                 <p>9:30am - 5:00pm</p>

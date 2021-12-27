@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 
 import users from './data/users.js'
-import products from './data/products.js'
+import productsJS from './data/products.js'
 import categories from './data/categories.js'
 import images from './data/images.js'
 import cloverInv from './data/cloverInv.js'
@@ -46,11 +46,10 @@ const importData = async () => {
         });
         await Category.insertMany(categories)
 
-        // Label Manufacturers
-        // for (let i = 0; i < products.length; i++) {
-        //     const product = products[i];
 
-        // }
+        // Delete Products with Don't Sell and Don't Display
+        const buffer = productsJS.filter(prod => prod.pDisplay == 1 || prod.pSell == 1)
+        const products = [...buffer]
 
         // Pick Description
         products.forEach(product => {
@@ -75,34 +74,6 @@ const importData = async () => {
             }
         }
 
-        //Load Options
-        // products.forEach(product => {
-        //     product.options = []
-        // });
-        // for (let i = 0; i < productOptions.length; i++) {
-        //     const productOption = productOptions[i]
-        //     const productIndex = products.findIndex(product => product.pID == productOption.pID)
-        //     // If pID Match
-        //     if (productIndex != -1) {
-        //         const optionGroupID = productOption.Option_Group_IDs.split(',')[0]
-        //         const optionGroupIndex = optionGroups.findIndex(optionGroup => optionGroup.optGrpID == optionGroupID)
-        //         // If Option_Group_IDs Match
-        //         if (optionGroupIndex != -1) {
-        //             const optionGroupText = optionGroups[optionGroupIndex].optGrpName
-        //             products[productIndex].optionGroup = optionGroupText
-        //             options.forEach(option => {
-        //                 if (option.optGroup == optionGroupID) {
-        //                     const newOption = {
-        //                         optName: option.optName,
-        //                         priceDiff: (Number(option.optPriceDiff) * 100)
-        //                     }
-        //                     products[productIndex].options.push(newOption)
-        //                     // console.log("pushed", products[productIndex].pID)
-        //                 }
-        //             })
-        //         }
-        //     }
-        // }
 
         // Price to Cents
         cloverInv.forEach(inv => { inv.Price = Math.round(Number(inv.Price) * 100) })
@@ -201,14 +172,6 @@ const importData = async () => {
             const product = products[i];
             product.pPrice = 0;
             product.pListPrice = 0;
-            // product.pPrice = Math.round(product.pPrice * 100);
-            // product.pListPrice = Math.round(product.pListPrice * 100);
-            // product.pInStock = 100
-            // product.pWeight = 2000 //2.000 lbs
-            // product.pLength = 10 // 10 inches
-            // product.pWidth = 10
-            // product.pHeight = 10
-            // product.user = adminUser
             if (product.options.length > 0) {
                 // product.cloverID = product.pID
                 fullProducts.push(product)

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Container, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,8 @@ import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import ExampleDoc from '../assest/productdata.csv'
+import { UserContext } from '../contexts/UserContext'
+
 
 const UploadsScreen = () => {
 
@@ -16,7 +18,8 @@ const UploadsScreen = () => {
     const [success, setSuccess] = useState("")
     const [error, setError] = useState("")
 
-    const { userInfo } = useSelector(state => state.userLogin);
+    // const { userInfo } = useSelector(state => state.userLogin);
+    const user = useContext(UserContext)
 
     const uploadFileHandler = async (e) => {
         const file = e.target.files[0]
@@ -29,7 +32,7 @@ const UploadsScreen = () => {
         try {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${userInfo.token}`,
+                    Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data'
                 }
             }
@@ -57,7 +60,7 @@ const UploadsScreen = () => {
 
             <Form>
                 <Form.Group controlId='image'>
-                    <Form.Label>Product Images</Form.Label>
+                    <Form.Label>Product Images:</Form.Label>
                     <Form.File id='image-file' label='Choose File' custom
                         onChange={uploadFileHandler}>
                     </Form.File>

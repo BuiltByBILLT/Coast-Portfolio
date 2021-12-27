@@ -5,14 +5,9 @@ import optionGroups from './data/optionGroups.js'
 import productsWithOptions from './data/productsWithOptions.js'
 import categories from './data/categories.js'
 
-import User from './models/userModel.js'
-import Product from './models/productModel.js'
-import Order from './models/orderModel.js'
-import Category from './models/categoryModel.js'
 import Inventory from './models/inventoryModel.js'
 
 
-import colors from 'colors'
 import ObjectsToCsv from 'objects-to-csv'
 import connectDB from './config/db.js'
 import dotenv from 'dotenv'
@@ -158,7 +153,7 @@ const importData = async () => {
         // Layer 1: pID is the start of the SKU AND the next char is "-"
         suggested = cloverInv.filter(cloverItem => {
             let subSKU = cloverItem.SKU.substring(0, parent.pID.length)
-            let subCode = cloverItem['Product Code'].substring(0, parent.pID.length)
+            let subCode = String(cloverItem['Product Code']).substring(0, parent.pID.length)
             return (subSKU == parent.pID && cloverItem.SKU[parent.pID.length] == "-") || cloverItem.SKU == parent.pID || (subCode == parent.pID && cloverItem['Product Code'][parent.pID.length] == "-") || cloverItem['Product Code'] == parent.pID
             // return subSKU == parent.pID || cloverItem.SKU == parent.pID || subCode == parent.pID || cloverItem['Product Code'] == parent.pID
         })
@@ -438,14 +433,15 @@ const importData = async () => {
                     iSelectionName: clover.iSelectionName,
                     iPrice: clover.Price,
                     iListPrice: clover.iListPrice,
-                    // iStock: Number(clover.Quantity),
-                    iStock: Number(clover.Quantity) + 10,
-                    iDisplay: 1,
+                    iStock: Number(clover.Quantity),
+                    // iStock: Number(clover.Quantity) + 10,
+                    // iDisplay: 1,
                     iSell: 1,
                 })
             }
             if (clover.iSelectionName) numOptions++
         })
+        await Inventory.deleteMany()
         await Inventory.insertMany(inventory)
         let inventoryCSV = new ObjectsToCsv(inventory);
         await inventoryCSV.toDisk('./inventory.csv');
