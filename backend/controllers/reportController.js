@@ -27,7 +27,7 @@ const dodReport = asyncHandler(async (req, res) => {
         + `&filter=clientCreatedTime>${start}`
         + `&filter=clientCreatedTime<${after}`
         + `&filter=payType=full`,
-        { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
     ).catch(error => console.log(error.response.data))
 
     const prev = await axios.get(
@@ -36,7 +36,7 @@ const dodReport = asyncHandler(async (req, res) => {
         + `&filter=clientCreatedTime>${before}`
         + `&filter=clientCreatedTime<${start}`
         + `&filter=payType=full`,
-        { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+        { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
     ).catch(error => console.log(error.response.data))
 
     // Current
@@ -71,7 +71,7 @@ const momReport = asyncHandler(async (req, res) => {
                 + `&filter=clientCreatedTime>${start}`
                 + `&filter=clientCreatedTime<${after}`
                 + `&filter=payType=full`,
-                { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             ).catch(error => console.log(error.response.data))
             selectedTotals = selectedTotals + selected.data.elements.reduce((acc, curr) => { return acc + curr.total }, 0)
             selectedCount = selectedCount + selected.data.elements.length
@@ -91,7 +91,7 @@ const momReport = asyncHandler(async (req, res) => {
                 + `&filter=clientCreatedTime>${before}`
                 + `&filter=clientCreatedTime<${start}`
                 + `&filter=payType=full`,
-                { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             ).catch(error => console.log(error.response.data))
             prevTotals = prevTotals + prev.data.elements.reduce((acc, curr) => { return acc + curr.total }, 0)
             prevCount = prevCount + prev.data.elements.length
@@ -126,7 +126,7 @@ const yoyReport = asyncHandler(async (req, res) => {
                 + `&filter=clientCreatedTime>${start}`
                 + `&filter=clientCreatedTime<${after}`
                 + `&filter=payType=full`,
-                { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             ).catch(error => console.log(error.response.data))
             selectedTotals = selectedTotals + selected.data.elements.reduce((acc, curr) => { return acc + curr.total }, 0)
             selectedCount = selectedCount + selected.data.elements.length
@@ -146,7 +146,7 @@ const yoyReport = asyncHandler(async (req, res) => {
                 + `&filter=clientCreatedTime>${before}`
                 + `&filter=clientCreatedTime<${start}`
                 + `&filter=payType=full`,
-                { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             ).catch(error => console.log(error.response.data))
             prevTotals = prevTotals + prev.data.elements.reduce((acc, curr) => { return acc + curr.total }, 0)
             prevCount = prevCount + prev.data.elements.length
@@ -175,7 +175,7 @@ const customRangeReport = asyncHandler(async (req, res) => {
                 + `&filter=clientCreatedTime>${start}`
                 + `&filter=clientCreatedTime<${end}`
                 + `&filter=payType=full`,
-                { headers: { "Authorization": `Bearer ${process.env.CLOVER_PROD_KEY}` } }
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
             ).catch(error => console.log(error.response.data))
             selected.data.elements = [...selected.data.elements, ...buffer.data.elements]
         } else break
