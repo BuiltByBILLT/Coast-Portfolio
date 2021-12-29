@@ -9,11 +9,11 @@ import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateImages } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import { set } from 'mongoose'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { UserContext } from '../contexts/UserContext'
 
 
-const ImageEditer = ({ images, pID }) => {
+const ImageEditer = ({ pID }) => {
 
     const [thumb1, setThumb1] = useState("")
     const [full1, setFull1] = useState("")
@@ -36,12 +36,31 @@ const ImageEditer = ({ images, pID }) => {
     const [thumb10, setThumb10] = useState("")
     const [full10, setFull10] = useState("")
 
+    const [images, setImages] = useState("")
     const [success, setSuccess] = useState("")
     const [error, setError] = useState("")
     const user = useContext(UserContext)
 
     // const { loading, error, } = useSelector(state => state.productUpdateImages)
     // const dispatch = useDispatch()
+
+    // Query: Product Details  
+    const { isLoading: queryLoading, refetch } = useQuery(["productEdit", pID], () => {
+        return axios.get(`/api/products/edit/${pID}`, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onSuccess: (data) => {
+            setImages(data.data.images)
+            console.log(images)
+        },
+        onError: (error) => {
+            setError(error.response && error.response.data.message
+                ? error.response.data.message : error.message)
+        }
+    })
+
+
 
     // Mutation: Update Product
     const { mutate, isLoading, reset } = useMutation(data => {
@@ -54,7 +73,7 @@ const ImageEditer = ({ images, pID }) => {
             setSuccess("Product Update Success!")
             setError("")
             reset()
-            // refetch()
+            refetch()
         },
         onError: (error) => {
             setError(error.response && error.response.data.message

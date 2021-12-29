@@ -20,9 +20,10 @@ router.route('/cloverids')
 
 router.route('/edit/:id')
     .get(getInventoryItem)
-    .post(protect, staff, newInventory)
     .put(protect, staff, updateInventory)
     .delete(protect, staff, deleteInventory)
 
+router.route('/new')
+    .post(protect, staff, newInventory)
 
 export default router

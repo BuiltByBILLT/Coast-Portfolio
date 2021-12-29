@@ -47,8 +47,6 @@ const ProductEditScreen = ({ match }) => {
             setOptionGroup(data.data.optionGroup)
             setPDisplay(data.data.pDisplay)
             setImages(data.data.images)
-            console.log(data.data.images)
-            console.log(images)
         },
         onError: (error) => {
             setError(error.response && error.response.data.message
@@ -170,7 +168,7 @@ const ProductEditScreen = ({ match }) => {
                                             onClick={editHandler}>
                                             Edit
                                         </Button>
-                                        <Button variant='secondary'
+                                        <Button variant='secondary' className="p-0 mx-3"
                                             onClick={() => setImageEdit(true)}>
                                             Edit Images
                                         </Button>

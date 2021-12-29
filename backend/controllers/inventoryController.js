@@ -45,31 +45,95 @@ const getInventoryItem = asyncHandler(async (req, res) => {
     else { throw new Error('Inventory not found') }
 })
 
+// ====================================================================================
+// ============================ Edit With Clover Sync =================================
+// ====================================================================================
+
+
 // @desc Create a new inventory
-// @route POST /api/inventory/edit/:id
+// @route POST /api/inventory/new
 // @access Staff
 const newInventory = asyncHandler(async (req, res) => {
-    const inventory = await Inventory.create(req.body)
-    if (inventory) { res.json(inventory) }
-    else { throw new Error('Inventory Data Invalid') }
+    try {
+        // Clover First
+        const res1 = await axios.post(
+            process.env.CLOVER_URL + `/items`,
+            {
+                "price": req.body.iPrice,
+                "sku": req.body.iParent,
+                "name": req.body.cloverName
+            },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+
+        )
+        const res2 = await axios.post(
+            process.env.CLOVER_URL + `/item_stocks/${res1.data.id}`,
+            { "quantity": req.body.iStock },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        )
+
+        // Mongo Next
+        const inventory = await Inventory.create({ ...req.body, cloverID: res1.data.id })
+        if (inventory) { res.json(inventory) }
+        else { throw new Error('Inventory Data Invalid') }
+
+    } catch (error) {
+        throw new Error(error.response && error.response.data.message
+            ? error.response.data.message : error.message)
+    }
 })
 
 // @desc Update single inventory
 // @route PUT /api/inventory/edit/:id
 // @access Staff
 const updateInventory = asyncHandler(async (req, res) => {
-    const inventory = await Inventory.findOneAndUpdate({ cloverID: req.params.id }, req.body)
-    if (inventory) { res.json(inventory) }
-    else { throw new Error('Inventory not found') }
+    try {
+        // Clover First
+        const res1 = await axios.post(
+            process.env.CLOVER_URL + `/items/${req.params.id}`,
+            {
+                "price": req.body.iPrice,
+                "sku": req.body.iParent,
+                "name": req.body.cloverName
+            },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+
+        )
+        const res2 = await axios.post(
+            process.env.CLOVER_URL + `/item_stocks/${res1.data.id}`,
+            { "quantity": req.body.iStock },
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        )
+
+        // Mongo Next
+        const inventory = await Inventory.findOneAndUpdate({ cloverID: req.params.id }, req.body)
+        if (inventory) { res.json(inventory) }
+        else { throw new Error('Inventory not found') }
+
+    } catch (error) {
+        throw new Error(error.response && error.response.data.message
+            ? error.response.data.message : error.message)
+    }
 })
 
 // @desc Delete single inventory
 // @route DELETE /api/inventory/edit/:id
 // @access Staff
 const deleteInventory = asyncHandler(async (req, res) => {
-    const inventory = await Inventory.findOneAndDelete({ cloverID: req.params.id })
-    if (inventory) { res.json(inventory) }
-    else { throw new Error('Inventory not found') }
+    try {
+        // Clover First
+        const res1 = await axios.delete(
+            process.env.CLOVER_URL + `/items/${req.params.id}`,
+            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+        )
+        // Mongo Next
+        const inventory = await Inventory.findOneAndDelete({ cloverID: req.params.id })
+        if (inventory) { res.json(inventory) }
+        else { throw new Error('Inventory not found') }
+    } catch (error) {
+        throw new Error(error.response && error.response.data.message
+            ? error.response.data.message : error.message)
+    }
 })
 
 
