@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import "../styles/HomeScreen.css"
 import TopThree from '../components/TopThree'
+import InstagramFeed from '../components/InstagramFeed'
 
 
 const HomeScreen = ({ match }) => {
@@ -244,11 +245,10 @@ const HomeScreen = ({ match }) => {
                         <TopThree />
                     </Container>
                 </Row>
-                <Row className="instagram mx-0" style={{ height: "600px" }}>
-                    {/* <Row className="instagram mx-0"> */}
-                    <Container >
+                <Row className="mx-0" style={{ "backgroundColor": "#1a1a1a" }}>
+                    <Container className="mb-5 mt-3">
                         <h3 className="text-white my-3">Instagram</h3>
-                        <div className="elfsight-app-d248b7bd-2728-4b1a-ba26-babd662f3e41 mx-auto"></div>
+                        <InstagramFeed />
                     </Container>
                 </Row>
                 <Row className="location mx-0">

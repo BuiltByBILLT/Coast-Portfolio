@@ -50,6 +50,7 @@ import EmployeeHistoryScreen from './screens/EmployeeHistoryScreen'
 import ProtectedRoute from './components/ProtectedRoute'
 import StaffRoute from './components/StaffRoute'
 import BrandsScreen from './screens/BrandsScreen'
+import TestScreen from './screens/TestScreen'
 
 
 const App = () => {
@@ -114,6 +115,8 @@ const App = () => {
         <StaffRoute path='/admin/discountlist' component={DiscountListScreen} />
         <StaffRoute path='/admin/discountnew' component={DiscountNewScreen} />
         <StaffRoute path='/admin/discount/:id/edit' component={DiscountEditScreen} />
+
+        <StaffRoute path='/admin/test' component={TestScreen} />
 
         <Route path='*' component={HomeScreen} />
       </Switch>
