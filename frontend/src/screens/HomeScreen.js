@@ -68,7 +68,8 @@ const HomeScreen = ({ match }) => {
                                 <h3 className="mt-3" style={{ letterSpacing: "0px" }}>IWATA Airbrush</h3>
                                 <p className="pr-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
                                 {/* <Link to={`/product/DKTX81PVDX2C6`}  > */}
-                                <Link to={`/products`}  >
+                                <Link to={`/product/H5100`}  >
+                                    {/* <Link to={`/products`}  > */}
                                     <Button>Shop Now</Button>
                                 </Link>
                             </Col>

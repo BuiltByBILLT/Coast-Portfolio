@@ -124,7 +124,7 @@ const ImageEditer = ({ pID }) => {
                 "imageProduct": pID,
                 "imageSrc": thumb,
                 "imageType": 0,
-                "imageNumber": index + 1
+                "imageNumber": index
             })
         });
         [full1, full2, full3, full4, full5, full6, full7, full8, full9, full10].forEach((full, index) => {
@@ -132,7 +132,7 @@ const ImageEditer = ({ pID }) => {
                 "imageProduct": pID,
                 "imageSrc": full,
                 "imageType": 1,
-                "imageNumber": index + 1
+                "imageNumber": index
             })
         })
 

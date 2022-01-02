@@ -140,23 +140,38 @@ const ReportCustomRange = () => {
                 </Col>
             </Row>
 
-            {/* <Row className="my-5 justify-content-center">
+            <Row className="my-5 justify-content-center">
                 <Col xs="auto" className="my-auto">
-                    <h5>Best Selling Category (By Price):</h5>
+                    <h5>Best Selling Categories (By Price):</h5>
                 </Col>
-                <Col xs="auto" className="text-center">
-                    <h3>{""}</h3>
+                <Col xs="auto" className="text-right">
+                    {report.topCatPrice.map(el => (
+                        <h5>{el[0]}</h5>
+                    ))}
+                </Col>
+                <Col xs="auto" className="text-left">
+                    {report.topCatPrice.map(el => (
+                        <h5>{toUSD(el[1])}</h5>
+                    ))}
                 </Col>
             </Row>
 
             <Row className="my-5 justify-content-center">
                 <Col xs="auto" className="my-auto">
-                    <h5>Best Selling Category (By Qty):</h5>
+                    <h5>Best Selling Categories (By Qty):</h5>
                 </Col>
-                <Col xs="auto" className="text-center">
-                    <h3>{""}</h3>
+                <Col xs="auto" className="text-right">
+                    {report.topCatQty.map(el => (
+                        <h5>{`${el[0]}:`}</h5>
+                    ))}
                 </Col>
-            </Row> */}
+                <Col xs="auto" className="text-left">
+                    {report.topCatQty.map(el => (
+                        <h5>{el[1]}</h5>
+                    ))}
+                </Col>
+            </Row>
+
         </div>
     )
 }

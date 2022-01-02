@@ -28,6 +28,7 @@ const ProductScreen = ({ match }) => {
     const [stock, setStock] = useState(0)
     const [option, setOption] = useState(0)
     const [price, setPrice] = useState(0)
+    const [listPrice, setListPrice] = useState(0)
     const [cloverID, setCloverID] = useState("")
     const [name, setName] = useState("")
     const [image, setImage] = useState("")
@@ -48,12 +49,15 @@ const ProductScreen = ({ match }) => {
             setName(product.pName)
             setCloverID(product.options[0].cloverID)
             setPrice(product.options[0].iPrice)
+            setListPrice(product.options[0].iListPrice)
             setStock(product.options[0].iStock)
+            console.log(product.options[0])
         }
         else if (product.options && product.options.length > 1 && option != 0) {
             setName(`${product.pName} (${product.options[option - 1].iSelectionName})`)
             setCloverID(product.options[option - 1].cloverID)
             setPrice(product.options[option - 1].iPrice)
+            setListPrice(product.options[option - 1].iListPrice)
             setStock(product.options[option - 1].iStock)
         } else {
 
@@ -88,7 +92,7 @@ const ProductScreen = ({ match }) => {
                                 <h5 className="mt-1 mb-3">{product.pName}</h5>
                                 <h3 className="text-danger"> {Number(price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
                                     <span className="ml-4 text-muted" style={{ textDecoration: "line-through" }}>
-                                        {product.pListPrice ? Number(product.pListPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" }) : ""}
+                                        {listPrice ? Number(listPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" }) : ""}
                                     </span>
                                 </h3>
                                 <span className="pr-4"> {Number(price * 0.0084).toLocaleString("en-US", { style: "currency", currency: "EUR" })}</span>

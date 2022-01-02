@@ -59,7 +59,7 @@ const ProductNewScreen = ({ history }) => {
 
     // Effect: Check if Product ID is already Taken
     useEffect(() => {
-        if (queryData && queryData.data) {
+        if (queryData && queryData.data.length > 0) {
             const match = queryData.data.filter(product => product.pID == pID)
             if (match.length) setAvailable(false)
             else setAvailable(true)

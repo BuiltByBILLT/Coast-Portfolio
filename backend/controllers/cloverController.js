@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler'
+import Inventory from '../models/inventoryModel.js'
 import axios from 'axios'
 
 // @desc Submit Clover Order
@@ -121,10 +122,12 @@ const orderClover = asyncHandler(async (req, res) => {
         )
         res.json(data)
         console.log("order success")
+
+        // After Order Functions
         sendToQB(data)
         console.log("sent to QB")
-        // updateInv(data)
-        // console.log("sent to InvUpdate")
+        updateInv(cart.cartItems)
+        console.log("sent to InvUpdate")
 
     } catch (error) {
         if (error.response) {
@@ -139,6 +142,11 @@ const orderClover = asyncHandler(async (req, res) => {
 })
 
 
+// ====================================================================================
+// ============================ After Order Functions =================================
+// ====================================================================================
+
+// Update QB
 async function sendToQB(order) {
     console.log("QB start")
     const { id, total, lineItems, payments } = order
@@ -164,16 +172,19 @@ async function sendToQB(order) {
     }
 }
 
+// Update Inv
+async function updateInv(cartItems) {
+    console.log("updateInv start")
+    for (const item of cartItems) {
+        await Inventory.findOneAndUpdate({ cloverID: item.cloverID }, { $inc: { iStock: -item.qty } })
+    }
+    console.log("updateInv finished!")
+}
 
 
-
-// @desc Get Tax Rate from Address
-// @route POST /api/clover/tax
-// @access Public
-const fetchTax = asyncHandler(async (req, res) => {
-
-})
-
+// ====================================================================================
+// ============================ Clover Extra===========================================
+// ====================================================================================
 
 // @desc Create a Refund
 // @route POST /api/clover/refund
@@ -221,6 +232,5 @@ const refundClover = asyncHandler(async (req, res) => {
 
 export {
     orderClover,
-    fetchTax,
     refundClover
 }
