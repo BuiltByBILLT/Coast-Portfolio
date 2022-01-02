@@ -23,41 +23,46 @@ async function downloadProductImage(image) {
         writer.on('error', reject)
     })
 }
-async function downloadCategoryImage(cat) {
-    var dir
-    if (cat.sectionImage === "") return
-    else if (cat.sectionImage.substr(0, 7) === "static/")
-        dir = path.resolve(process.cwd(), 'frontend', 'public', 'static', cat.sectionImage.substr(7))
-    else if (cat.sectionImage.substr(0, 7) === "images/")
-        dir = path.resolve(process.cwd(), 'frontend', 'public', 'images', cat.sectionImage.substr(7))
-    else if (cat.sectionImage.substr(0, 11) === "prodimages/")
-        dir = path.resolve(process.cwd(), 'frontend', 'public', 'prodimages', cat.sectionImage.substr(11))
-    else return
+async function downloadCategoryImage(image) {
+    try {
 
-    // cat.sectionImage.split("/")
-    // checkexist() => return
-    // if split.length == 2
-    // makedir split[0]
-    // dir = path (frontend, public, split[0], split[1])
-    // if split.length == 3
-    // makedir split[0] split[1]
-    // dir = path (frontend, public, split[0], split[1], split[2])
+        var dir
+        if (image === "") return
+        else if (image.substr(0, 7) === "static/")
+            dir = path.resolve(process.cwd(), 'frontend', 'public', 'static', image.substr(7))
+        else if (image.substr(0, 7) === "images/")
+            dir = path.resolve(process.cwd(), 'frontend', 'public', 'images', image.substr(7))
+        else if (image.substr(0, 11) === "prodimages/")
+            dir = path.resolve(process.cwd(), 'frontend', 'public', 'prodimages', image.substr(11))
+        else return
 
-    const writer = fs.createWriteStream(dir)
+        // image.split("/")
+        // checkexist() => return
+        // if split.length == 2
+        // makedir split[0]
+        // dir = path (frontend, public, split[0], split[1])
+        // if split.length == 3
+        // makedir split[0] split[1]
+        // dir = path (frontend, public, split[0], split[1], split[2])
 
-    const url = 'https://coastairbrush.com/' + cat.sectionImage
-    const response = await axios({
-        url,
-        method: 'GET',
-        responseType: 'stream'
-    })
+        const writer = fs.createWriteStream(dir)
 
-    response.data.pipe(writer)
+        const url = 'https://coastairbrush.com/' + image
+        const response = await axios({
+            url,
+            method: 'GET',
+            responseType: 'stream'
+        })
 
-    return new Promise((resolve, reject) => {
-        writer.on('finish', resolve)
-        writer.on('error', reject)
-    })
+        response.data.pipe(writer)
+
+        return new Promise((resolve, reject) => {
+            writer.on('finish', resolve)
+            writer.on('error', reject)
+        })
+    } catch (e) {
+        throw e
+    }
 }
 
 // downloadImage()
@@ -77,7 +82,7 @@ async function downloadCategoryImage(cat) {
     // for (let i = 0; i < 3; i++) {
     //     const cat = categories[i];
     //     try {
-    //         await downloadCategoryImage(cat)
+    //         await downloadCategoryImage(cat.sectionImage)
     //         success++
     //     } catch (e) {
     //         error.push(cat)
@@ -98,7 +103,7 @@ async function downloadCategoryImage(cat) {
             await downloadCategoryImage(prod)
             success++
         } catch (e) {
-            error.push(prod)
+            error.push({ link: prod, message: e.message })
         }
     }
     console.log(success)
