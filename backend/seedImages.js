@@ -34,6 +34,15 @@ async function downloadCategoryImage(cat) {
         dir = path.resolve(process.cwd(), 'frontend', 'public', 'prodimages', cat.sectionImage.substr(11))
     else return
 
+    // cat.sectionImage.split("/")
+    // checkexist() => return
+    // if split.length == 2
+    // makedir split[0]
+    // dir = path (frontend, public, split[0], split[1])
+    // if split.length == 3
+    // makedir split[0] split[1]
+    // dir = path (frontend, public, split[0], split[1], split[2])
+
     const writer = fs.createWriteStream(dir)
 
     const url = 'https://coastairbrush.com/' + cat.sectionImage
@@ -56,25 +65,41 @@ async function downloadCategoryImage(cat) {
 (async () => {
     var success = 0
     var error = []
-    for (let i = 0; i < 3; i++) {
-        const image = images[i];
+    // for (let i = 0; i < 3; i++) {
+    //     const image = images[i];
+    //     try {
+    //         await downloadProductImage(image)
+    //         success++
+    //     } catch (e) {
+    //         error.push(image)
+    //     }
+    // }
+    // for (let i = 0; i < 3; i++) {
+    //     const cat = categories[i];
+    //     try {
+    //         await downloadCategoryImage(cat)
+    //         success++
+    //     } catch (e) {
+    //         error.push(cat)
+    //     }
+    // }
+    const H5100 = [
+        "prodimages/IW_th2limited_1_500px_3.png",
+        "prodimages/IW_th2limited_1_500px_3.png",
+        "prodimages/H5100-HP-TH2-Fan-A1.jpg",
+        "prodimages/H5100-D2.jpg",
+        "prodimages/H5100-HP-TH2-Round-A1_2.jpg",
+        "prodimages/IW_vaultlogo_footer800px.png",
+    ]
+
+    for (let i = 0; i < 6; i++) {
+        const prod = H5100[i];
         try {
-            await downloadProductImage(image)
+            await downloadCategoryImage(prod)
             success++
         } catch (e) {
-            error.push(image)
+            error.push(prod)
         }
-
-    }
-    for (let i = 0; i < 3; i++) {
-        const cat = categories[i];
-        try {
-            await downloadCategoryImage(cat)
-            success++
-        } catch (e) {
-            error.push(cat)
-        }
-
     }
     console.log(success)
     console.log(error)
