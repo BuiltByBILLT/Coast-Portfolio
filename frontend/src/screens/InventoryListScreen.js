@@ -142,8 +142,9 @@ const InventoryListScreen = ({ history }) => {
                 </Table>
             )}
             <div className="d-flex justify-content-center">
-                <Paginate pages={pages} page={page} />
+                <Paginate pages={pages} page={page} grey={true} />
             </div>
+            <p className="text-muted text-center">Use Search for more results</p>
         </Container>
     )
 }

@@ -3,14 +3,15 @@ import { Pagination } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useHistory } from 'react-router-dom'
 
-const Paginate = ({ pages, page, keyword, location, brands }) => {
+const Paginate = ({ pages, page, keyword, location, brands, grey }) => {
 
+    const BRAND = brands ? "/brands/" + brands : ""
     const history = useHistory()
     const nextHandler = () => {
-        history.push(location + "/" + keyword + "/page/" + (Number(page) + 1) + "/brands/" + brands)
+        history.push(location + "/" + keyword + "/page/" + (Number(page) + 1) + BRAND)
     }
     const prevHandler = () => {
-        history.push(location + "/" + keyword + "/page/" + (Number(page) - 1) + "/brands/" + brands)
+        history.push(location + "/" + keyword + "/page/" + (Number(page) - 1) + BRAND)
     }
 
     return (pages > 1 && (
@@ -21,7 +22,7 @@ const Paginate = ({ pages, page, keyword, location, brands }) => {
             <Pagination.Item to="" disabled>{page}</Pagination.Item>
             <Pagination.Item to="" disabled >of</Pagination.Item>
             <Pagination.Item to="" disabled>{pages}</Pagination.Item>
-            <Pagination.Item to=""
+            <Pagination.Item to="" disabled={grey}
                 onClick={nextHandler}
             >&raquo;</Pagination.Item>
         </Pagination>

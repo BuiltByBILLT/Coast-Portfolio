@@ -42,13 +42,19 @@ const SearchScreen = ({ history, match }) => {
                             <BrandFilter keyword={keyword} brands={brands} pageNumber={pageNumber} />
                         </Col>
                         <Col xs={12} lg={9}>
-                            <Row>
-                                {products.map(product => (
-                                    <Col key={product.pID} xs='6' lg='3' className=''>
-                                        <ProductDetailsCard product={product} />
-                                    </Col>
-                                ))}
-                            </Row>
+                            {products.length === 0
+                                ? <Message variant='warning'>
+                                    No Products Found {keyword && `that match keyword(s) \"${keyword}\"`} {brands && `under brand(s) ${brands}`}
+                                </Message>
+                                : <Row>
+                                    {products.map(product => (
+                                        <Col key={product.pID} xs='6' lg='3' className=''>
+                                            <ProductDetailsCard product={product} />
+                                        </Col>
+
+                                    ))}
+                                </Row>}
+
                         </Col>
                     </Row>
                     <Row className="justify-content-center">
