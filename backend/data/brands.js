@@ -1,4 +1,5 @@
 const brands = [
+    { brandID: "38", brandName: "3M" },
     { brandID: "57", brandName: "Advantage Refinish Products" },
     { brandID: "68", brandName: "Air Gunsa" },
     { brandID: "73", brandName: "Airbrush Action" },

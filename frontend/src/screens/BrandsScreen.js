@@ -30,7 +30,27 @@ const BrandsScreen = ({ match }) => {
                 ))}
             </div>
 
+
+
+
             <ListGroup variant="flush">
+
+                {// Numbers
+                    <ListGroupItem key='#' className="py-4">
+                        <h1 className="text-danger mb-3">#</h1>
+                        <Row>
+                            {brands && brands.filter(brand => Number(brand.brandName[0])).map(brand => (
+                                <Col xs={4} className="my-1">
+                                    <LinkContainer to={"/search/" + "ALL" + "/page/" + 1 + "/brands/" + brand.brandID}>
+                                        <Link active={false} className="px-0">
+                                            {brand.brandName}
+                                        </Link>
+                                    </LinkContainer>
+                                </Col>
+                            ))}
+                        </Row>
+                    </ListGroupItem>}
+
                 {letters.map((letter, index) => (
                     <ListGroupItem key={letter} className="py-4">
                         <h1 className="text-danger mb-3" ref={el => myRef.current[index] = el}>{letter}</h1>
@@ -47,6 +67,7 @@ const BrandsScreen = ({ match }) => {
                         </Row>
                     </ListGroupItem>
                 ))}
+
             </ListGroup>
         </Container >
     )

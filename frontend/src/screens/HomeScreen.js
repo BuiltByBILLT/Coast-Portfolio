@@ -68,9 +68,7 @@ const HomeScreen = ({ match }) => {
                                 <h2 className="mt-5 text-danger">Featured Product</h2>
                                 <h3 className="mt-3" style={{ letterSpacing: "0px" }}>IWATA Airbrush</h3>
                                 <p className="pr-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
-                                {/* <Link to={`/product/DKTX81PVDX2C6`}  > */}
                                 <Link to={`/product/H5100`}  >
-                                    {/* <Link to={`/products`}  > */}
                                     <Button>Shop Now</Button>
                                 </Link>
                             </Col>
@@ -107,7 +105,7 @@ const HomeScreen = ({ match }) => {
                             <Row className="my-5">
                                 {[
                                     { name: "Leafing/Pinstripe", url: "21", image: "/static/Pinstripe.png" },
-                                    { name: "Hobby", url: "0", image: "/static/Hobby.png" },
+                                    { name: "Hobby", url: "803", image: "/static/Hobby.png" },
                                     { name: "Mural", url: "589", image: "/static/Mural.png" },
                                     { name: "Model", url: "404", image: "/static/Model.png" }
                                 ].map(card => (
@@ -131,13 +129,13 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { image: "/static/kolor.png" },
-                                    { image: "/static/Iwata.png" },
-                                    { image: "/static/3m.png" },
-                                    { image: "/static/CreateXColors.png" }
+                                    { image: "/static/kolor.png", url: 7 },
+                                    { image: "/static/Iwata.png", url: 2 },
+                                    { image: "/static/3m.png", url: 38 },
+                                    { image: "/static/CreateXColors.png", url: 0 }
                                 ].map(card => (
                                     <Col key={card.image} xs='6' lg='3' className='p-4 text-center'>
-                                        <Link to={`/brands`} className="linkBox" >
+                                        <Link to={`/search/ALL/page/1/brands/${card.url}`} className="linkBox" >
                                             <Image
                                                 className="mx-auto yellowBorderHover"
                                                 style={{ width: "200px", height: "200px", objectFit: "contain", padding: "0px" }}
@@ -152,13 +150,13 @@ const HomeScreen = ({ match }) => {
                         {
                             <Row className="my-5">
                                 {[
-                                    { image: "/static/Lumilor.png" },
-                                    { image: "/static/Paasche.png" },
-                                    { image: "/static/1shot.png" },
-                                    { image: "/static/MissionModels.png" }
+                                    { image: "/static/Lumilor.png", url: 33 },
+                                    { image: "/static/Paasche.png", url: 13 },
+                                    { image: "/static/1shot.png", url: 5 },
+                                    { image: "/static/MissionModels.png", url: 19 }
                                 ].map(card => (
                                     <Col key={card.image} xs='6' lg='3' className='p-4 text-center'>
-                                        <Link to={`/brands`} className="linkBox" >
+                                        <Link to={`/search/ALL/page/1/brands/${card.url}`} className="linkBox" >
                                             <Image
                                                 className="mx-auto yellowBorderHover"
                                                 style={{ width: "200px", height: "200px", objectFit: "contain", padding: "0px" }}
@@ -176,7 +174,7 @@ const HomeScreen = ({ match }) => {
                     <h3 className="text-danger mb-4">Watch Our Training Videos</h3>
                     <Row className="my-5">
                         <Col lg={4}>
-                            <Link to={`https://www.youtube.com`} className="linkBox" >
+                            <a href="http://www.coastairbrushtv.com/HOKurethanes" target='_blank' className="linkBox" >
                                 <Image src="/static/Video_mixing.png"
                                     style={{ width: "100%" }} >
                                 </Image>
@@ -185,11 +183,11 @@ const HomeScreen = ({ match }) => {
                                 <div className="overlayYellow">
                                     <Button className="middle">Watch Video</Button>
                                 </div>
-                            </Link>
+                            </a>
 
                         </Col>
                         <Col lg={4}>
-                            <Link to={`https://www.youtube.com`} className="linkBox" >
+                            <a href="http://www.coastairbrushtv.com/Airbrush-Overview_p_20.html" target='_blank' className="linkBox" >
                                 <Image src="/static/Vide_airbrush.png"
                                     style={{ width: "100%" }} />
                                 <h5 className="mt-3 mb-0 text-center text-danger">Airbrush Overview </h5>
@@ -197,10 +195,10 @@ const HomeScreen = ({ match }) => {
                                 <div className="overlayYellow">
                                     <Button className="middle">Watch Video</Button>
                                 </div>
-                            </Link>
+                            </a>
                         </Col>
                         <Col lg={4}>
-                            <Link to={`https:www.youtube.com`} className="linkBox" >
+                            <a href="http://www.coastairbrushtv.com/The-Flaming-Skull--Creating-Skulls-Realistic-Blue-Fire-w-Craig-Fraser_p_56.html" target='_blank' className="linkBox" >
                                 <Image src="/static/Video_FlamingSkull.png"
                                     style={{ width: "100%" }} />
                                 <h5 className="mt-3 mb-0 text-center text-danger">The "Flaming" Skull</h5>
@@ -208,7 +206,7 @@ const HomeScreen = ({ match }) => {
                                 <div className="overlayYellow">
                                     <Button className="middle">Watch Video</Button>
                                 </div>
-                            </Link>
+                            </a>
                         </Col>
                     </Row>
                 </Container>
@@ -227,7 +225,9 @@ const HomeScreen = ({ match }) => {
                         <Image src="/static/Asset34.png" style={{ width: "30%" }} />
                         <p className="text-dark my-5">Grab your Iwata HP-TH2 Gravity Feed Dual Action Trigger Airbrush while the vault is still open</p>
                         <div className="ml-auto">
-                            <Button>Shop Now</Button>
+                            <Link to={`/product/H5100`}  >
+                                <Button>Shop Now</Button>
+                            </Link>
                         </div>
                     </Col>
                 </Row>

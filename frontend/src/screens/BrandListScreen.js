@@ -110,7 +110,7 @@ const BrandListScreen = ({ history }) => {
                         {brands && filtered.map(brand => (
                             <tr key={brand.brandID}>
                                 <td>{brand.brandID}</td>
-                                <td><Link to={`/brand/${brand.brandID}`}>{brand.brandName}</Link></td>
+                                <td><Link to={`/search/ALL/page/1/brands/${brand.brandID}`}>{brand.brandName}</Link></td>
                                 <td className="p-0 align-middle text-center">
                                     <LinkContainer to={`/admin/brand/${brand.brandID}/edit`} className="my-auto">
                                         <Button variant='dark' className='btn-sm'>
