@@ -24,13 +24,13 @@ async function sendToQB(order) {
     const lineItems = order.lineItems.elements
     const total = order.payments.elements[0].amount
     const tax = order.payments.elements[0].taxAmount
+    const subtotal = 0
+    const hasShipping = false
     console.log({ id, lineItems, total, tax })
-    // const { id, total, lineItems, payments } = order
-    // const shipping = lineItems.elements.find(lineItem => lineItem.item && lineItem.item.id == process.env.SHIPPING_ID)
-    // const tax = payments.elements && payments.elements[0] && payments.elements[0].taxAmount
+
 
     // if (shipping.price && tax) {
-    //     const subtotal = total - shipping.price - tax
+
     //     const { data } = await axios.post(
     //         process.env.ZAPIER_URL,
     //         {

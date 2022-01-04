@@ -124,12 +124,12 @@ const orderClover = asyncHandler(async (req, res) => {
         console.log("order success")
 
         // After Order Functions
-        if (process.env.NODE_ENV === "development") {
-            sendToQB(data)
-            console.log("sent to QB")
-            updateInv(cart.cartItems)
-            console.log("sent to InvUpdate")
-        }
+        // if (process.env.NODE_ENV === "development") {
+        sendToQB(data)
+        console.log("sent to QB")
+        updateInv(cart.cartItems)
+        console.log("sent to InvUpdate")
+        // }
 
     } catch (error) {
         if (error.response) {
