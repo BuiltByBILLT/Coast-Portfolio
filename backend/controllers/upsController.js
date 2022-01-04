@@ -2,6 +2,8 @@ import asyncHandler from 'express-async-handler'
 import axios from 'axios'
 import Label from '../models/labelModel.js'
 
+dotenv.config()
+const LABEL_URL = process.env.NODE_ENV === "development" ? `https://wwwcie.ups.com/ship/v1807/shipments` : `https://onlinetools.ups.com/ship/v1807/shipments`,
 
 // @desc Verify Address
 // @route POST /api/shipping/ups/AV
@@ -145,7 +147,7 @@ const createUPS = asyncHandler(async (req, res) => {
 
     try {
         const { data } = await axios.post(
-            `https://wwwcie.ups.com/ship/v1807/shipments`,
+            LABEL_URL,
             body,
             {
                 headers: {
