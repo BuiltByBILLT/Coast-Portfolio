@@ -152,9 +152,9 @@ const createUPS = asyncHandler(async (req, res) => {
             {
                 headers: {
                     "Content-Type": "application/ json",
-                    "AccessLicenseNumber": "EDA5BD9C0D495E31",
+                    "AccessLicenseNumber": process.env.UPS_ACCESS,
                     "Username": "Coast Airbrush",
-                    "Password": "daytona30",
+                    "Password": process.env.UPS_PASS,
                     "transId": orderID,
                     "transactionSrc": "Website",
                 }
