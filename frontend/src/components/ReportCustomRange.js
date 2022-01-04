@@ -16,7 +16,7 @@ const ReportCustomRange = () => {
     const [start, setStart] = useState("")
     const [end, setEnd] = useState("")
     const [error, setError] = useState("")
-    const [report, setReport] = useState({ topQty: [], topPrice: [], totalOrders: "", averageValue: 0 })
+    const [report, setReport] = useState({ topQty: [], topPrice: [], topCatQty: [], topCatPrice: [], totalOrders: "", averageValue: 0 })
 
     useEffect(() => {
         console.log("start", startString)

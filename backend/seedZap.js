@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import connectDB from './config/db.js'
+import mongoose from 'mongoose'
 import axios from 'axios'
 import Inventory from './models/inventoryModel.js'
 import Zap from './models/zapModel.js'
@@ -19,7 +20,7 @@ const main = async () => {
     try {
         const latest = await axios.get(
             CLOVER_URL + `/orders`
-            + `?limit=10`
+            + `?limit=100`
             + `&filter=payType=full`,
             { headers: { "Authorization": `Bearer ${CLOVER_KEY}` } }
         )
@@ -29,6 +30,8 @@ const main = async () => {
         await Zap.insertMany(orderIDs)
     } catch (error) {
         console.log(error)
+    } finally {
+        mongoose.disconnect()
     }
 }
 
