@@ -69,19 +69,29 @@ const Footer = () => {
                     <Col className="text-center text-lg-left px-0 mt-4 mt-lg-auto ml-xl-5">
                         <Row className="mx-0 mb-4 mb-lg-2 mr-xl-5">
                             <Col className="px-1">
-                                <i className="fab fa-facebook-square fa-2x text-white"></i>
+                                <a href="http://www.facebook.com/" target='_blank' >
+                                    <i className="fab fa-facebook-square fa-2x text-white"></i>
+                                </a>
                             </Col>
                             <Col className="px-1">
-                                <i className="fab fa-youtube fa-2x text-white"></i>
+                                <a href="http://www.youtube.com/" target='_blank' >
+                                    <i className="fab fa-youtube fa-2x text-white"></i>
+                                </a>
                             </Col>
                             <Col className="px-1">
-                                <i className="fab fa-twitter fa-2x text-white"></i>
+                                <a href="http://www.twitter.com/" target='_blank' >
+                                    <i className="fab fa-twitter fa-2x text-white"></i>
+                                </a>
                             </Col>
                             <Col className="px-1">
-                                <i className="fab fa-pinterest fa-2x text-white"></i>
+                                <a href="http://www.pinterest.com/" target='_blank' >
+                                    <i className="fab fa-pinterest fa-2x text-white"></i>
+                                </a>
                             </Col>
                             <Col className="px-1">
-                                <i className="fab fa-instagram fa-2x text-white"></i>
+                                <a href="http://www.instagram.com/" target='_blank' >
+                                    <i className="fab fa-instagram fa-2x text-white"></i>
+                                </a>
                             </Col>
                         </Row>
                         <p>&copy;2021 - Coast Airbrush | All rights reserved</p>
