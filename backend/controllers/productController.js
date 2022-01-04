@@ -33,7 +33,7 @@ const getProducts = asyncHandler(async (req, res) => {
     let query = {
         ...keyword,
         ...filter,
-        optionGroup: { $exists: false }, // Remove Later
+        // optionGroup: { $exists: false }, // Remove Later
         pDisplay: req.user && req.user.isStaff ? { $ne: null } : true
     }
 
