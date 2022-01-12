@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import axios from 'axios'
 import Inventory from './models/inventoryModel.js'
 import Zap from './models/zapModel.js'
-import Order from './models/orderModel.js'
+import Storder from './models/storderModel.js'
 
 dotenv.config()
 // Always Prod
@@ -26,7 +26,7 @@ const main = async () => {
         )
         const orderIDs = latest.data.elements.map(orders => { return { orderID: orders.id } })
         console.log(orderIDs)
-        await Order.insertMany(orderIDs)
+        await Storder.insertMany(orderIDs)
         await Zap.insertMany(orderIDs)
     } catch (error) {
         console.log(error)

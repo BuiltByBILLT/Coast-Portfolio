@@ -15,6 +15,10 @@ import dotenv from 'dotenv'
 dotenv.config()
 connectDB()
 
+// var cloverRaw = XlsxDataAsJson.parseFile(process.cwd() + "\\backend\\cloverRaw.xlsx");
+// cloverRaw = cloverRaw.filter(row => row['Clover ID'])
+// console.log("from Clover export", cloverRaw.length)
+
 const importData = async () => {
 
 
