@@ -108,8 +108,9 @@ const checkNew = async () => {
 
 
 
-
-
+// WholeSync Once
+// Check most recent DB
+// Loop
 while (true) {
     await checkNew()
     await new Promise(r => setTimeout(r, 10000));
