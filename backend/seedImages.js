@@ -5,46 +5,26 @@ import fs from 'fs'
 import path from 'path'
 import axios from 'axios'
 
-async function downloadProductImage(image) {
-    const url = 'https://coastairbrush.com/' + image.imageSrc
-    const dir = path.resolve(process.cwd(), 'frontend', 'public', 'prodimages', image.imageSrc.substr(11))
-    const writer = fs.createWriteStream(dir)
-
-    const response = await axios({
-        url,
-        method: 'GET',
-        responseType: 'stream'
-    })
-
-    response.data.pipe(writer)
-
-    return new Promise((resolve, reject) => {
-        writer.on('finish', resolve)
-        writer.on('error', reject)
-    })
-}
-async function downloadCategoryImage(image) {
+async function downloadImages(image) {
     try {
 
-        var dir
-        if (image === "") return
-        else if (image.substr(0, 7) === "static/")
-            dir = path.resolve(process.cwd(), 'frontend', 'public', 'static', image.substr(7))
-        else if (image.substr(0, 7) === "images/")
-            dir = path.resolve(process.cwd(), 'frontend', 'public', 'images', image.substr(7))
-        else if (image.substr(0, 11) === "prodimages/")
-            dir = path.resolve(process.cwd(), 'frontend', 'public', 'prodimages', image.substr(11))
-        else return
+        // Check Path
+        const parts = image.split("/")
+        if (parts.length !== 2 && parts.length !== 3) return
+        if (parts.length === 3) {
+            var full = path.resolve(process.cwd(), 'frontend', 'public', parts[0], parts[1], parts[2])
+            var dir = path.resolve(process.cwd(), 'frontend', 'public', parts[0], parts[1])
+        }
+        if (parts.length === 2) {
+            var full = path.resolve(process.cwd(), 'frontend', 'public', parts[0], parts[1])
+            var dir = path.resolve(process.cwd(), 'frontend', 'public', parts[0])
+        }
+        if (fs.existsSync(full)) return // If Exists
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
 
-        // image.split("/")
-        // checkexist() => return
-        // if split.length == 2
-        // makedir split[0]
-        // dir = path (frontend, public, split[0], split[1])
-        // if split.length == 3
-        // makedir split[0] split[1]
-        // dir = path (frontend, public, split[0], split[1], split[2])
-
+        // Download
         const writer = fs.createWriteStream(dir)
 
         const url = 'https://coastairbrush.com/' + image
@@ -53,7 +33,6 @@ async function downloadCategoryImage(image) {
             method: 'GET',
             responseType: 'stream'
         })
-
         response.data.pipe(writer)
 
         return new Promise((resolve, reject) => {
@@ -61,6 +40,7 @@ async function downloadCategoryImage(image) {
             writer.on('error', reject)
         })
     } catch (e) {
+        console.log(e.message)
         throw e
     }
 }
@@ -70,25 +50,33 @@ async function downloadCategoryImage(image) {
 (async () => {
     var success = 0
     var error = []
+
+    // Product Images
     // for (let i = 0; i < 3; i++) {
-    //     const image = images[i];
-    //     try {
-    //         await downloadProductImage(image)
-    //         success++
-    //     } catch (e) {
-    //         error.push(image)
-    //     }
-    // }
+    for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        try {
+            await downloadImages(image.imageSrc)
+            success++
+        } catch (e) {
+            error.push({ link: image.imageSrc, message: e.message })
+        }
+    }
+
+    // Category Images
     // for (let i = 0; i < 3; i++) {
-    //     const cat = categories[i];
-    //     try {
-    //         await downloadCategoryImage(cat.sectionImage)
-    //         success++
-    //     } catch (e) {
-    //         error.push(cat)
-    //     }
-    // }
-    const H5100 = [
+    for (let i = 0; i < categories.length; i++) {
+        const category = categories[i];
+        try {
+            await downloadImages(category.sectionImage)
+            success++
+        } catch (e) {
+            error.push({ link: category.sectionImage, message: e.message })
+        }
+    }
+
+    // Manual Images
+    const manualImport = [
         "prodimages/IW_th2limited_1_500px_3.png",
         "prodimages/IW_th2limited_1_500px_3.png",
         "prodimages/H5100-HP-TH2-Fan-A1.jpg",
@@ -97,13 +85,13 @@ async function downloadCategoryImage(image) {
         "prodimages/IW_vaultlogo_footer800px.png",
     ]
 
-    for (let i = 0; i < 6; i++) {
-        const prod = H5100[i];
+    for (let i = 0; i < manualImport.length; i++) {
+        const image = manualImport[i];
         try {
-            await downloadCategoryImage(prod)
+            await downloadImages(image)
             success++
         } catch (e) {
-            error.push({ link: prod, message: e.message })
+            error.push({ link: image, message: e.message })
         }
     }
     console.log(success)
@@ -111,14 +99,15 @@ async function downloadCategoryImage(image) {
 })()
 
 
+// Find Subfolders
 // console.log(images.length)
 // const regex = new RegExp('prodimages/\w*/', 'g');
 // const folders = images.filter((image) => image.imageSrc.substr(11).includes("/"));
 // let obj = {}
 // folders.forEach(folder => {
-//     let next = folder.imageSrc.indexOf("/",11)
-//     let sub = folder.imageSrc.slice(11,next)
-//     obj[sub]= true
+//     let next = folder.imageSrc.indexOf("/", 11)
+//     let sub = folder.imageSrc.slice(11, next)
+//     obj[sub] = true
 // })
 // console.log(folders.length);
 // console.log(obj);
