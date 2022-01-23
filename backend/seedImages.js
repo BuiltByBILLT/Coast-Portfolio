@@ -25,7 +25,7 @@ async function downloadImages(image) {
         }
 
         // Download
-        const writer = fs.createWriteStream(dir)
+        const writer = fs.createWriteStream(full)
 
         const url = 'https://coastairbrush.com/' + image
         const response = await axios({
@@ -40,7 +40,8 @@ async function downloadImages(image) {
             writer.on('error', reject)
         })
     } catch (e) {
-        console.log(e.message)
+        console.log("download error: " + e.message)
+        console.log("error url: " + image)
         throw e
     }
 }
@@ -52,11 +53,12 @@ async function downloadImages(image) {
     var error = []
 
     // Product Images
-    // for (let i = 0; i < 3; i++) {
-    for (let i = 0; i < images.length; i++) {
+    for (let i = 0; i < 3; i++) {
+        // for (let i = 0; i < images.length; i++) {
         const image = images[i];
         try {
             await downloadImages(image.imageSrc)
+            console.log(image.imageSrc)
             success++
         } catch (e) {
             error.push({ link: image.imageSrc, message: e.message })
@@ -64,11 +66,12 @@ async function downloadImages(image) {
     }
 
     // Category Images
-    // for (let i = 0; i < 3; i++) {
-    for (let i = 0; i < categories.length; i++) {
+    for (let i = 0; i < 3; i++) {
+        // for (let i = 0; i < categories.length; i++) {
         const category = categories[i];
         try {
             await downloadImages(category.sectionImage)
+            console.log(category.sectionImage)
             success++
         } catch (e) {
             error.push({ link: category.sectionImage, message: e.message })
@@ -89,6 +92,7 @@ async function downloadImages(image) {
         const image = manualImport[i];
         try {
             await downloadImages(image)
+            console.log(image)
             success++
         } catch (e) {
             error.push({ link: image, message: e.message })
