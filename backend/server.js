@@ -18,6 +18,7 @@ import shippingRoutes from './routes/shippingRoutes.js'
 import brandRoutes from './routes/brandRoutes.js'
 import discountRoutes from './routes/discountRoutes.js'
 import avaTaxRoutes from './routes/avaTaxRoutes.js'
+import poRoutes from './routes/poRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -25,12 +26,13 @@ connectDB()
 
 const app = express()
 
-if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'))
-}
-if (process.env.NODE_ENV === 'production') {
-    app.use(morgan('combined'))
-}
+app.use(morgan('dev'))
+// if (process.env.NODE_ENV === 'development') {
+//     app.use(morgan('dev'))
+// }
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(morgan('dev'))
+// }
 
 app.use(express.json())
 
@@ -51,8 +53,7 @@ app.use('/api/reports', reportRoutes)
 app.use('/api/files', fileRoutes)
 app.use('/api/shipping', shippingRoutes)
 app.use('/api/tax', avaTaxRoutes)
-
-// app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
+app.use('/api/pos', poRoutes)
 
 
 const __dirname = path.resolve()

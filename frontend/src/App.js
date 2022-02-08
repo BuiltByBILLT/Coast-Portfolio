@@ -51,6 +51,9 @@ import ProtectedRoute from './components/ProtectedRoute'
 import StaffRoute from './components/StaffRoute'
 import BrandsScreen from './screens/BrandsScreen'
 import TestScreen from './screens/TestScreen'
+import PoListScreen from './screens/PoListScreen'
+import PoNewScreen from './screens/PoNewScreen'
+import PoEditScreen from './screens/PoEditScreen'
 
 
 const App = () => {
@@ -115,6 +118,10 @@ const App = () => {
         <StaffRoute path='/admin/discountlist' component={DiscountListScreen} />
         <StaffRoute path='/admin/discountnew' component={DiscountNewScreen} />
         <StaffRoute path='/admin/discount/:id/edit' component={DiscountEditScreen} />
+
+        <StaffRoute path='/admin/polist' component={PoListScreen} />
+        <StaffRoute path='/admin/ponew' component={PoNewScreen} />
+        <StaffRoute path='/admin/po/:id/edit' component={PoEditScreen} />
 
         <StaffRoute path='/admin/test' component={TestScreen} />
 

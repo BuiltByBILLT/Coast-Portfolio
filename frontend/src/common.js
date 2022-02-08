@@ -1,5 +1,5 @@
 export const toUSD = (cents) => {
-    if (!cents) return ""
+    if (!cents) return "$0.00"
     return (Number(cents) / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
 }
 

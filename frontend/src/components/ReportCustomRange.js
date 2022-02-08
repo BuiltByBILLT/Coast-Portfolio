@@ -52,6 +52,8 @@ const ReportCustomRange = () => {
     // Handlers
     const sumbitHandler = (e) => {
         e.preventDefault()
+        setReport({ topQty: [], topPrice: [], topCatQty: [], topCatPrice: [], totalOrders: "", averageValue: 0 })
+        setError("")
         mutate({ start, end })
     }
 
@@ -83,7 +85,7 @@ const ReportCustomRange = () => {
                         <Button block style={{ paddingBottom: "8px" }}
                             disabled={!startString || !endString || isLoading}
                             onClick={sumbitHandler} >
-                            {isLoading ? "Loading" : "Go"}
+                            {isLoading ? "Loading (Takes a while)" : "Go"}
                         </Button>
                     </Col>
                 </Form.Row>

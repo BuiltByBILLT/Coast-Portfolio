@@ -23,7 +23,7 @@ const MainNav = () => {
     const cartLink = (cartItems, shippingInfo, shippingMethod) => {
         if (pathname == '/payment' || pathname == '/shippingmethod' || pathname == '/shipping') return '/cart'
         if (cartItems.length == 0) return '/cart'
-        if (Object.keys(shippingInfo).length == 0) return '/shipping'
+        if (Object.keys(shippingInfo).length == 0) return '/cart'
         if (Object.keys(shippingMethod).length == 0) return '/shippingmethod'
         return '/payment'
     }
@@ -75,6 +75,9 @@ const MainNav = () => {
                             <LinkContainer to='/admin/reports'>
                                 <NavDropdown.Item active={false}>Custom Reports</NavDropdown.Item>
                             </LinkContainer>
+                            <LinkContainer to='/admin/polist'>
+                                <NavDropdown.Item active={false}>Supplier PO's</NavDropdown.Item>
+                            </LinkContainer>
                             <LinkContainer to='/admin/uploads'>
                                 <NavDropdown.Item active={false}>File Uploads</NavDropdown.Item>
                             </LinkContainer>
@@ -82,7 +85,7 @@ const MainNav = () => {
                         : <LinkContainer to='/orderhistory'>
                             <NavDropdown.Item active={false}>Order History</NavDropdown.Item>
                         </LinkContainer>}
-                    <NavDropdown.Item onClick={logoutHandler}>
+                    <NavDropdown.Item onClick={logoutHandler} className="text-danger text-center">
                         Log Out
                     </NavDropdown.Item>
                 </NavDropdown>

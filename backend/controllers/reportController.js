@@ -208,9 +208,9 @@ const customRangeReport = asyncHandler(async (req, res) => {
                 soldPrice[id] = soldPrice[id] ? soldPrice[id] + price : price
                 // Category
                 let iParent = await Inventory.findOne({ cloverID: id }, { iParent: 1, _id: 0 })
-                if (iParent.iParent) {
+                if (iParent && iParent.iParent) {
                     let pSection = await Product.findOne({ pID: iParent.iParent }, { pSection: 1, _id: 0 })
-                    if (pSection.pSection) {
+                    if (pSection && pSection.pSection) {
                         let cat = pSection.pSection
                         catQty[cat] = catQty[cat] ? catQty[cat] + 1 : 1
                         catPrice[cat] = catPrice[cat] ? catPrice[cat] + price : price
