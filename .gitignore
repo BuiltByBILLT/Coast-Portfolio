@@ -11,6 +11,8 @@ node_modules/
 /frontend/public/images/
 /frontend/public/index.html
 
+#Uploads
+/uploads
 
 # testing
 /coverage

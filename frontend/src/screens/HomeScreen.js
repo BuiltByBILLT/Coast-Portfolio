@@ -47,7 +47,7 @@ const HomeScreen = ({ match }) => {
                         }}>
                         <p className="text-light"
                             style={{ width: "350px" }}>
-                            Here at Coast, we are one big family of artists who love to create and serve our communit as best we can</p>
+                            Here at Coast, we are one big family of artists who love to create and serve our community as best we can</p>
                     </Container>
                 </Row>
                 <div style={{ position: "absolute", width: "100vw" }}>

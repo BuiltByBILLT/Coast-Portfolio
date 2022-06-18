@@ -76,7 +76,7 @@ const MainNav = () => {
                                 <NavDropdown.Item active={false}>Custom Reports</NavDropdown.Item>
                             </LinkContainer>
                             <LinkContainer to='/admin/polist'>
-                                <NavDropdown.Item active={false}>Supplier PO's</NavDropdown.Item>
+                                <NavDropdown.Item active={false}>Purchase Orders</NavDropdown.Item>
                             </LinkContainer>
                             <LinkContainer to='/admin/uploads'>
                                 <NavDropdown.Item active={false}>File Uploads</NavDropdown.Item>

@@ -1,17 +1,21 @@
 import axios from 'axios';
+import { enabled } from 'colors';
 import React, { useContext, useEffect, useState } from 'react';
 import { Form, ListGroup, Modal, Table } from 'react-bootstrap';
 import { useQuery } from 'react-query';
 import { UserContext } from '../contexts/UserContext';
 import Loader from './Loader';
 
-const PoSearchModal = ({ show, setShow, merchantData, fillHandler }) => {
+const CloverIdModal = ({ show, setShow, merchantData, fillHandler }) => {
 
     const user = useContext(UserContext)
     const [inventoryList, setInventoryList] = useState([])
     const [search, setSearch] = useState("")
 
-
+    const { isLoading, data, error } = useQuery([`poCloverSearch`, search], () =>
+        axios.get(`/api/inventory?keyword=${search}`, { headers: { Authorization: `Bearer ${user.token}` } }),
+        { enabled: show && !!search }
+    )
 
     // Close Modal and Reset
     const closeHandler = () => {
@@ -21,10 +25,7 @@ const PoSearchModal = ({ show, setShow, merchantData, fillHandler }) => {
 
     // Fill In Item
     const selectHandler = (parentNode) => {
-        fillHandler(parentNode.children[0].innerHTML,
-            parentNode.children[1].innerHTML,
-            parentNode.children[2].innerHTML,
-            parentNode.children[3].innerHTML)
+        fillHandler(parentNode.children[0].innerHTML)
         closeHandler()
     }
 
@@ -52,19 +53,17 @@ const PoSearchModal = ({ show, setShow, merchantData, fillHandler }) => {
                 {<Table hover>
                     <thead>
                         <tr>
-                            <th>SKU</th>
-                            <th>Description</th>
-                            <th>Price</th>
                             <th>CloverID</th>
+                            <th>Clover Name</th>
+                            <th>Product Page</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {inventoryList.map(line => (
+                        {data?.data && data.data.inventory.map(line => (
                             <tr key={line.sku} onClick={(e) => selectHandler(e.target.parentNode)} style={{ cursor: "pointer" }}>
-                                <td className="p-2">{line.sku}</td>
-                                <td className="p-2">{line.description}</td>
-                                <td className="p-2">{line.price}</td>
                                 <td className="p-2">{line.cloverID}</td>
+                                <td className="p-2">{line.cloverName}</td>
+                                <td className="p-2">{line.iParent}</td>
                             </tr>
                         ))
                         }
@@ -75,4 +74,4 @@ const PoSearchModal = ({ show, setShow, merchantData, fillHandler }) => {
     );
 };
 
-export default PoSearchModal;
+export default CloverIdModal;

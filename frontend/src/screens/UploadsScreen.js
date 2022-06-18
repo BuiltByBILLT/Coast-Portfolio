@@ -1,7 +1,7 @@
 import axios from 'axios'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Container, Modal } from 'react-bootstrap'
+import { Form, Button, Container, Modal, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -10,6 +10,7 @@ import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import ExampleDoc from '../assest/productdata.csv'
 import { UserContext } from '../contexts/UserContext'
+import MerchantUpload from '../components/MerchantUpload'
 
 
 const UploadsScreen = () => {
@@ -17,33 +18,34 @@ const UploadsScreen = () => {
     const [uploading, setUploading] = useState(false)
     const [success, setSuccess] = useState("")
     const [error, setError] = useState("")
+    const [file, setFile] = useState("")
+    const [merchant, setMerchant] = useState("")
 
-    // const { userInfo } = useSelector(state => state.userLogin);
     const user = useContext(UserContext)
 
-    const uploadFileHandler = async (e) => {
+
+    // Image Upload
+    const uploadProductImageHandler = async (e) => {
         const file = e.target.files[0]
         const formData = new FormData()
         formData.append('image', file)
         setUploading(true)
         setSuccess("")
         setError("")
-
         try {
-            const config = {
+            const { data } = await axios.post('/api/upload/prodimage', formData, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                     'Content-Type': 'multipart/form-data'
                 }
-            }
-            const { data } = await axios.post('/api/upload', formData, config)
-            setUploading(false)
+            })
             setSuccess(data)
         } catch (error) {
             console.error(error)
-            setUploading(false)
             setError(error)
         }
+        setUploading(false)
+        // e.target.value = ""
     }
 
 
@@ -58,11 +60,11 @@ const UploadsScreen = () => {
                 <Modal.Body> <Loader /> </Modal.Body>
             </Modal>
 
-            <Form>
+            <Form className="my-4">
                 <Form.Group controlId='image'>
                     <Form.Label>Product Images:</Form.Label>
-                    <Form.File id='image-file' label='Choose File' custom
-                        onChange={uploadFileHandler}>
+                    <Form.File id='image-file' label='No File Selected' custom
+                        onChange={uploadProductImageHandler}>
                     </Form.File>
                     {uploading && <Loader />}
                 </Form.Group>
@@ -72,9 +74,9 @@ const UploadsScreen = () => {
 
 
 
-            {/* <a href={ExampleDoc} download="bulkUpload.csv" target='_blank'>
-                <Button className="">CSV Template</Button>
-            </a> */}
+
+            <MerchantUpload />
+
 
         </Container>
     )

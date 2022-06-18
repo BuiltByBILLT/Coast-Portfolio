@@ -1,44 +1,62 @@
 import mongoose from 'mongoose'
 
 const lineSchema = mongoose.Schema({
-    lineCloverID: {
+    cloverID: {
         type: String,
     },
-    lineSku: {
+    sku: {
         type: String,
     },
-    lineName: {
+    description: {
         type: String,
     },
-    lineQty: {
+    qty: {
         type: Number,
     },
-    lineRate: {
+    price: {
         type: Number,
     },
 })
 
 const PoSchema = mongoose.Schema({
-    poEmail: {
+    merchantName: {
         type: String,
         required: true
     },
-    poVender: {
+    merchantEmail: {
         type: String,
         required: true
     },
-    poShipTo: {
+    merchantAddress: {
         type: String,
         required: true
     },
-    poText: {
-        type: String,
-    },
-    poHtml: {
+    replyToEmail: {
         type: String,
         required: true
     },
-    poLines: [lineSchema],
+    shipToAddress: {
+        type: String,
+        required: true
+    },
+    poDate: {
+        type: String,
+        required: true
+    },
+    receivedDate: {
+        type: String,
+    },
+    emailHtml: {
+        type: String,
+        required: true
+    },
+    emailURL: {
+        type: String,
+    },
+    status: {
+        type: String,
+    },
+    lineItems: [lineSchema],
 
 
 }, { timestamps: true })
