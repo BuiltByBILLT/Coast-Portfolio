@@ -6,7 +6,7 @@ import Merchant from '../models/merchantModel.js'
 
 // @desc Upload Merchant CSV
 // @route POST /api/merchants
-// @access Staff
+// @access Staff 
 const saveMerchant = asyncHandler(async (req, res) => {
     if (!req.file) { throw new Error('Please select file') }
 
