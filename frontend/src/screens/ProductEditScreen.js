@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom'
 import ImageEditer from '../components/ImageEditer'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import OptionEditor from '../components/OptionEditor'
 import { UserContext } from '../contexts/UserContext'
+import { useHistory } from 'react-router-dom'
 
 const ProductEditScreen = ({ match }) => {
 
     // States and Contexts
     const ID = match.params.id
+    const history = useHistory()
     const user = useContext(UserContext)
 
     const [pID, setPID] = useState("")
@@ -19,9 +22,15 @@ const ProductEditScreen = ({ match }) => {
     const [pSection, setPSection] = useState("")
     const [pManufacturer, setPManufacturer] = useState("")
     const [pDescription, setPDescription] = useState("")
+    const [pPrice, setPPrice] = useState(0)
+    const [pListPrice, setPListPrice] = useState(0)
+    const [cloverID, setCloverID] = useState("")
+    // const [pStock, setPStock] = useState(0)
+    const [pDisplay, setPDisplay] = useState(false)
+
     const [hasOptions, setHasOptions] = useState(false)
     const [optionGroup, setOptionGroup] = useState("")
-    const [pDisplay, setPDisplay] = useState(false)
+    const [options, setOptions] = useState([{}])
 
     const [images, setImages] = useState([])
     const [imageEdit, setImageEdit] = useState(false)
@@ -31,22 +40,26 @@ const ProductEditScreen = ({ match }) => {
     const [error, setError] = useState("")
 
     // Query: Product Details  
-    const { isLoading: queryLoading, refetch } = useQuery(["productEdit", ID], () => {
+    const { isLoading: queryLoading, isError, refetch } = useQuery(["productEdit", ID], () => {
         return axios.get(`/api/products/edit/${ID}`, {
             headers: { Authorization: `Bearer ${user.token}` }
         })
     }, {
-        onSuccess: (data) => {
-            console.log(data.data)
-            setPID(data.data.pID)
-            setPName(data.data.pName)
-            setPSection(data.data.pSection)
-            setPManufacturer(data.data.pManufacturer)
-            setPDescription(data.data.pDescription)
-            setHasOptions(!!data.data.optionGroup)
-            setOptionGroup(data.data.optionGroup)
-            setPDisplay(data.data.pDisplay)
-            setImages(data.data.images)
+        onSuccess: ({ data: { pID, pName, pSection, pManufacturer, pDescription, pPrice, pListPrice, pStock, cloverID, optionGroup, pDisplay, images, options } }) => {
+            setPID(pID)
+            setPName(pName)
+            setPSection(pSection)
+            setPManufacturer(pManufacturer)
+            setPDescription(pDescription)
+            setPPrice(pPrice)
+            setPListPrice(pListPrice)
+            setCloverID(cloverID)
+            // setPStock(pStock)
+            setPDisplay(pDisplay)
+            setHasOptions(!!optionGroup)
+            setOptionGroup(optionGroup)
+            setOptions(options)
+            setImages(images)
         },
         onError: (error) => {
             setError(error.response && error.response.data.message
@@ -56,6 +69,7 @@ const ProductEditScreen = ({ match }) => {
 
     // Mutation: Update Product
     const { mutate, isLoading: mutationLoading, reset } = useMutation(data => {
+        setEdit(false)
         return axios.put(`/api/products/edit/${ID}`, data, {
             headers: { Authorization: `Bearer ${user.token}` }
         })
@@ -78,7 +92,11 @@ const ProductEditScreen = ({ match }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ pID, pName, pSection, pManufacturer, pDescription, optionGroup, pDisplay })
+        if (hasOptions) {
+            mutate({ pID, pName, pSection, pManufacturer, pDescription, pDisplay, pPrice: null, pListPrice: null, cloverID: null, optionGroup, options })
+        } else {
+            mutate({ pID, pName, pSection, pManufacturer, pDescription, pDisplay, pPrice, pListPrice, cloverID, optionGroup: null, options: [] })
+        }
     }
     const editHandler = (e) => {
         e.preventDefault()
@@ -91,15 +109,13 @@ const ProductEditScreen = ({ match }) => {
         refetch()
     }
 
+
+
     return (
         <Container className="my-5 pb-5">
             <Row>
                 <Col xs={8}>
-                    <Row>
-                        <Col>
-                            <Link to="/admin/productlist">{"<-- Product Page List"}</Link>
-                        </Col>
-                    </Row>
+                    <Link to="/admin/productlist">{"<-- Product Page List"}</Link>
                     <h2 className="mt-3">Edit Product Page</h2>
                     {queryLoading ? <Loader />
                         : mutationLoading ? <Loader /> : (
@@ -132,28 +148,68 @@ const ProductEditScreen = ({ match }) => {
                                 </Form.Group>
                                 <Form.Group controlId='Description'>
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control as='textarea' placeholder='Description' value={pDescription} disabled={!edit}
+                                    <Form.Control as='textarea' placeholder='Description' value={pDescription} rows={5} disabled={!edit}
                                         onChange={(e) => setPDescription(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Check type="checkbox" id="optionsCheck" className="mb-3" custom
-                                    label="Has Options" disabled={!edit}
-                                    checked={hasOptions}
-                                    onChange={(e) => { setHasOptions(e.target.checked); setOptionGroup(null) }}>
-                                </Form.Check>
-                                {hasOptions && <Form.Group controlId='hasOptions'>
-                                    <Form.Label>Option Group Text</Form.Label>
-                                    <Form.Control type='text' placeholder='ex: Select Size' value={optionGroup} required disabled={!edit}
-                                        onChange={(e) => setOptionGroup(e.target.value)}>
+                                <Form.Row className='mx-0 my-4'>
+                                    <Form.Check type="checkbox" id="displayCheck" className="" custom
+                                        label="Display Product" disabled={!edit}
+                                        checked={pDisplay}
+                                        onChange={(e) => setPDisplay(e.target.checked)}>
+                                    </Form.Check>
+                                    <Form.Check type="checkbox" id="optionsCheck" className="mx-5" custom
+                                        label="Has Options" disabled={!edit}
+                                        checked={hasOptions}
+                                        onChange={(e) => { setHasOptions(e.target.checked) }}>
+                                    </Form.Check>
+                                </Form.Row>
+                                {hasOptions &&
+                                    <Form.Group controlId='hasOptions'>
+                                        <Form.Label>Option Group Text</Form.Label>
+                                        <Form.Control type='text' placeholder='ex: Select Size' value={optionGroup} required disabled={!edit}
+                                            onChange={(e) => setOptionGroup(e.target.value)}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                }
+                                {hasOptions
+                                    ? <OptionEditor options={options} setOptions={setOptions} edit={edit} />
+                                    : <Form.Row className="mx-0 justify-content-between">
+                                        <Form.Group className="w-50 pr-2">
+                                            <Form.Label>CloverID</Form.Label>
+                                            {edit
+                                                ? <Form.Control type='text' value={cloverID || ""} required
+                                                    onChange={(e) => setCloverID(e.target.value)}>
+                                                </Form.Control>
+                                                : <div onClick={() => { if (cloverID) history.push(`/admin/inventory/${cloverID}/edit`) }} >
+                                                    <Form.Control type='text' value={cloverID || ""} disabled
+                                                        style={{ cursor: cloverID ? "pointer" : "default" }}>
+                                                    </Form.Control>
+                                                </div>
+                                            }
+                                        </Form.Group>
+                                        <Form.Group className="w-25 px-2">
+                                            <Form.Label>Price (In Cents)</Form.Label>
+                                            <Form.Control type='number' placeholder='' value={pPrice} required disabled={!edit}
+                                                onChange={(e) => setPPrice(e.target.value)}>
+                                            </Form.Control>
+                                        </Form.Group>
+                                        <Form.Group className="w-25 pl-2">
+                                            <Form.Label>List Price (In Cents)</Form.Label>
+                                            <Form.Control type='number' placeholder='(Optional)' value={pListPrice} disabled={!edit}
+                                                onChange={(e) => setPListPrice(e.target.value)}>
+                                            </Form.Control>
+                                        </Form.Group>
+                                        {/* <Form.Group>
+                                    <Form.Label>Stock</Form.Label>
+                                    <Form.Control type='number' placeholder='' value={pStock} required disabled={!edit}
+                                        onChange={(e) => setPStock(e.target.value)}>
                                     </Form.Control>
-                                </Form.Group>}
-                                <Form.Check type="checkbox" id="displayCheck" className="mb-3" custom
-                                    label="Display Product" disabled={!edit}
-                                    checked={pDisplay}
-                                    onChange={(e) => setPDisplay(e.target.checked)}>
-                                </Form.Check>
+                                </Form.Group> */}
+                                    </Form.Row>
+                                }
                                 {edit ? (
-                                    <>
+                                    <Row className="mx-0">
                                         <Button variant='secondary' className="text-danger p-0" type="submit">
                                             Save
                                         </Button>
@@ -161,15 +217,15 @@ const ProductEditScreen = ({ match }) => {
                                             onClick={cancelHandler}>
                                             Cancel
                                         </Button>
-                                    </>
+                                    </Row>
                                 ) : (
-                                    <>
+                                    <Row className="mx-0">
                                         <Button variant='secondary' className="text-danger p-0" type="button"
-                                            onClick={editHandler}>
+                                            onClick={editHandler} disabled={!pID}>
                                             Edit
                                         </Button>
                                         <Button variant='secondary' className="p-0 mx-3"
-                                            onClick={() => setImageEdit(true)}>
+                                            onClick={() => setImageEdit(true)} disabled={!pID}>
                                             Edit Images
                                         </Button>
                                         <Modal show={imageEdit} onHide={() => setImageEdit(false)}
@@ -178,15 +234,15 @@ const ProductEditScreen = ({ match }) => {
                                             <Modal.Header closeButton>
                                                 <Modal.Title>Edit Product Images</Modal.Title>
                                             </Modal.Header>
-                                            <Modal.Body> <ImageEditer images={images} pID={ID} /> </Modal.Body>
+                                            <Modal.Body> <ImageEditer images={images} pID={pID} /> </Modal.Body>
                                         </Modal>
-                                    </>
+                                    </Row>
                                 )}
                             </Form>
                         )}
                 </Col>
             </Row>
-        </Container>
+        </Container >
     )
 }
 

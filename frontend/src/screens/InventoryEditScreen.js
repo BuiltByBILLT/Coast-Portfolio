@@ -15,12 +15,9 @@ const InventoryEditScreen = ({ match }) => {
 
     const [cloverID, setCloverID] = useState("")
     const [cloverName, setCloverName] = useState("")
-    const [iParent, setParent] = useState("")
+    const [cloverPrice, setCloverPrice] = useState("")
+    const [cloverSku, setCloverSku] = useState("")
     const [iStock, setStock] = useState(0)
-    const [iPrice, setPrice] = useState(0)
-    const [iListPrice, setListPrice] = useState(0)
-    const [isOption, setIsOption] = useState(false)
-    const [iSelectionName, setSelectionName] = useState("")
     const [iSell, setSell] = useState(false)
 
     const [edit, setEdit] = useState(false)
@@ -33,17 +30,14 @@ const InventoryEditScreen = ({ match }) => {
             headers: { Authorization: `Bearer ${user.token}` }
         })
     }, {
-        onSuccess: (data) => {
+        onSuccess: ({ data: { cloverID, cloverName, cloverPrice, cloverSku, iStock, iSell } }) => {
             // console.log(data.data)
-            setCloverID(data.data.cloverID)
-            setCloverName(data.data.cloverName)
-            setParent(data.data.iParent)
-            setStock(data.data.iStock)
-            setPrice(data.data.iPrice)
-            setListPrice(data.data.iListPrice)
-            setIsOption(!!data.data.iSelectionName)
-            setSelectionName(data.data.iSelectionName)
-            setSell(data.data.iSell)
+            setCloverID(cloverID)
+            setCloverName(cloverName)
+            setCloverPrice(cloverPrice)
+            setCloverSku(cloverSku)
+            setStock(iStock)
+            setSell(iSell)
         },
         onError: (error) => {
             setError(error.response && error.response.data.message
@@ -51,7 +45,7 @@ const InventoryEditScreen = ({ match }) => {
         }
     })
 
-    // Mutation: Update Product
+    // Mutation: Update Inventory
     const { mutate, isLoading: mutationLoading, reset } = useMutation(data => {
         return axios.put(`/api/inventory/edit/${ID}`, data, {
             headers: { Authorization: `Bearer ${user.token}` }
@@ -74,7 +68,7 @@ const InventoryEditScreen = ({ match }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ cloverID, cloverName, iParent, iStock, iPrice, iListPrice, iSelectionName, iSell })
+        mutate({ cloverID, cloverName, cloverPrice, cloverSku, iStock, iSell })
     }
     const editHandler = (e) => {
         e.preventDefault()
@@ -114,10 +108,16 @@ const InventoryEditScreen = ({ match }) => {
                                         onChange={(e) => setCloverName(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Group controlId='Parent Page'>
-                                    <Form.Label>Parent Page</Form.Label>
-                                    <Form.Control type='text' placeholder='Parent Page' value={iParent} disabled={!edit}
-                                        onChange={(e) => setParent(e.target.value)}>
+                                <Form.Group controlId='Price'>
+                                    <Form.Label>Clover POS Price *NOT Website Price* (In Cents)</Form.Label>
+                                    <Form.Control type='number' placeholder='Price from Clover POS (In Cents)' value={cloverPrice} required disabled={!edit}
+                                        onChange={(e) => setCloverPrice(e.target.value)}>
+                                    </Form.Control>
+                                </Form.Group>
+                                <Form.Group controlId='Sku'>
+                                    <Form.Label>Clover POS SKU *NOT Website SKU* (Optional)</Form.Label>
+                                    <Form.Control type='text' placeholder='Sku from Clover POS' value={cloverSku} disabled={!edit}
+                                        onChange={(e) => setCloverSku(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
                                 <Form.Group controlId='Stock'>
@@ -126,29 +126,6 @@ const InventoryEditScreen = ({ match }) => {
                                         onChange={(e) => setStock(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Group controlId='Price'>
-                                    <Form.Label>Price</Form.Label>
-                                    <Form.Control type='number' placeholder='Price' value={iPrice} required disabled={!edit}
-                                        onChange={(e) => setPrice(e.target.value)}>
-                                    </Form.Control>
-                                </Form.Group>
-                                <Form.Group controlId='List Price'>
-                                    <Form.Label>List Price</Form.Label>
-                                    <Form.Control type='number' placeholder='List Price' value={iListPrice} disabled={!edit}
-                                        onChange={(e) => setListPrice(e.target.value)}>
-                                    </Form.Control>
-                                </Form.Group>
-                                <Form.Check type="checkbox" id="optionsCheck" className="mb-3" custom
-                                    label="Is An Option" disabled={!edit}
-                                    checked={isOption}
-                                    onChange={(e) => { setIsOption(e.target.checked); setSelectionName(null) }}>
-                                </Form.Check>
-                                {isOption && <Form.Group controlId='isOption'>
-                                    <Form.Label>Variation Name</Form.Label>
-                                    <Form.Control type='text' placeholder='ex: 2oz' value={iSelectionName} required disabled={!edit}
-                                        onChange={(e) => setSelectionName(e.target.value)}>
-                                    </Form.Control>
-                                </Form.Group>}
                                 <Form.Check type="checkbox" id="sellCheck" className="mb-3" custom
                                     label="Sell" disabled={!edit}
                                     checked={iSell}
@@ -166,6 +143,7 @@ const InventoryEditScreen = ({ match }) => {
                                     </>
                                 ) : (
                                     <Button variant='secondary' className="text-danger p-0" type="button"
+                                        disabled={!cloverID}
                                         onClick={editHandler}>
                                         Edit
                                     </Button>

@@ -5,29 +5,31 @@ import { getSuggestedProducts } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import ProductSimpleCard from './ProductSimpleCard'
+import axios from 'axios'
+import { useQuery } from 'react-query'
 
 const Suggested = () => {
 
-    const { loading, error, suggested } = useSelector(state => state.productSuggested)
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(getSuggestedProducts())
-    }, [dispatch])
+    // const { loading, error, suggested } = useSelector(state => state.productSuggested)
+    // const dispatch = useDispatch()
+    // useEffect(() => {
+    //     dispatch(getSuggestedProducts())
+    // }, [dispatch])
 
+    const { data } = useQuery(`suggested`, () =>
+        axios.get(`/api/products/suggested`)
+    )
+    const suggested = data?.data
+
+    if (!suggested) return null
     return (
-        <>
-            {error ? (<Message variant='danger'>{error}</Message>)
-                : suggested && (
-                    <Row>
-                        {suggested.map(product => (
-                            <Col key={product.pID} xs='6' lg='3' className='px-4'>
-                                <ProductSimpleCard product={product} />
-                            </Col>
-                        ))}
-                    </Row>
-                )
-            }
-        </>
+        <Row>
+            {suggested.map(product => (
+                <Col key={product.pID} xs='6' lg='3' className='px-4'>
+                    <ProductSimpleCard product={product} />
+                </Col>
+            ))}
+        </Row>
     )
 }
 

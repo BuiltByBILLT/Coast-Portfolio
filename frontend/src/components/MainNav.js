@@ -81,6 +81,9 @@ const MainNav = () => {
                             <LinkContainer to='/admin/uploads'>
                                 <NavDropdown.Item active={false}>File Uploads</NavDropdown.Item>
                             </LinkContainer>
+                            <LinkContainer to='/admin/clovermatcher'>
+                                <NavDropdown.Item active={false}>Clover Matcher</NavDropdown.Item>
+                            </LinkContainer>
                         </>)
                         : <LinkContainer to='/orderhistory'>
                             <NavDropdown.Item active={false}>Order History</NavDropdown.Item>

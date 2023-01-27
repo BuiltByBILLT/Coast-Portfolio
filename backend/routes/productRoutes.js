@@ -8,7 +8,8 @@ import {
     updateImages,
     getProduct,
     newProduct,
-    getPIDs
+    getPIDs,
+    getAll
 } from '../controllers/productController.js'
 import { staff, protect, check } from '../middleware/authMiddleware.js'
 
@@ -21,7 +22,9 @@ router.route('/')
 router.route('/details/:id')
     .get(getProductDetails)
 
-router.get(`/PIDs`, protect, getPIDs)
+router.get(`/PIDs`, protect, staff, getPIDs)
+router.get(`/all`, protect, staff, getAll)
+
 router.route('/edit/:id')
     .get(getProduct)
     .post(protect, staff, newProduct)

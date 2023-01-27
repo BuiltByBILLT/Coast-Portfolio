@@ -29,7 +29,7 @@ const CartScreen = ({ match, history }) => {
         }
     }, [cartID])
 
-    // Query: Get Details
+    // Query: Get Cart from Overide
     const { refetch } = useQuery([`cart`, cartID], () => {
         return axios.get(`/api/cart/${cartID}`)
     }, {
@@ -44,7 +44,7 @@ const CartScreen = ({ match, history }) => {
         }
     })
 
-    // Mutation: Update Brand 
+    // Mutation: Send Cart 
     const { mutate, isSuccess, reset } = useMutation(data => {
         return axios.post(`/api/cart`, data, {
             headers: { Authorization: `Bearer ${user.token}` }

@@ -2,6 +2,9 @@ export const toUSD = (cents) => {
     if (!cents) return "$0.00"
     return (Number(cents) / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
 }
+export const toCurrency = (string, currency) => {
+    return string.toLocaleString("en-US", { style: "currency", currency: currency })
+}
 
 export const envImage = (url) => {
     if (url && url.substr(0, 6) === "static") return "/" + url

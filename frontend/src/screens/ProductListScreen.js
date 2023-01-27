@@ -34,7 +34,7 @@ const ProductListScreen = ({ history }) => {
 
     // Delete Mutation
     const { mutate, isLoading: mLoading, reset } = useMutation(pID => {
-        return axios.delete(`/api/products/edit/${pID}`, {
+        return axios.delete(`/api/products/edit/${encodeURIComponent(pID)}`, {
             headers: { Authorization: `Bearer ${user.token}` }
         })
     }, {
@@ -101,6 +101,7 @@ const ProductListScreen = ({ history }) => {
                             <th>MODIFIED</th>
                             <th>SKU</th>
                             <th>NAME</th>
+                            <th>PRICE</th>
                             <th>DISPLAY</th>
                             <th></th>
                         </tr>
@@ -110,7 +111,14 @@ const ProductListScreen = ({ history }) => {
                             <tr key={product.pID}>
                                 <td>{product.updatedAt.slice(0, 10)}</td>
                                 <td>{product.pID}</td>
-                                <td><Link to={`/product/${product.pID}`}>{product.pName}</Link></td>
+                                <td>{product.pDisplay
+                                    ? <Link to={`/product/${encodeURIComponent(product.pID)}`}>{product.pName}</Link>
+                                    : product.pName
+                                }</td>
+                                <td>{product.pPrice
+                                    ? Number(product.pPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
+                                    : "Options"
+                                }</td>
                                 <td >
                                     {product.pDisplay
                                         ? <i className='fas fa-check text-success'></i>
@@ -118,7 +126,7 @@ const ProductListScreen = ({ history }) => {
                                     }
                                 </td>
                                 <td className="text-center px-1">
-                                    <LinkContainer to={`/admin/product/${product.pID}/edit`}>
+                                    <LinkContainer to={`/admin/product/${encodeURIComponent(product.pID)}/edit`}>
                                         <Button variant='dark' className='btn-sm mr-2'>
                                             <i className='fas fa-edit'></i>
                                         </Button>

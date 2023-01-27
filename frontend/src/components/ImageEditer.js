@@ -1,14 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col, Modal } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
-import { listProductDetails, updateImages } from '../actions/productActions'
-import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
-import { set } from 'mongoose'
 import { useMutation, useQuery } from 'react-query'
 import { UserContext } from '../contexts/UserContext'
 
@@ -45,8 +37,8 @@ const ImageEditer = ({ pID }) => {
     // const dispatch = useDispatch()
 
     // Query: Product Details  
-    const { isLoading: queryLoading, refetch } = useQuery(["productEdit", pID], () => {
-        return axios.get(`/api/products/edit/${pID}`, {
+    const { isLoading: queryLoading, refetch } = useQuery(["productEdit", encodeURIComponent(pID)], () => {
+        return axios.get(`/api/products/edit/${encodeURIComponent(pID)}`, {
             headers: { Authorization: `Bearer ${user.token}` }
         })
     }, {
@@ -64,7 +56,7 @@ const ImageEditer = ({ pID }) => {
 
     // Mutation: Update Product
     const { mutate, isLoading, reset } = useMutation(data => {
-        return axios.put(`/api/products/images/${pID}`, data, {
+        return axios.put(`/api/products/images/${encodeURIComponent(pID)}`, data, {
             headers: { Authorization: `Bearer ${user.token}` }
         })
     }, {

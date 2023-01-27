@@ -1,46 +1,42 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { useMutation, useQuery } from 'react-query'
-import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Image, Card, Button, Container, Nav, Form } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails, deliverOrder } from '../actions/orderActions'
 // import { createUPS } from '../actions/shippingActions'
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstants'
 import { envImage } from '../common'
 import { UserContext } from '../contexts/UserContext'
 
 const OrderScreen = ({ match, history }) => {
     const orderID = match.params.id
-    const userInfo = useContext(UserContext)
+    const user = useContext(UserContext)
 
 
     const [size, setSize] = useState("")
     const [amount, setAmount] = useState("")
     const [lineID, setLineID] = useState("")
+    const [error, setError] = useState("")
 
-    const { order, loading, error } = useSelector(state => state.orderDetails)
-    // const { userInfo } = useSelector(state => state.userLogin)
-
-
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(getOrderDetails(orderID))
-        return () => { }
-    }, [])
+    const { isLoading: loading, data, refetch } = useQuery(['orders', orderID], () => {
+        return axios.get(`/api/orders/${orderID}`, {
+            headers: { Authorization: `Bearer ${user.token}` }
+        })
+    }, {
+        onError: ({ response, message }) => { setError(response?.data.message || message) },
+    })
+    const order = data?.data
 
     // Check if Label already created
-    const { isLoading, isError, data: labelData, error: labelError, refetch } = useQuery('label', () =>
+    const { isLoading, isError, data: labelData, error: labelErrorrefetch, refetch: refetchLabel } = useQuery('label', () =>
         axios.get(`/api/shipping/tracking/${orderID}`)
     )
 
     // Shipping Label Mutations
     const labelMutation = useMutation(data => {
         return axios.post(`/api/shipping/ups/${orderID}/${size}`, data,
-            { headers: { Authorization: `Bearer ${userInfo.token}` } })
+            { headers: { Authorization: `Bearer ${user.token}` } })
     })
     const handleUPS = () => {
         labelMutation.mutate(order.shippingLabel)
@@ -49,16 +45,16 @@ const OrderScreen = ({ match, history }) => {
     // Refund Mutation
     const refundMutation = useMutation(data => {
         return axios.post(`/api/clover/refund`, data,
-            { headers: { Authorization: `Bearer ${userInfo.token}` } })
+            { headers: { Authorization: `Bearer ${user.token}` } })
     })
     const handleRefund = () => {
         refundMutation.mutate({ amount, lineID, orderID })
     }
 
     useEffect(() => {
-        if (labelMutation.data) { refetch() }
+        if (labelMutation.data) { refetchLabel() }
         if (refundMutation.data) {
-            dispatch(getOrderDetails(orderID))
+            refetch()
             setAmount("")
             setLineID("")
         }
@@ -107,18 +103,23 @@ const OrderScreen = ({ match, history }) => {
                                                 {order.lineItems.map((item, index) => (
                                                     <ListGroup.Item key={index} className="mb-3 border-0 px-0">
                                                         <Row>
-                                                            <Col xs={12} lg={3} className="mb-3 mb-lg-0">
+                                                            {/* <Col xs={12} lg={3} className="mb-3 mb-lg-0">
                                                                 {item.image &&
                                                                     <Image src={envImage(item.image)} alt={item.name}
                                                                         fluid rounded />}
-                                                            </Col>
-                                                            <Col xs={12} lg={4} className="mb-2 my-lg-auto text-center text-lg-left">
+                                                            </Col> */}
+                                                            <Col xs={12} lg={7} className="mb-2 my-lg-auto text-center text-lg-left">
                                                                 {item.name === "Website Shipping"
                                                                     ? item.alternateName
-                                                                    : <Link to={`/product/${item.pID}`}
-                                                                        className=" text-danger" style={{ fontWeight: "bold" }}>
-                                                                        {item.name}
-                                                                    </Link>}
+                                                                    : item.alternateName
+                                                                        ? <Link to={`/product/${item.alternateName}`}
+                                                                            className=" text-danger" style={{ fontWeight: "bold" }}>
+                                                                            {item.name}
+                                                                        </Link>
+                                                                        : <p className=" text-danger" style={{ fontWeight: "bold" }}>
+                                                                            {item.name}
+                                                                        </p>
+                                                                }
                                                             </Col>
                                                             <Col xs={5} lg={2} className="text-center my-auto">
                                                                 {Number(item.price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
@@ -169,7 +170,7 @@ const OrderScreen = ({ match, history }) => {
                                         </ListGroup.Item>
                                     </ListGroup>)}
 
-                                    {userInfo.isStaff && (<ListGroup>
+                                    {user.isStaff && (<ListGroup>
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col >
@@ -183,7 +184,7 @@ const OrderScreen = ({ match, history }) => {
                                                     }
                                                 </Col>
 
-                                                {userInfo && userInfo.isStaff &&
+                                                {user && user.isStaff &&
                                                     <Col className="text-center">
                                                         <Row>
                                                             <Col>
@@ -254,7 +255,7 @@ const OrderScreen = ({ match, history }) => {
                                                         </p>)}
                                                 </Col>
 
-                                                {userInfo && userInfo.isStaff &&
+                                                {user && user.isStaff &&
                                                     <Col className="text-center">
                                                         {labelData && labelData.data.tracking
                                                             ? <a href={`data:image/png;base64,${labelData.data.raw}`} target="_self" type="image/png">Right Click to Open Label</a>

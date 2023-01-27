@@ -20,6 +20,7 @@ import discountRoutes from './routes/discountRoutes.js'
 import merchantRoutes from './routes/merchantRoutes.js'
 import avaTaxRoutes from './routes/avaTaxRoutes.js'
 import poRoutes from './routes/poRoutes.js'
+import matcherRoutes from './routes/matcherRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 dotenv.config()
@@ -55,6 +56,7 @@ app.use('/api/files', fileRoutes)
 app.use('/api/shipping', shippingRoutes)
 app.use('/api/tax', avaTaxRoutes)
 app.use('/api/pos', poRoutes)
+app.use('/api/matcher', matcherRoutes)
 
 
 const __dirname = path.resolve()

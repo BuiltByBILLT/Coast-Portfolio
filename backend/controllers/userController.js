@@ -279,13 +279,13 @@ const addWishToUser = asyncHandler(async (req, res) => {
     // console.log(req.body)
     const user = await User.findById(req.user.id)
     if (user) {
-        if (user.wishList.includes(req.params.pID)) {
+        if (user.wishList.includes(encodeURIComponent(req.params.pID))) {
             res.status(201).json({
                 userData: { ...user._doc, token: generateToken(user._id), password: undefined }
             })
         }
         else {
-            user.wishList.push(req.params.pID)
+            user.wishList.push(encodeURIComponent(req.params.pID))
             const updatedUser = await user.save()
             if (updatedUser) {
                 res.status(201).json({
@@ -310,7 +310,7 @@ const addWishToUser = asyncHandler(async (req, res) => {
 const removeWishFromUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.id)
     if (user) {
-        const index = user.wishList.indexOf(req.params.pID);
+        const index = user.wishList.indexOf(encodeURIComponent(req.params.pID));
         console.log(req.params.pID)
         if (index > -1) {
             user.wishList.splice(index, 1);

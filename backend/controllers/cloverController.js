@@ -35,8 +35,8 @@ const orderClover = asyncHandler(async (req, res) => {
                 {
                     "item": { "id": cartItem.cloverID },
                     "name": cartItem.name,
-                    "alternateName": cartItem.image,
-                    "note": cartItem.pID,
+                    "alternateName": cartItem.pID,
+                    "note": cartItem.image,
                     "price": cartItem.price,
                     "taxRates": [
                         {

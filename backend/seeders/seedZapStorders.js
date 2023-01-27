@@ -1,10 +1,10 @@
 import dotenv from 'dotenv'
-import connectDB from './config/db.js'
+import connectDB from '../config/db.js'
 import mongoose from 'mongoose'
 import axios from 'axios'
-import Inventory from './models/inventoryModel.js'
-import Zap from './models/zapModel.js'
-import Storder from './models/storderModel.js'
+import Inventory from '../models/inventoryModel.js'
+import Zap from '../models/zapModel.js'
+import Storder from '../models/storderModel.js'
 
 dotenv.config()
 // Always Prod

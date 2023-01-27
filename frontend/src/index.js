@@ -6,6 +6,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { UserContextProvider } from './contexts/UserContext.js';
 import { CartContextProvider } from './contexts/CartContext';
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
 
 import './bootstrap.css';
 import './index.css';
@@ -31,6 +33,7 @@ ReactDOM.render(
         </CartContextProvider>
       </UserContextProvider>
     </Provider>
+    <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
   </QueryClientProvider>,
   document.getElementById('root')
 );

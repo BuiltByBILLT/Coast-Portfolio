@@ -19,7 +19,7 @@ const SearchScreen = ({ history, match }) => {
     const brands = match.params.brands || ""
 
     // List Query
-    const { isFetching: loading, data, error, refetch } = useQuery(`productListAdmin`, () => {
+    const { isFetching: loading, data, error, refetch } = useQuery(`productList`, () => {
         return axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}&brands=${brands}`)
     })
     const products = data && data.data && data.data.products

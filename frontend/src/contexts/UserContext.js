@@ -5,7 +5,7 @@ export const UserContext = createContext()
 export const UserContextUpdate = createContext()
 
 const userReducer = (state, action) => {
-    console.log(action)
+    // console.log(action)
     switch (action.type) {
         case "LOGIN":
             return action.payload;
@@ -35,7 +35,7 @@ export const UserContextProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem("user", JSON.stringify(state))
-        console.log(state)
+        // console.log(state)
     }, [state])
 
 

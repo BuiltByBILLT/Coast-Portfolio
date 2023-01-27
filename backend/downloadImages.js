@@ -1,5 +1,5 @@
-import images from './data/images.js'
-import categories from './data/categories.js'
+// import images from '../data/images.js'
+// import categories from '../data/categories.js'
 
 import fs from 'fs'
 import path from 'path'
@@ -51,6 +51,10 @@ async function downloadImages(image) {
 (async () => {
     var success = 0
     var error = []
+
+    const images = await csvtojson().fromFile('./data/productimages 11-5-2022.csv')
+    const categories = await csvtojson().fromFile('./data/categoryinventory 11-5-2022.csv')
+
 
     // Product Images
     for (let i = 0; i < 3; i++) {

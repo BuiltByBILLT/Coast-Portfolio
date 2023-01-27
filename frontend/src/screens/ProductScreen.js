@@ -6,146 +6,142 @@ import Suggested from '../components/Suggested'
 import ProductCrumbs from '../components/ProductCrumbs'
 import ImageDisplay from '../components/ImageDisplay'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { listProductDetails, resetProductDetails, } from '../actions/productActions'
-
-import "../styles/ProductPage.css"
-// import { addToCart } from '../actions/cartActions'
 import { HeartList } from '../components/HeartList'
-import { CartContext, CartContextUpdate } from '../contexts/CartContext'
+import { CartContextUpdate } from '../contexts/CartContext'
+import axios from 'axios'
+import { useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
+import useCategories from '../hooks/useCatergories'
 
 const ProductScreen = ({ match }) => {
 
-    const pID = match.params.id
+    const pID = decodeURIComponent(match.params.id)
+    const encoded = match.params.id
     const cartUpdate = useContext(CartContextUpdate)
+    const categories = useCategories()
 
-    const { loading, error, product } = useSelector(state => state.productDetails)
-    const { category } = useSelector(state => state.categoryDetails)
-    const { userInfo } = useSelector(state => state.userLogin)
-
-
-    const [qty, setQty] = useState(1)
+    const [qty, setQty] = useState(0)
     const [stock, setStock] = useState(0)
     const [option, setOption] = useState(0)
     const [price, setPrice] = useState(0)
     const [listPrice, setListPrice] = useState(0)
     const [cloverID, setCloverID] = useState("")
     const [name, setName] = useState("")
-    const [image, setImage] = useState("")
+    const [error, setError] = useState("")
 
-    const dispatch = useDispatch()
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        dispatch(listProductDetails(match.params.id))
-        return () => {
-            dispatch(resetProductDetails());
-        };
-    }, [dispatch, match])
-
-
-    useEffect(() => {
-        setImage(product.images && product.images[0] && product.images[0].imageSrc)
-        if (product.options && product.options.length == 1) {
-            setName(product.pName)
-            setCloverID(product.options[0].cloverID)
-            setPrice(product.options[0].iPrice)
-            setListPrice(product.options[0].iListPrice)
-            setStock(product.options[0].iStock)
-            console.log(product.options[0])
+    const { isLoading, data } = useQuery(pID, () => {
+        return axios.get(`/api/products/details/${encoded}`)
+    }, {
+        onSuccess: ({ data: { cloverID, pPrice, pListPrice, pName, pStock, optionGroup } }) => {
+            setPrice(pPrice)
+            setListPrice(pListPrice)
+            setCloverID(cloverID)
+            setName(pName)
+            setStock(pStock)
+            pStock > 0 && setQty(1)
+            optionGroup && setOption(99)
+        },
+        onError: ({ response, message }) => {
+            setError(response?.data.message || message)
         }
-        else if (product.options && product.options.length > 1 && option != 0) {
-            setName(`${product.pName} (${product.options[option - 1].iSelectionName})`)
-            setCloverID(product.options[option - 1].cloverID)
-            setPrice(product.options[option - 1].iPrice)
-            setListPrice(product.options[option - 1].iListPrice)
-            setStock(product.options[option - 1].iStock)
-        } else {
+    })
+    const product = data?.data || {}
+    const { pName, optionGroup, options, pDescription, pLongDescription, pSection } = product
+    const image = product.images && product.images[0] && product.images[0].imageSrc
+    const missingData = !pID || !cloverID || !name || !price || !qty || !stock || !pSection
 
-        }
-    }, [option, product])
+
+    const optionHandler = (e) => {
+        setOption(e)
+        setCloverID(e == 99 ? "" : options[e].cloverID)
+        setName(e == 99 ? "" : product.name + " " + options[e].oName)
+        setPrice(e == 99 ? 0 : options[e].oPrice)
+        setStock(e == 99 ? 0 : options[e].oStock)
+        setQty(e == 99 ? 0 : options[e].oStock ? 1 : 0)
+    }
 
     const addToCartHandler = () => {
+        if (missingData) return
         window.scrollTo({ top: 0, behavior: "smooth" });
-        // dispatch(addToCart(product, name, qty, stock, price, cloverID))
         cartUpdate({
             type: "ADD_ITEM",
-            cartItem: { pID, cloverID, name, image, price, qty, stock, category: product.pSection }
+            cartItem: { pID, cloverID, name, image, price, qty, stock, category: pSection }
         })
-
     }
 
 
+    if (error) return <Container className="my-5 py-3"><Message variant='danger'>{error}</Message></Container>
+    if (isLoading) return <Container className="my-5 py-3"><Loader /></Container>
     return (
-        <Container className="my-5 py-3">
-            {loading ? <Loader />
-                : error ? (<Message variant='danger'>{error}</Message>)
-                    : (<>
-                        {/* <Meta title={product.pName} /> */}
-                        {product && <ProductCrumbs product={product} />}
-                        <Row className="mb-5 productPage">
-                            <Col lg={5} className="pr-5 mt-3">
-                                {product.images && <ImageDisplay product={product} />}
+        <Container className="my-lg-5 py-3">
+            {<ProductCrumbs product={product} />}
+            <Row className="mb-5 mt-4">
+                <Col lg={5} className="pr-5">
+                    {product.images && <ImageDisplay product={product} />}
+                </Col>
+                <Col lg={7} >
+                    <h3><Link to={`/category/${product.pSection}`} className="text-danger" >
+                        {categories?.find(cat => cat.sectionID == product.pSection)?.sectionName || "Category"}
+                    </Link>
+                    </h3>
+                    <h4 className="mt-3 mb-1">{"Product ID: " + pID}</h4>
+                    <h4 className="mt-1 mb-3">{pName}</h4>
+                    <h3 className="text-danger"> {Number(price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                        <span className="ml-4 text-muted" style={{ textDecoration: "line-through" }}>
+                            {listPrice && Number(listPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
+                        </span>
+                    </h3>
+                    <span className="pr-4"> {Number(price * 0.0084).toLocaleString("en-US", { style: "currency", currency: "EUR" })}</span>
+                    <span className="pr-4"> {Number(price * 0.0136).toLocaleString("en-US", { style: "currency", currency: "USD" })} AUD</span>
+                    <span className="pr-4"> {Number(price * .0124).toLocaleString("en-US", { style: "currency", currency: "USD" })} CAD</span>
+                    <Row className="my-4">
+                        {optionGroup &&
+                            <Col xs="auto">
+                                <Form.Control as="select" value={option} style={{ display: "inherit" }}
+                                    onChange={(e) => optionHandler(e.target.value)}>
+                                    <option key={0} value={99}>{optionGroup}</option>
+                                    {options.map((option, index) => (
+                                        <option key={index} value={index}>{option.oName}</option>
+                                    ))}
+                                </Form.Control>
                             </Col>
-                            <Col lg={7} >
-                                <h3 className="text-danger">{product.topSection}</h3>
-                                <h5 className="mt-3 mb-1">{"Product ID: " + product.pID}</h5>
-                                <h5 className="mt-1 mb-3">{product.pName}</h5>
-                                <h3 className="text-danger"> {Number(price / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })}
-                                    <span className="ml-4 text-muted" style={{ textDecoration: "line-through" }}>
-                                        {listPrice ? Number(listPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" }) : ""}
-                                    </span>
-                                </h3>
-                                <span className="pr-4"> {Number(price * 0.0084).toLocaleString("en-US", { style: "currency", currency: "EUR" })}</span>
-                                <span className="pr-4"> {Number(price * 0.0136).toLocaleString("en-US", { style: "currency", currency: "USD" })} AUD</span>
-                                <span className="pr-4"> {Number(price * .0124).toLocaleString("en-US", { style: "currency", currency: "USD" })} CAD</span>
-                                <Row className="my-4">
-                                    {product.optionGroup &&
-                                        <Col xs="auto">
-                                            <Form.Control as="select" value={option}
-                                                onChange={(e) => setOption(e.target.value)}>
-                                                <option key={0} value={0}>{product.optionGroup}</option>
-                                                {product.options.map((option, index) => (
-                                                    <option key={index + 1} value={index + 1}>{option.iSelectionName}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Col>
-                                    }
-                                </Row>
-                                <Row className="align-items-center mb-4">
-                                    <Col xs="auto">
-                                        <Form.Control className='form-select' as='select' value={qty} disabled={stock < 1}
-                                            onChange={(e) => setQty(e.target.value)}>
-                                            {stock < 1 && !product.optionGroup ? <option>Out of Stock</option>
-                                                : [...Array(stock > 0 ? stock : 0).keys()].map(x => (
-                                                    <option key={x + 1} value={x + 1}>{x + 1}</option>
-                                                ))}
-                                        </Form.Control>
-                                    </Col >
-                                    <Col xs="auto">
-                                        <Button
-                                            block
-                                            onClick={addToCartHandler}
-                                            disabled={product.optionGroup && option == 0 || stock < 1}
-                                        // disabled={product.countInStock === 0}
-                                        >Add to Cart
-                                        </Button>
-                                    </Col>
-                                    <Col xs="auto" className="px-2">
-                                        <HeartList pID={product.pID} size="2x" />
-                                    </Col>
-                                </Row>
-                                <h5 className="pt-3">Description</h5>
-                                {product.pLongDescription
-                                    ? <div dangerouslySetInnerHTML={{ __html: product.pLongDescription }} />
-                                    : <div dangerouslySetInnerHTML={{ __html: product.pDescription }} />
+                        }
+                    </Row>
+                    <Row className="align-items-center mb-4">
+                        <Col xs="auto">
+                            <Form.Control className='form-select' as='select' value={qty} disabled={stock < 1}
+                                onChange={(e) => setQty(e.target.value)}>
+                                {stock >= 1 || option == 99
+                                    ? [...Array(stock > 0 ? stock : 0).keys()].map(x => (
+                                        <option key={x + 1} value={x + 1}>{x + 1}</option>
+                                    ))
+                                    : <option>Out of Stock</option>
                                 }
-                            </Col>
-                        </Row>
-                        <h4 className="text-danger my-4 pt-5">You May Also Like</h4>
-                        <Suggested />
-                    </>
-                    )
-            }
+                            </Form.Control>
+                        </Col >
+                        <Col xs="auto">
+                            <Button
+                                block
+                                onClick={addToCartHandler}
+                                disabled={optionGroup && option == 99 || stock < 1 || missingData}
+                            >Add to Cart
+                            </Button>
+                        </Col>
+                        <Col xs="auto" className="px-2">
+                            <HeartList pID={encoded} size="2x" />
+                        </Col>
+                    </Row>
+                    <h4 className="pt-3">Description</h4>
+                    {pLongDescription
+                        ? <div dangerouslySetInnerHTML={{ __html: pLongDescription }} />
+                        : pDescription
+                            ? <div dangerouslySetInnerHTML={{ __html: pDescription }} />
+                            : "No Description"
+                    }
+                </Col>
+            </Row>
+            <h4 className="text-danger my-4 pt-5">You May Also Like</h4>
+            <Suggested />
         </Container>
     )
 }

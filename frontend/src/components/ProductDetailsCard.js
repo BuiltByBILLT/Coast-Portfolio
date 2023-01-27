@@ -8,7 +8,7 @@ import { envImage, firstImage } from '../common'
 
 const ProductDetailsCard = ({ product }) => {
     return (
-        <Link to={`/product/${product.pID}`} className="linkBox">
+        <Link to={`/product/${encodeURIComponent(product.pID)}`} className="linkBox">
             <div className="mb-5 productDetailsCard">
                 <p className="bg-danger text-light text-center py-1 mb-2">
                     {"Product ID " + product.pID}

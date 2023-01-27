@@ -27,6 +27,32 @@ const imageSchema = mongoose.Schema({
 })
 
 
+const optionSchema = mongoose.Schema({
+    oName: {
+        type: String,
+        required: true,
+    },
+    oPrice: {
+        type: Number,
+        required: true,
+    },
+    oListPrice: {
+        type: Number,
+        default: null
+    },
+    cloverID: {
+        type: String,
+    },
+    oStock: {
+        type: Number,
+        default: null
+    }
+}, {
+    timestamps: true,
+})
+
+
+
 const productSchema = mongoose.Schema({
     pID: {
         type: String,
@@ -44,6 +70,12 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    pPrice: {
+        type: Number,
+    },
+    pListPrice: {
+        type: Number,
+    },
     pDescription: {
         type: String,
     },
@@ -53,9 +85,18 @@ const productSchema = mongoose.Schema({
         default: 0
     },
     images: [imageSchema],
+    options: [optionSchema],
     optionGroup: {
         type: String,
+        default: null,
     },
+    cloverID: {
+        type: String,
+    },
+    pStock: {
+        type: Number,
+        default: null
+    }
 
 }, {
     timestamps: true

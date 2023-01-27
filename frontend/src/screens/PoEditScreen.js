@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap'
+import { Alert, Button, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import { useMutation, useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router'
@@ -242,6 +242,8 @@ const PoEditScreen = ({ match }) => {
                     ))}
                 </tbody>
             </Table>
+            {!complete && <Alert variant='warning'>Remember to fill in Clover ID, only items with valid ID's will have their inventory updated</Alert>}
+            {!complete && <Alert variant='info'>CloverID's will be remembered the after the item is saved</Alert>}
             {!complete && <Button variant='danger' className="mr-3" type="button" disabled={lineItems.length === 0 || isLoading}
                 onClick={saveHandler}>
                 {isLoading ? "Loading" : "Save and Update Stock"}

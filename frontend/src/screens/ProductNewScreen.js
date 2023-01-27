@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { UserContext } from '../contexts/UserContext'
+import OptionEditor from '../components/OptionEditor'
 
 const ProductNewScreen = ({ history }) => {
 
@@ -17,8 +18,12 @@ const ProductNewScreen = ({ history }) => {
     const [pSection, setPSection] = useState("")
     const [pManufacturer, setPManufacturer] = useState("")
     const [pDescription, setPDescription] = useState("")
+    const [pPrice, setPPrice] = useState(0)
+    const [pListPrice, setPListPrice] = useState(0)
+    const [cloverID, setCloverID] = useState("")
     const [hasOptions, setHasOptions] = useState(false)
     const [optionGroup, setOptionGroup] = useState("")
+    const [options, setOptions] = useState([{}])
     const [pDisplay, setPDisplay] = useState(false)
 
     const [available, setAvailable] = useState(true)
@@ -40,7 +45,7 @@ const ProductNewScreen = ({ history }) => {
 
     // Mutation: New Product
     const { mutate, isLoading: mutationLoading, reset } = useMutation(data => {
-        return axios.post(`/api/products/edit/${pID}`, data, {
+        return axios.post(`/api/products/edit/${encodeURIComponent(pID)}`, data, {
             headers: { Authorization: `Bearer ${user.token}` }
         })
     }, {
@@ -71,7 +76,11 @@ const ProductNewScreen = ({ history }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ pName, pID, pSection, pManufacturer, pDescription, pDisplay })
+        if (hasOptions) {
+            mutate({ pName, pID, pSection, pManufacturer, pDescription, pDisplay, options, optionGroup })
+        } else {
+            mutate({ pName, pID, pSection, pManufacturer, pDescription, pDisplay, pPrice, pListPrice, cloverID })
+        }
     }
     const cancelHandler = (e) => {
         e.preventDefault()
@@ -123,28 +132,55 @@ const ProductNewScreen = ({ history }) => {
                                 </Form.Group>
                                 <Form.Group controlId='Description'>
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control as='textarea' placeholder='Description' value={pDescription} disabled={!edit}
+                                    <Form.Control as='textarea' rows={5} placeholder='Description' value={pDescription} disabled={!edit}
                                         onChange={(e) => setPDescription(e.target.value)}>
                                     </Form.Control>
                                 </Form.Group>
-                                <Form.Check type="checkbox" id="optionsCheck" className="mb-3" custom
-                                    label="Has Options" disabled={!edit}
-                                    checked={hasOptions}
-                                    onChange={(e) => setHasOptions(e.target.checked)}>
-                                </Form.Check>
-                                {hasOptions && <Form.Group controlId='hasOptions'>
-                                    <Form.Label>Option Group Text</Form.Label>
-                                    <Form.Control type='text' placeholder='ex: Select Size' value={optionGroup} required disabled={!edit}
-                                        onChange={(e) => setOptionGroup(e.target.value)}>
-                                    </Form.Control>
-                                </Form.Group>}
-                                <Form.Check type="checkbox" id="displayCheck" className="mb-3" custom
-                                    label="Display Product" disabled={!edit}
-                                    checked={pDisplay}
-                                    onChange={(e) => setPDisplay(e.target.checked)}>
-                                </Form.Check>
+                                <Form.Row className='mx-0 my-4'>
+                                    <Form.Check type="checkbox" id="displayCheck" className="" custom
+                                        label="Display Product" disabled={!edit}
+                                        checked={pDisplay}
+                                        onChange={(e) => setPDisplay(e.target.checked)}>
+                                    </Form.Check>
+                                    <Form.Check type="checkbox" id="optionsCheck" className="mx-5" custom
+                                        label="Has Options" disabled={!edit}
+                                        checked={hasOptions}
+                                        onChange={(e) => { setHasOptions(e.target.checked) }}>
+                                    </Form.Check>
+                                </Form.Row>
+                                {hasOptions &&
+                                    <Form.Group controlId='hasOptions'>
+                                        <Form.Label>Option Group Text</Form.Label>
+                                        <Form.Control type='text' placeholder='ex: Select Size' value={optionGroup} required disabled={!edit}
+                                            onChange={(e) => setOptionGroup(e.target.value)}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                }
+                                {hasOptions
+                                    ? <OptionEditor options={options} setOptions={setOptions} edit={edit} />
+                                    : <Form.Row className="mx-0 justify-content-between">
+                                        <Form.Group className="w-50 pr-2">
+                                            <Form.Label>CloverID</Form.Label>
+                                            <Form.Control type='text' value={cloverID || ""} required
+                                                onChange={(e) => setCloverID(e.target.value)}>
+                                            </Form.Control>
+                                        </Form.Group>
+                                        <Form.Group className="w-25 px-2">
+                                            <Form.Label>Price (In Cents)</Form.Label>
+                                            <Form.Control type='number' placeholder='' value={pPrice} required disabled={!edit}
+                                                onChange={(e) => setPPrice(e.target.value)}>
+                                            </Form.Control>
+                                        </Form.Group>
+                                        <Form.Group className="w-25 pl-2">
+                                            <Form.Label>List Price (In Cents)</Form.Label>
+                                            <Form.Control type='number' placeholder='(Optional)' value={pListPrice} disabled={!edit}
+                                                onChange={(e) => setPListPrice(e.target.value)}>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Form.Row>
+                                }
                                 {edit && (
-                                    <>
+                                    <Row className="mx-0">
                                         <Button variant='secondary' className="text-danger p-0" type="submit" disabled={!available}>
                                             Save
                                         </Button>
@@ -152,7 +188,7 @@ const ProductNewScreen = ({ history }) => {
                                             onClick={cancelHandler}>
                                             Cancel
                                         </Button>
-                                    </>
+                                    </Row>
                                 )}
                             </Form>
                         )}

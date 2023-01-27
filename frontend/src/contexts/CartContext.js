@@ -9,7 +9,7 @@ export const CartContextUpdate = createContext()
 const initialState = { cartItems: [], shippingInfo: {}, shippingMethod: {}, discount: {} }
 
 const cartReducer = (state, action) => {
-    console.log(action)
+    // console.log(action)
     let newCartItems
     switch (action.type) {
         case "ADD_ITEM":
@@ -62,7 +62,7 @@ export const CartContextProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(state))
-        console.log(state)
+        // console.log(state)
         if (user._id) userUpdate({ type: "CART", cartItems: state.cartItems })
     }, [state])
 

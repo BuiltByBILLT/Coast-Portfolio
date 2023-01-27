@@ -131,7 +131,7 @@ const updatePo = asyncHandler(async (req, res) => {
             { "quantity": inv.iStock },
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
         )
-        await new Promise(r => setTimeout(r, 1000)); // Pause for congestion
+        await new Promise(r => setTimeout(r, 200)); // Pause for congestion
     }
 
     //Save PO

@@ -10,18 +10,12 @@ const inventorySchema = mongoose.Schema({
         type: String,
         required: true
     },
-    iParent: {
+    cloverSku: {
         type: String,
     },
-    iSelectionName: {
-        type: String,
-    },
-    iPrice: {
+    cloverPrice: {
         type: Number,
-        default: 0
-    },
-    iListPrice: {
-        type: Number,
+        required: true
     },
     iStock: {
         type: Number,

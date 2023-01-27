@@ -101,9 +101,7 @@ const InventoryListScreen = ({ history }) => {
 
                             <th>MODIFIED</th>
                             <th>CLOVER ID</th>
-                            <th>PARENT</th>
                             <th>CLOVER NAME</th>
-                            <th>PRICE</th>
                             <th>STOCK</th>
                             <th>SELL </th>
                             <th></th>
@@ -114,10 +112,7 @@ const InventoryListScreen = ({ history }) => {
                             <tr key={inventory.cloverID}>
                                 <td style={{ minWidth: "110px" }}>{inventory.updatedAt.slice(0, 10)}</td>
                                 <td style={{ minWidth: "110px" }}>{inventory.cloverID}</td>
-                                <td><Link to={`/product/${inventory.iParent}`}>{inventory.iParent}</Link></td>
                                 <td>{inventory.cloverName}</td>
-                                <td>{Number(inventory.iPrice / 100).toLocaleString("en-US", { style: "currency", currency: "USD" })
-                                }</td>
                                 <td>{inventory.iStock}</td>
                                 <td>
                                     {inventory.iSell

@@ -58,13 +58,6 @@ const deleteCategory = asyncHandler(async (req, res) => {
 const getCategoryProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({ pSection: req.params.id, pDisplay: true })
     if (products) {
-        for (let i = 0; i < products.length; i++) {
-            const product = products[i];
-            if (!product.optionGroup) {
-                const inv = await Inventory.findOne({ iParent: product.pID })
-                if (inv) { product._doc.pPrice = inv.iPrice }
-            }
-        }
         res.json(products)
     } else {
         res.status(404)

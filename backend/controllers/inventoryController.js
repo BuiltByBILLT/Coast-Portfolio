@@ -14,7 +14,7 @@ const getInventory = asyncHandler(async (req, res) => {
         $or: [
             { cloverName: { $regex: req.query.keyword, $options: 'i' } },
             { cloverID: { $regex: req.query.keyword, $options: 'i' } },
-            { iParent: { $regex: req.query.keyword, $options: 'i' } },
+            { cloverSku: { $regex: req.query.keyword, $options: 'i' } },
         ]
     } : {}
 
@@ -30,8 +30,10 @@ const getInventory = asyncHandler(async (req, res) => {
 // @route GET /api/inventory/cloverids
 // @access Staff
 const getCloverIDs = asyncHandler(async (req, res) => {
-    const inventory = await Inventory.find({})
-        .select('cloverID')
+    const inventory = await Inventory.find({}, {
+        _id: 0, cloverID: 1, cloverSku: 1, cloverPrice: 1, cloverName: 1
+    })
+
     if (inventory) { res.json(inventory) }
     else { throw new Error('CloverIDs not found') }
 })
@@ -59,8 +61,8 @@ const newInventory = asyncHandler(async (req, res) => {
         const res1 = await axios.post(
             process.env.CLOVER_URL + `/items`,
             {
-                "price": req.body.iPrice,
-                "sku": req.body.iParent,
+                "price": req.body.cloverPrice,
+                "sku": req.body.cloverSku,
                 "name": req.body.cloverName
             },
             { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
@@ -87,23 +89,27 @@ const newInventory = asyncHandler(async (req, res) => {
 // @route PUT /api/inventory/edit/:id
 // @access Staff
 const updateInventory = asyncHandler(async (req, res) => {
+    const { cloverPrice, cloverSku, cloverName, iStock } = req.body
     try {
         // Clover First
-        const res1 = await axios.post(
-            process.env.CLOVER_URL + `/items/${req.params.id}`,
-            {
-                "price": req.body.iPrice,
-                "sku": req.body.iParent,
-                "name": req.body.cloverName
-            },
-            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
-
-        )
-        const res2 = await axios.post(
-            process.env.CLOVER_URL + `/item_stocks/${res1.data.id}`,
-            { "quantity": req.body.iStock },
-            { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
-        )
+        if (cloverPrice || cloverSku || cloverName) {
+            const res1 = await axios.post(
+                process.env.CLOVER_URL + `/items/${req.params.id}`,
+                {
+                    "price": req.body.cloverPrice,
+                    "sku": req.body.cloverSku,
+                    "name": req.body.cloverName
+                },
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+            )
+        }
+        if (iStock) {
+            const res2 = await axios.post(
+                process.env.CLOVER_URL + `/item_stocks/${req.params.id}`,
+                { "quantity": req.body.iStock },
+                { headers: { "Authorization": `Bearer ${process.env.CLOVER_KEY}` } }
+            )
+        }
 
         // Mongo Next
         const inventory = await Inventory.findOneAndUpdate({ cloverID: req.params.id }, req.body)

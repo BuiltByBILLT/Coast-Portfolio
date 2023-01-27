@@ -54,6 +54,7 @@ import TestScreen from './screens/TestScreen'
 import PoListScreen from './screens/PoListScreen'
 import PoNewScreen from './screens/PoNewScreen'
 import PoEditScreen from './screens/PoEditScreen'
+import CloverMatcherScreen from './screens/CloverMatcherScreen'
 
 
 const App = () => {
@@ -122,6 +123,9 @@ const App = () => {
         <StaffRoute path='/admin/polist' component={PoListScreen} />
         <StaffRoute path='/admin/ponew' component={PoNewScreen} />
         <StaffRoute path='/admin/po/:id/edit' component={PoEditScreen} />
+
+        <StaffRoute path='/admin/clovermatcher/:id' component={CloverMatcherScreen} />
+        <StaffRoute path='/admin/clovermatcher' component={CloverMatcherScreen} />
 
         <StaffRoute path='/admin/test' component={TestScreen} />
 

@@ -249,18 +249,6 @@ const customRangeReport = asyncHandler(async (req, res) => {
     }
 
 
-
-    // Categories
-    // catQty, catPrice = {}
-    // for soldQty and soldPrice
-    // find Product, if(parent)
-    // product.sectionID
-    // fill catQty, catPrice
-    // sort and slice
-    // find Cat Name
-    // replace catID with catName
-
-
     res.json({ topQty, topPrice, totalOrders, averageValue, topCatPrice, topCatQty })
 })
 

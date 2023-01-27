@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { UserNavBar } from '../components/UserNavBar'
 import WishListCard from '../components/WishListCard'
 import { UserContext } from '../contexts/UserContext'

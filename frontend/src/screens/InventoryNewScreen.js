@@ -14,15 +14,11 @@ const InventoryNewScreen = ({ history }) => {
 
     // const [cloverID, setCloverID] = useState("")
     const [cloverName, setCloverName] = useState("")
-    const [iParent, setParent] = useState("")
+    const [cloverPrice, setCloverPrice] = useState("")
+    const [cloverSku, setCloverSku] = useState("")
     const [iStock, setStock] = useState(0)
-    const [iPrice, setPrice] = useState(0)
-    const [iListPrice, setListPrice] = useState(0)
-    const [isOption, setIsOption] = useState(false)
-    const [iSelectionName, setSelectionName] = useState("")
     const [iSell, setSell] = useState(false)
 
-    const [available, setAvailable] = useState(true)
     const [edit, setEdit] = useState(true)
     const [success, setSuccess] = useState("")
     const [error, setError] = useState("")
@@ -51,7 +47,7 @@ const InventoryNewScreen = ({ history }) => {
     // Handlers
     const saveHandler = (e) => {
         e.preventDefault()
-        mutate({ cloverName, iParent, iStock, iPrice, iListPrice, iSelectionName, iSell })
+        mutate({ cloverName, cloverSku, cloverPrice, cloverSku, iStock, iSell })
     }
     const cancelHandler = (e) => {
         e.preventDefault()
@@ -84,10 +80,16 @@ const InventoryNewScreen = ({ history }) => {
                                     onChange={(e) => setCloverName(e.target.value)}>
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group controlId='Parent Page'>
-                                <Form.Label>Parent Page</Form.Label>
-                                <Form.Control type='text' placeholder='Parent Page' value={iParent} required disabled={!edit}
-                                    onChange={(e) => setParent(e.target.value)}>
+                            <Form.Group controlId='Price'>
+                                <Form.Label>Clover POS Price *NOT Website Price* (In Cents)</Form.Label>
+                                <Form.ContCloverrol type='number' placeholder='Price (In Cents)' value={cloverPrice} required disabled={!edit}
+                                    onChange={(e) => setCloverPrice(e.target.value)}>
+                                </Form.ContCloverrol>
+                            </Form.Group>
+                            <Form.Group controlId='Sku'>
+                                <Form.Label>Clover POS SKU *NOT Website SKU* (Optional)</Form.Label>
+                                <Form.Control type='text' placeholder='Sku Page' value={cloverSku} disabled={!edit}
+                                    onChange={(e) => setCloverSku(e.target.value)}>
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group controlId='Stock'>
@@ -96,29 +98,6 @@ const InventoryNewScreen = ({ history }) => {
                                     onChange={(e) => setStock(e.target.value)}>
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group controlId='Price'>
-                                <Form.Label>Price (In Cents)</Form.Label>
-                                <Form.Control type='number' placeholder='Price (In Cents)' value={iPrice} required disabled={!edit}
-                                    onChange={(e) => setPrice(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group controlId='List Price'>
-                                <Form.Label>List Price</Form.Label>
-                                <Form.Control type='number' placeholder='List Price' value={iListPrice} disabled={!edit}
-                                    onChange={(e) => setListPrice(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Check type="checkbox" id="optionsCheck" className="mb-3" custom
-                                label="Is An Option" disabled={!edit}
-                                checked={isOption}
-                                onChange={(e) => { setIsOption(e.target.checked); setSelectionName(null) }}>
-                            </Form.Check>
-                            {isOption && <Form.Group controlId='isOption'>
-                                <Form.Label>Variation Name</Form.Label>
-                                <Form.Control type='text' placeholder='ex: 2oz' value={iSelectionName} required disabled={!edit}
-                                    onChange={(e) => setSelectionName(e.target.value)}>
-                                </Form.Control>
-                            </Form.Group>}
                             <Form.Check type="checkbox" id="sellCheck" className="mb-3" custom
                                 label="Sell" disabled={!edit}
                                 checked={iSell}
@@ -126,7 +105,8 @@ const InventoryNewScreen = ({ history }) => {
                             </Form.Check>
                             {edit && (
                                 <>
-                                    <Button variant='secondary' className="text-danger p-0" type="submit" disabled={!available}>
+                                    <Button variant='secondary' className="text-danger p-0" type="submit"
+                                        disabled={!cloverName || !cloverPrice}>
                                         Save
                                     </Button>
                                     <Button variant='secondary' className="p-0 ml-5" type="button"
